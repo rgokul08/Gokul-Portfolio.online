@@ -1,0 +1,126 @@
+/* src/components/About.css */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* Story card */
+.about-story {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.about-story-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, rgba(99,179,237,0.15), rgba(183,148,244,0.15));
+  border: 1px solid rgba(99,179,237,0.2);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #63b3ed;
+}
+.about-story-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #f0f0f5;
+}
+.about-para {
+  font-size: 15px;
+  color: #9898b0;
+  line-height: 1.8;
+}
+.about-loading {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+/* Contact items */
+.about-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 4px;
+}
+.about-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #9898b0;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.about-contact-item:hover { color: #63b3ed; }
+.about-contact-item svg { font-size: 16px; flex-shrink: 0; color: #63b3ed; }
+
+/* Right column */
+.about-right {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Stats */
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.about-stat {
+  padding: 28px 24px;
+  text-align: center;
+  cursor: default;
+}
+.about-stat-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #63b3ed, #b794f4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.about-stat-label {
+  font-size: 13px;
+  color: #5a5a72;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* Skills */
+.about-skills-card {
+  padding: 32px;
+}
+.about-skills-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f0f0f5;
+  margin-bottom: 20px;
+}
+.about-skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .about-story { padding: 28px; }
+}
+@media (max-width: 480px) {
+  .about-stats { grid-template-columns: 1fr 1fr; }
+}
