@@ -11,18 +11,19 @@ const DEFAULT_ABOUT = {
 My journey in tech started with curiosity about how things work under the hood. Today, I channel that curiosity into crafting clean, efficient code and modern user interfaces. Whether it's a full-stack web app or a sleek UI component, I bring dedication and attention to detail to everything I build.
 
 When I'm not coding, I'm exploring the latest in web technologies, contributing to open-source, or sketching UI concepts.`,
-  skills: ['React', 'JavaScript', 'Node.js', 'Python', 'HTML & CSS', 'Supabase', 'Git & GitHub', 'Figma', 'TailwindCSS', 'REST APIs', 'SQL', 'Problem Solving'],
+
+  skills: ['Java', 'Python','Figma', 'HTML & CSS', 'JavaScript', 'Supabase', 'Git & GitHub'],
   email: 'rgokul08.in@gmail.com',
-  contact: '+91 XXXXXXXXXX',
+  contact: '+91 88382104XX',
   linkedin: 'https://www.linkedin.com/in/gokul-r-69ab13385/',
   github: 'https://github.com/rgokul08',
 }
 
 const stats = [
-  { label: 'Projects Built',    value: '10+' },
-  { label: 'Certificates',      value: '15+' },
-  { label: 'Technologies',      value: '12+' },
-  { label: 'Years Learning',    value: '3+' },
+  { label: 'Projects Built',    value: '3+' },
+  { label: 'Certificates',      value: '25+' },
+  { label: 'Technologies',      value: '7+' },
+  { label: 'Years Learning',    value: '2+' },
 ]
 
 export default function About() {
