@@ -6,11 +6,25 @@ import './About.css'
 
 const DEFAULT_ABOUT = {
   name: 'Gokul R',
-  bio: `I'm a passionate engineering student with a strong foundation in software development and a keen eye for design. I thrive at the intersection of technology and creativity — building applications that are not only functional but also delightful to use.
+  bio: `I’m Gokul R, a passionate Software Developer and AI & Data Science student at Prince Dr. K. Vasudevan College (2025–2029). I have a strong interest in web development, coding, and creating modern digital experiences. With a background in CBSE education from Zion International Public School, I developed a solid foundation in problem-solving and analytical thinking.
 
-My journey in tech started with curiosity about how things work under the hood. Today, I channel that curiosity into crafting clean, efficient code and modern user interfaces. Whether it's a full-stack web app or a sleek UI component, I bring dedication and attention to detail to everything I build.
+I specialize in web design, frontend development, and software development, with skills in building responsive and user-friendly websites. I enjoy learning new technologies, solving real-world problems, and continuously improving my technical abilities.
 
-When I'm not coding, I'm exploring the latest in web technologies, contributing to open-source, or sketching UI concepts.`,
+Education Journey
+
+🎓 B.Tech in AI & Data Science
+Prince Dr. K. Vasudevan College
+2025 – 2029 | CGPA: 8.2/10
+
+🎓 Higher Secondary Education (CBSE)
+Zion School
+2024 – 2025 | 92%
+
+🎓 Secondary Education (CBSE)
+Zion School
+2022 – 2023 | 89%
+
+`,
   skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript', 'Supabase', 'Git & GitHub'],
   email: 'rgokul08.in@gmail.com',
   contact: '+91 88382104XX',
