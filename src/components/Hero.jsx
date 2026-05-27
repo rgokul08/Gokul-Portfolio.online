@@ -8,7 +8,7 @@ const roles = [
   'Software Developer',
   'Engineering Student',
   'Problem Solver',
-  'UI Enthusiast',
+  'Web Designer',
 ]
 
 export default function Hero() {
