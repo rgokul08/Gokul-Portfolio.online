@@ -1,11 +1,12 @@
 // src/components/Certificates.jsx
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
-import { FiAward, FiX, FiExternalLink, FiZoomIn } from 'react-icons/fi'
+import { FiAward, FiX, FiExternalLink, FiZoomIn, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import './Certificates.css'
 
 const BUCKET = 'Portfolio'
 const FOLDER = 'certificates_image'
+const SLIDE_THRESHOLD = 3
 
 const FALLBACK_CERTS = [
   { id: 1, title: 'React Developer Certification', description: 'Completed advanced React course covering hooks, context, and modern patterns.', authority: 'Udemy', image_url: null },
@@ -28,7 +29,10 @@ function getImageUrl(item) {
 export default function Certificates() {
   const [certs,   setCerts]   = useState([])
   const [loading, setLoading] = useState(true)
-  const [preview, setPreview] = useState(null) // lightbox
+  const [preview, setPreview] = useState(null)
+  const [current, setCurrent] = useState(0)
+  const [paused,  setPaused]  = useState(false)
+  const timerRef = useRef(null)
 
   useEffect(() => {
     const fetch = async () => {
@@ -48,12 +52,38 @@ export default function Certificates() {
     fetch()
   }, [])
 
-  // Close lightbox on Escape
+  // Escape closes lightbox
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') setPreview(null) }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [])
+
+  const useSlideshow = certs.length > SLIDE_THRESHOLD
+
+  const next = useCallback(() => {
+    if (useSlideshow) setCurrent(c => (c + 1) % certs.length)
+  }, [useSlideshow, certs.length])
+
+  const prev = useCallback(() => {
+    if (useSlideshow) setCurrent(c => (c - 1 + certs.length) % certs.length)
+  }, [useSlideshow, certs.length])
+
+  useEffect(() => {
+    if (!useSlideshow || paused) return
+    timerRef.current = setInterval(next, 3500)
+    return () => clearInterval(timerRef.current)
+  }, [useSlideshow, paused, next])
+
+  // For slideshow: 3 visible cards centered on current
+  const getVisible = () => {
+    const vis = []
+    for (let offset = -1; offset <= 1; offset++) {
+      const idx = (current + offset + certs.length) % certs.length
+      vis.push({ cert: certs[idx], pos: offset, idx })
+    }
+    return vis
+  }
 
   return (
     <div className="certificates">
@@ -67,13 +97,57 @@ export default function Certificates() {
           <div className="certs-skeleton-grid">
             {[1,2,3,4,5,6].map(i => <div key={i} className="cert-skeleton" />)}
           </div>
+        ) : useSlideshow ? (
+          /* ── Slideshow mode ── */
+          <div
+            className="certs-slideshow"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            <div className="certs-stage">
+              {getVisible().map(({ cert, pos }) => (
+                <CertCard
+                  key={`${cert.id}-${pos}`}
+                  cert={cert}
+                  pos={pos}
+                  onPreview={pos === 0 ? () => setPreview(cert) : undefined}
+                />
+              ))}
+            </div>
+
+            <button className="cert-slide-btn cert-slide-prev" onClick={() => { prev(); setPaused(true) }} aria-label="Previous">
+              <FiChevronLeft />
+            </button>
+            <button className="cert-slide-btn cert-slide-next" onClick={() => { next(); setPaused(true) }} aria-label="Next">
+              <FiChevronRight />
+            </button>
+
+            <div className="cert-slide-dots">
+              {certs.map((_, i) => (
+                <button
+                  key={i}
+                  className={`cert-slide-dot ${i === current ? 'active' : ''}`}
+                  onClick={() => { setCurrent(i); setPaused(true) }}
+                  aria-label={`Certificate ${i + 1}`}
+                />
+              ))}
+            </div>
+
+            {!paused && (
+              <div className="cert-progress">
+                <div className="cert-progress-bar" key={current} />
+              </div>
+            )}
+          </div>
         ) : (
+          /* ── Grid mode ── */
           <div className="certs-grid">
             {certs.map((cert, i) => (
               <CertCard
                 key={cert.id}
                 cert={cert}
                 index={i}
+                pos={0}
                 onPreview={() => setPreview(cert)}
               />
             ))}
@@ -85,9 +159,7 @@ export default function Certificates() {
       {preview && (
         <div className="cert-lightbox" onClick={() => setPreview(null)}>
           <div className="cert-lightbox-inner" onClick={e => e.stopPropagation()}>
-            <button className="cert-lightbox-close" onClick={() => setPreview(null)}>
-              <FiX />
-            </button>
+            <button className="cert-lightbox-close" onClick={() => setPreview(null)}><FiX /></button>
             {getImageUrl(preview) ? (
               <img src={getImageUrl(preview)} alt={preview.title} className="cert-lightbox-img" />
             ) : (
@@ -113,37 +185,31 @@ export default function Certificates() {
   )
 }
 
-function CertCard({ cert, index, onPreview }) {
+function CertCard({ cert, index = 0, pos = 0, onPreview }) {
   const imgSrc = getImageUrl(cert)
+  const posClass = pos === -1 ? 'cert-slide-left' : pos === 1 ? 'cert-slide-right' : 'cert-slide-center'
 
   return (
     <div
-      className="cert-card glass-card fade-in"
-      style={{ animationDelay: `${index * 0.08}s` }}
+      className={`cert-card glass-card ${pos === 0 && onPreview !== undefined ? (index !== undefined ? 'fade-in' : `cert-slide-card ${posClass}`) : `cert-slide-card ${posClass}`}`}
+      style={index !== undefined && pos === 0 && onPreview !== undefined && index >= 0 ? { animationDelay: `${index * 0.08}s` } : {}}
       onClick={onPreview}
-      role="button"
-      tabIndex={0}
-      onKeyDown={e => e.key === 'Enter' && onPreview()}
+      role={onPreview ? 'button' : undefined}
+      tabIndex={onPreview ? 0 : undefined}
+      onKeyDown={onPreview ? e => e.key === 'Enter' && onPreview() : undefined}
     >
       <div className="cert-image-wrap">
         {imgSrc ? (
           <img src={imgSrc} alt={cert.title} className="cert-image" loading="lazy" />
         ) : (
-          <div className="cert-placeholder">
-            <FiAward />
-          </div>
+          <div className="cert-placeholder"><FiAward /></div>
         )}
-        <div className="cert-zoom-hint"><FiZoomIn /></div>
+        {onPreview && <div className="cert-zoom-hint"><FiZoomIn /></div>}
       </div>
-
       <div className="cert-body">
-        {cert.authority && (
-          <div className="cert-authority">{cert.authority}</div>
-        )}
+        {cert.authority && <div className="cert-authority">{cert.authority}</div>}
         <h3 className="cert-title">{cert.title}</h3>
-        {cert.description && (
-          <p className="cert-desc">{cert.description}</p>
-        )}
+        {cert.description && <p className="cert-desc">{cert.description}</p>}
       </div>
     </div>
   )

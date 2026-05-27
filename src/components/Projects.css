@@ -29,14 +29,14 @@
   color: #63b3ed;
 }
 
-/* Grid */
+/* Grid mode */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 24px;
 }
 
-/* Skeleton loader */
+/* Skeleton */
 .projects-loading {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -56,6 +56,21 @@
 }
 @keyframes shimmer { to { background-position: -200% 0; } }
 
+/* ── Slideshow ── */
+.projects-slideshow {
+  position: relative;
+  padding-bottom: 80px;
+}
+
+.projects-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  min-height: 520px;
+  perspective: 1200px;
+}
+
 /* Card */
 .project-card {
   display: flex;
@@ -63,6 +78,118 @@
   overflow: hidden;
   border-radius: 24px;
 }
+
+/* Slide card variants */
+.slide-card {
+  transition: all 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
+
+.slide-center {
+  width: 420px;
+  opacity: 1;
+  transform: scale(1) translateZ(0);
+  z-index: 3;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,179,237,0.2);
+}
+
+.slide-left,
+.slide-right {
+  width: 320px;
+  opacity: 0.45;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.slide-left  { transform: scale(0.88) translateX(-30px) rotateY(8deg); }
+.slide-right { transform: scale(0.88) translateX(30px)  rotateY(-8deg); }
+
+/* Controls */
+.slide-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  background: rgba(10,10,15,0.9);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 50%;
+  color: #f0f0f5;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s;
+  z-index: 10;
+  backdrop-filter: blur(12px);
+}
+.slide-btn:hover {
+  background: rgba(99,179,237,0.15);
+  border-color: rgba(99,179,237,0.4);
+  color: #63b3ed;
+  transform: translateY(-50%) scale(1.08);
+}
+.slide-prev { left: 0; }
+.slide-next { right: 0; }
+
+/* Dots */
+.slide-dots {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+.slide-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+}
+.slide-dot.active {
+  width: 28px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #63b3ed, #b794f4);
+}
+.slide-dot:hover { background: rgba(255,255,255,0.5); }
+
+/* Progress bar */
+.slide-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.slide-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #63b3ed, #b794f4);
+  border-radius: 2px;
+  animation: slideProgress 4s linear forwards;
+}
+@keyframes slideProgress { from { width: 0; } to { width: 100%; } }
+
+/* Empty state */
+.projects-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 80px 0;
+  color: #5a5a72;
+  font-size: 48px;
+}
+.projects-empty p { font-size: 16px; color: #5a5a72; }
 
 /* Image */
 .project-image-wrap {
@@ -102,10 +229,7 @@
   transition: opacity 0.3s;
 }
 .project-card:hover .project-image-overlay { opacity: 1; }
-.project-image-overlay-links {
-  display: flex;
-  gap: 12px;
-}
+.project-image-overlay-links { display: flex; gap: 12px; }
 .project-overlay-btn {
   display: inline-flex;
   align-items: center;
@@ -155,8 +279,6 @@
   line-height: 1.7;
   flex: 1;
 }
-
-/* Tools */
 .project-tools {
   display: flex;
   flex-wrap: wrap;
@@ -171,8 +293,6 @@
   font-weight: 500;
   border-radius: 100px;
 }
-
-/* Links */
 .project-links {
   display: flex;
   gap: 10px;
@@ -206,6 +326,15 @@
 }
 .project-link-btn.ghost:hover { color: #f0f0f5; border-color: rgba(255,255,255,0.25); }
 
+/* Responsive */
+@media (max-width: 900px) {
+  .projects-stage { gap: 0; }
+  .slide-left, .slide-right { display: none; }
+  .slide-center { width: 100%; max-width: 440px; }
+  .slide-prev { left: 4px; }
+  .slide-next { right: 4px; }
+}
 @media (max-width: 600px) {
   .projects-grid { grid-template-columns: 1fr; }
+  .slide-center { width: 95vw; }
 }

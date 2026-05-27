@@ -1,13 +1,12 @@
 // src/components/Projects.jsx
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
-import { FiExternalLink, FiGithub, FiClock, FiCode } from 'react-icons/fi'
+import { FiExternalLink, FiGithub, FiClock, FiCode, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import './Projects.css'
 
 const BUCKET = 'Portfolio'
 const FOLDER = 'projects_image'
 
-// Fallback sample projects
 const FALLBACK_PROJECTS = [
   {
     id: 1,
@@ -38,10 +37,10 @@ const FALLBACK_PROJECTS = [
   },
 ]
 
+const SLIDE_THRESHOLD = 3 // Use slideshow when more than this many projects
+
 function getImageUrl(item) {
-  // If image_url is a full URL, use as-is
   if (item.image_url && item.image_url.startsWith('http')) return item.image_url
-  // If it's just a filename, build from Supabase storage
   if (item.image_url) {
     const { data } = supabase.storage.from(BUCKET).getPublicUrl(`${FOLDER}/${item.image_url}`)
     return data.publicUrl
@@ -61,7 +60,10 @@ function parseTools(tools) {
 export default function Projects() {
   const [projects, setProjects] = useState([])
   const [loading, setLoading]   = useState(true)
-  const [filter, setFilter]     = useState('All')
+  const [filter,  setFilter]    = useState('All')
+  const [current, setCurrent]   = useState(0)
+  const [paused,  setPaused]    = useState(false)
+  const timerRef = useRef(null)
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -81,14 +83,38 @@ export default function Projects() {
     fetchProjects()
   }, [])
 
-  // Collect all unique tools for filter tabs
-  const allTools = ['All', ...new Set(
-    projects.flatMap(p => parseTools(p.tools))
-  )]
+  const allTools = ['All', ...new Set(projects.flatMap(p => parseTools(p.tools)))]
+  const filtered = filter === 'All' ? projects : projects.filter(p => parseTools(p.tools).includes(filter))
+  const useSlideshow = filtered.length > SLIDE_THRESHOLD
 
-  const filtered = filter === 'All'
-    ? projects
-    : projects.filter(p => parseTools(p.tools).includes(filter))
+  // Auto-advance slideshow
+  const next = useCallback(() => {
+    if (useSlideshow) setCurrent(c => (c + 1) % filtered.length)
+  }, [useSlideshow, filtered.length])
+
+  const prev = useCallback(() => {
+    if (useSlideshow) setCurrent(c => (c - 1 + filtered.length) % filtered.length)
+  }, [useSlideshow, filtered.length])
+
+  useEffect(() => {
+    if (!useSlideshow || paused) return
+    timerRef.current = setInterval(next, 4000)
+    return () => clearInterval(timerRef.current)
+  }, [useSlideshow, paused, next])
+
+  // Reset slide index when filter changes
+  useEffect(() => { setCurrent(0) }, [filter])
+
+  // Visible projects for slideshow: show up to 3 centered on current
+  const getVisible = () => {
+    if (!useSlideshow) return filtered.map((p, i) => ({ project: p, pos: 0, idx: i }))
+    const vis = []
+    for (let offset = -1; offset <= 1; offset++) {
+      const idx = (current + offset + filtered.length) % filtered.length
+      vis.push({ project: filtered[idx], pos: offset, idx })
+    }
+    return vis
+  }
 
   return (
     <div className="projects">
@@ -98,7 +124,6 @@ export default function Projects() {
           Featured <span>Projects</span>
         </h2>
 
-        {/* Filter tabs */}
         {!loading && allTools.length > 1 && (
           <div className="projects-filters">
             {allTools.slice(0, 8).map(tool => (
@@ -115,13 +140,61 @@ export default function Projects() {
 
         {loading ? (
           <div className="projects-loading">
-            {[1,2,3].map(i => <div key={i} className="project-skeleton" />)}
+            {[1, 2, 3].map(i => <div key={i} className="project-skeleton" />)}
+          </div>
+        ) : useSlideshow ? (
+          /* ── Slideshow mode ── */
+          <div
+            className="projects-slideshow"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            <div className="projects-stage">
+              {getVisible().map(({ project, pos }) => (
+                <ProjectCard key={`${project.id}-${pos}`} project={project} pos={pos} />
+              ))}
+            </div>
+
+            {/* Controls */}
+            <button className="slide-btn slide-prev" onClick={() => { prev(); setPaused(true) }} aria-label="Previous">
+              <FiChevronLeft />
+            </button>
+            <button className="slide-btn slide-next" onClick={() => { next(); setPaused(true) }} aria-label="Next">
+              <FiChevronRight />
+            </button>
+
+            {/* Dots */}
+            <div className="slide-dots">
+              {filtered.map((_, i) => (
+                <button
+                  key={i}
+                  className={`slide-dot ${i === current ? 'active' : ''}`}
+                  onClick={() => { setCurrent(i); setPaused(true) }}
+                  aria-label={`Go to project ${i + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Progress bar */}
+            {!paused && (
+              <div className="slide-progress">
+                <div className="slide-progress-bar" key={current} />
+              </div>
+            )}
           </div>
         ) : (
+          /* ── Grid mode ── */
           <div className="projects-grid">
             {filtered.map((project, i) => (
-              <ProjectCard key={project.id} project={project} index={i} />
+              <ProjectCard key={project.id} project={project} index={i} pos={0} grid />
             ))}
+          </div>
+        )}
+
+        {filtered.length === 0 && !loading && (
+          <div className="projects-empty">
+            <FiCode />
+            <p>No projects match this filter.</p>
           </div>
         )}
       </div>
@@ -129,16 +202,17 @@ export default function Projects() {
   )
 }
 
-function ProjectCard({ project, index }) {
+function ProjectCard({ project, index = 0, pos = 0, grid = false }) {
   const imgSrc = getImageUrl(project)
   const tools  = parseTools(project.tools)
 
+  const posClass = pos === -1 ? 'slide-left' : pos === 1 ? 'slide-right' : 'slide-center'
+
   return (
     <div
-      className="project-card glass-card fade-in"
-      style={{ animationDelay: `${index * 0.12}s` }}
+      className={`project-card glass-card ${grid ? 'fade-in' : `slide-card ${posClass}`}`}
+      style={grid ? { animationDelay: `${index * 0.12}s` } : {}}
     >
-      {/* Image */}
       <div className="project-image-wrap">
         {imgSrc ? (
           <img src={imgSrc} alt={project.title} className="project-image" loading="lazy" />
@@ -163,26 +237,15 @@ function ProjectCard({ project, index }) {
         </div>
       </div>
 
-      {/* Body */}
       <div className="project-body">
-        {/* Duration */}
         {project.duration && (
-          <div className="project-duration">
-            <FiClock /> {project.duration}
-          </div>
+          <div className="project-duration"><FiClock /> {project.duration}</div>
         )}
-
         <h3 className="project-title">{project.title}</h3>
         <p className="project-desc">{project.description}</p>
-
-        {/* Tools */}
         <div className="project-tools">
-          {tools.map((tool, i) => (
-            <span key={i} className="project-tool">{tool}</span>
-          ))}
+          {tools.map((tool, i) => <span key={i} className="project-tool">{tool}</span>)}
         </div>
-
-        {/* Footer links */}
         <div className="project-links">
           {project.project_link && (
             <a href={project.project_link} target="_blank" rel="noopener noreferrer" className="project-link-btn">
