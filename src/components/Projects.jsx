@@ -1,18 +1,20 @@
 // src/components/Projects.jsx
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
-import { FiExternalLink, FiGithub, FiClock, FiCode, FiChevronLeft, FiChevronRight, FiPackage } from 'react-icons/fi'
+import { FiExternalLink, FiGithub, FiClock, FiCode, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import './Projects.css'
 
 const BUCKET = 'Portfolio'
 const FOLDER = 'projects_image'
-const SLIDE_THRESHOLD = 3
+const SLIDE_THRESHOLD = 3 // Use slideshow when more than this many projects
 
 function getImageUrl(item) {
-  if (!item.image_url) return null
-  if (item.image_url.startsWith('http')) return item.image_url
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(`${FOLDER}/${item.image_url}`)
-  return data.publicUrl
+  if (item.image_url && item.image_url.startsWith('http')) return item.image_url
+  if (item.image_url) {
+    const { data } = supabase.storage.from(BUCKET).getPublicUrl(`${FOLDER}/${item.image_url}`)
+    return data.publicUrl
+  }
+  return null
 }
 
 function parseTools(tools) {
@@ -26,22 +28,34 @@ function parseTools(tools) {
 
 export default function Projects() {
   const [projects, setProjects] = useState([])
-  const [loading,  setLoading]  = useState(true)
-  const [filter,   setFilter]   = useState('All')
-  const [current,  setCurrent]  = useState(0)
-  const [paused,   setPaused]   = useState(false)
+  const [loading, setLoading]   = useState(true)
+  const [error, setError]       = useState(null)
+  const [filter,  setFilter]    = useState('All')
+  const [current, setCurrent]   = useState(0)
+  const [paused,  setPaused]    = useState(false)
   const timerRef = useRef(null)
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const { data, error } = await supabase
+        setLoading(true)
+        const { data, error: dbError } = await supabase
           .from('projects')
           .select('*')
           .order('id', { ascending: false })
-        if (error || !data) setProjects([])
-        else setProjects(data)
-      } catch {
+        
+        if (dbError) {
+          console.error('Supabase error:', dbError)
+          setError('Failed to fetch projects')
+          setProjects([])
+        } else if (data && data.length > 0) {
+          setProjects(data)
+        } else {
+          setProjects([])
+        }
+      } catch (err) {
+        console.error('Fetch error:', err)
+        setError('Failed to fetch projects')
         setProjects([])
       } finally {
         setLoading(false)
@@ -54,6 +68,7 @@ export default function Projects() {
   const filtered = filter === 'All' ? projects : projects.filter(p => parseTools(p.tools).includes(filter))
   const useSlideshow = filtered.length > SLIDE_THRESHOLD
 
+  // Auto-advance slideshow
   const next = useCallback(() => {
     if (useSlideshow) setCurrent(c => (c + 1) % filtered.length)
   }, [useSlideshow, filtered.length])
@@ -68,8 +83,10 @@ export default function Projects() {
     return () => clearInterval(timerRef.current)
   }, [useSlideshow, paused, next])
 
+  // Reset slide index when filter changes
   useEffect(() => { setCurrent(0) }, [filter])
 
+  // Visible projects for slideshow: show up to 3 centered on current
   const getVisible = () => {
     if (!useSlideshow) return filtered.map((p, i) => ({ project: p, pos: 0, idx: i }))
     const vis = []
@@ -78,6 +95,20 @@ export default function Projects() {
       vis.push({ project: filtered[idx], pos: offset, idx })
     }
     return vis
+  }
+
+  if (loading) {
+    return (
+      <div className="projects">
+        <div className="container">
+          <div className="section-label">My Work</div>
+          <h2 className="section-title">Featured <span>Projects</span></h2>
+          <div className="projects-loading">
+            {[1, 2, 3].map(i => <div key={i} className="project-skeleton" />)}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -102,16 +133,22 @@ export default function Projects() {
           </div>
         )}
 
-        {loading ? (
-          <div className="projects-loading">
-            {[1, 2, 3].map(i => <div key={i} className="project-skeleton" />)}
-          </div>
-        ) : filtered.length === 0 ? (
+        {error && (
           <div className="projects-empty">
-            <FiPackage />
-            <p>{projects.length === 0 ? 'Projects coming soon!' : 'No projects match this filter.'}</p>
+            <FiCode />
+            <p>{error}</p>
           </div>
-        ) : useSlideshow ? (
+        )}
+
+        {!error && projects.length === 0 && !loading && (
+          <div className="projects-empty">
+            <FiCode />
+            <p>No projects yet. Check back soon!</p>
+          </div>
+        )}
+
+        {!error && projects.length > 0 && useSlideshow ? (
+          /* ── Slideshow mode ── */
           <div
             className="projects-slideshow"
             onMouseEnter={() => setPaused(true)}
@@ -123,6 +160,7 @@ export default function Projects() {
               ))}
             </div>
 
+            {/* Controls */}
             <button className="slide-btn slide-prev" onClick={() => { prev(); setPaused(true) }} aria-label="Previous">
               <FiChevronLeft />
             </button>
@@ -130,6 +168,7 @@ export default function Projects() {
               <FiChevronRight />
             </button>
 
+            {/* Dots */}
             <div className="slide-dots">
               {filtered.map((_, i) => (
                 <button
@@ -141,17 +180,26 @@ export default function Projects() {
               ))}
             </div>
 
+            {/* Progress bar */}
             {!paused && (
               <div className="slide-progress">
                 <div className="slide-progress-bar" key={current} />
               </div>
             )}
           </div>
-        ) : (
+        ) : !error && projects.length > 0 ? (
+          /* ── Grid mode ── */
           <div className="projects-grid">
             {filtered.map((project, i) => (
               <ProjectCard key={project.id} project={project} index={i} pos={0} grid />
             ))}
+          </div>
+        ) : null}
+
+        {!error && filtered.length === 0 && projects.length > 0 && (
+          <div className="projects-empty">
+            <FiCode />
+            <p>No projects match this filter.</p>
           </div>
         )}
       </div>
@@ -162,6 +210,7 @@ export default function Projects() {
 function ProjectCard({ project, index = 0, pos = 0, grid = false }) {
   const imgSrc = getImageUrl(project)
   const tools  = parseTools(project.tools)
+
   const posClass = pos === -1 ? 'slide-left' : pos === 1 ? 'slide-right' : 'slide-center'
 
   return (

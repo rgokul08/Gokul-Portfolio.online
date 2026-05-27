@@ -1,15 +1,14 @@
 // src/components/Navbar.jsx
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { FiX, FiSend, FiAlertCircle, FiCheckCircle } from 'react-icons/fi'
 import './Navbar.css'
 
 const navLinks = [
-  { label: 'Home',         href: 'home' },
-  { label: 'About',        href: 'about' },
-  { label: 'Projects',     href: 'projects' },
-  { label: 'Certificates', href: 'certificates' },
-  { label: 'Feedback',     href: 'feedback' },
-  { label: 'Contact',      href: 'feedback' },
+  { label: 'Home',         href: '#home' },
+  { label: 'About',        href: '#about' },
+  { label: 'Projects',     href: '#projects' },
+  { label: 'Certificates', href: '#certificates' },
+  { label: 'Contact',      href: '#feedback' },
 ]
 
 const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID  || ''
@@ -17,40 +16,42 @@ const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || ''
 const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  || ''
 
 export default function Navbar() {
-  const [scrolled,  setScrolled]  = useState(false)
-  const [active,    setActive]    = useState('home')
-  const [open,      setOpen]      = useState(false)
-  const [hireOpen,  setHireOpen]  = useState(false)
-  const [form,      setForm]      = useState({ name: '', email: '', message: '' })
-  const [status,    setStatus]    = useState('idle')
-  const [errMsg,    setErrMsg]    = useState('')
+  const [scrolled, setScrolled] = useState(false)
+  const [active,   setActive]   = useState('#home')
+  const [open,     setOpen]     = useState(false)
+  const [hireOpen, setHireOpen] = useState(false)
+  const [form,     setForm]     = useState({ name: '', email: '', message: '' })
+  const [status,   setStatus]   = useState('idle')
+  const [errMsg,   setErrMsg]   = useState('')
 
   useEffect(() => {
-    const sectionIds = ['home', 'about', 'projects', 'certificates', 'feedback']
-
     const onScroll = () => {
       setScrolled(window.scrollY > 40)
-
-      // Find active section based on scroll position
-      let current = 'home'
-      for (const id of sectionIds) {
+      
+      // Check which section is currently in view
+      const sections = navLinks.map(l => l.href.slice(1))
+      let current = '#home'
+      
+      for (const id of sections) {
         const el = document.getElementById(id)
-        if (el) {
-          const rect = el.getBoundingClientRect()
-          if (rect.top <= 120) current = id
+        if (el && window.scrollY >= el.offsetTop - 200) {
+          current = `#${id}`
         }
       }
       setActive(current)
     }
-
+    
     window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll() // run on mount
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Close hire modal on Escape
   useEffect(() => {
-    const handler = (e) => {
-      if (e.key === 'Escape') { setHireOpen(false); setStatus('idle') }
+    const handler = (e) => { 
+      if (e.key === 'Escape') { 
+        setHireOpen(false)
+        setStatus('idle') 
+      } 
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
@@ -58,7 +59,7 @@ export default function Navbar() {
 
   const handleNav = (href) => {
     setOpen(false)
-    const el = document.getElementById(href)
+    const el = document.querySelector(href)
     if (el) el.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -67,8 +68,10 @@ export default function Navbar() {
   const handleHireSubmit = async (e) => {
     e.preventDefault()
     if (!form.name || !form.email || !form.message) return
+    
     setStatus('sending')
     setErrMsg('')
+    
     try {
       const emailjs = (await import('emailjs-com')).default
       await emailjs.send(
@@ -92,30 +95,25 @@ export default function Navbar() {
     }
   }
 
-  // Determine if a nav item is active
-  const isActive = (href) => {
-    if (href === 'feedback') return active === 'feedback'
-    return active === href
-  }
-
   return (
     <>
       <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="nav-container">
-          <button className="nav-logo" onClick={() => handleNav('home')}>
+          <a href="#home" className="nav-logo" onClick={(e) => { e.preventDefault(); handleNav('#home') }}>
             <div className="nav-logo-mark">G</div>
             <span>Gokul</span>
-          </button>
+          </a>
 
           <nav className="nav-links">
-            {navLinks.map((link, i) => (
-              <button
-                key={`${link.href}-${i}`}
-                className={`nav-link ${isActive(link.href) ? 'active' : ''}`}
-                onClick={() => handleNav(link.href)}
+            {navLinks.map(link => (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`nav-link ${active === link.href ? 'active' : ''}`}
+                onClick={(e) => { e.preventDefault(); handleNav(link.href) }}
               >
                 {link.label}
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -133,20 +131,17 @@ export default function Navbar() {
         </div>
 
         <div className={`nav-mobile ${open ? 'open' : ''}`}>
-          {navLinks.map((link, i) => (
-            <button
-              key={`mobile-${link.href}-${i}`}
-              className={`nav-mobile-link ${isActive(link.href) ? 'active' : ''}`}
-              onClick={() => handleNav(link.href)}
+          {navLinks.map(link => (
+            <a
+              key={link.href}
+              href={link.href}
+              className={`nav-mobile-link ${active === link.href ? 'active' : ''}`}
+              onClick={(e) => { e.preventDefault(); handleNav(link.href) }}
             >
               {link.label}
-            </button>
+            </a>
           ))}
-          <button
-            className="btn-primary"
-            style={{ marginTop: 16, width: '100%', justifyContent: 'center' }}
-            onClick={() => { setOpen(false); setHireOpen(true) }}
-          >
+          <button className="btn-primary" style={{ marginTop: 16, width: '100%', justifyContent: 'center' }} onClick={() => { setOpen(false); setHireOpen(true) }}>
             Hire Me
           </button>
         </div>
@@ -156,9 +151,7 @@ export default function Navbar() {
       {hireOpen && (
         <div className="hire-overlay" onClick={() => { setHireOpen(false); setStatus('idle') }}>
           <div className="hire-modal glass-card" onClick={e => e.stopPropagation()}>
-            <button className="hire-close" onClick={() => { setHireOpen(false); setStatus('idle') }}>
-              <FiX />
-            </button>
+            <button className="hire-close" onClick={() => { setHireOpen(false); setStatus('idle') }}><FiX /></button>
             <div className="hire-header">
               <div className="hire-icon">🚀</div>
               <h2>Let's Work Together</h2>
@@ -170,7 +163,7 @@ export default function Navbar() {
                 <FiCheckCircle />
                 <h3>Message Sent!</h3>
                 <p>Thanks {form.name || 'there'}! I'll get back to you soon.</p>
-                <button className="btn-outline" onClick={() => setStatus('idle')}>Send Another</button>
+                <button className="btn-outline" onClick={() => { setStatus('idle'); setForm({ name: '', email: '', message: '' }) }}>Send Another</button>
               </div>
             ) : (
               <form onSubmit={handleHireSubmit} className="hire-form" noValidate>
@@ -190,9 +183,7 @@ export default function Navbar() {
                   <div className="form-error"><FiAlertCircle /> {errMsg}</div>
                 )}
                 <button type="submit" className="btn-primary form-submit" disabled={status === 'sending'}>
-                  {status === 'sending'
-                    ? <><div className="spinner" style={{ width: 18, height: 18 }} /> Sending...</>
-                    : <><FiSend /> Send Message</>}
+                  {status === 'sending' ? <><div className="spinner" style={{ width: 18, height: 18 }} /> Sending...</> : <><FiSend /> Send Message</>}
                 </button>
               </form>
             )}

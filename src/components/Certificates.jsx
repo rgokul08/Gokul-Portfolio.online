@@ -9,38 +9,53 @@ const FOLDER = 'certificates_image'
 const SLIDE_THRESHOLD = 3
 
 function getImageUrl(item) {
-  if (!item.image_url) return null
-  if (item.image_url.startsWith('http')) return item.image_url
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(`${FOLDER}/${item.image_url}`)
-  return data.publicUrl
+  if (item.image_url && item.image_url.startsWith('http')) return item.image_url
+  if (item.image_url) {
+    const { data } = supabase.storage.from(BUCKET).getPublicUrl(`${FOLDER}/${item.image_url}`)
+    return data.publicUrl
+  }
+  return null
 }
 
 export default function Certificates() {
   const [certs,   setCerts]   = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError]     = useState(null)
   const [preview, setPreview] = useState(null)
   const [current, setCurrent] = useState(0)
   const [paused,  setPaused]  = useState(false)
   const timerRef = useRef(null)
 
   useEffect(() => {
-    const fetchCerts = async () => {
+    const fetch = async () => {
       try {
-        const { data, error } = await supabase
+        setLoading(true)
+        const { data, error: dbError } = await supabase
           .from('certificate')
           .select('*')
           .order('id', { ascending: false })
-        if (error || !data) setCerts([])
-        else setCerts(data)
-      } catch {
+        
+        if (dbError) {
+          console.error('Supabase error:', dbError)
+          setError('Failed to fetch certificates')
+          setCerts([])
+        } else if (data && data.length > 0) {
+          setCerts(data)
+        } else {
+          setCerts([])
+        }
+      } catch (err) {
+        console.error('Fetch error:', err)
+        setError('Failed to fetch certificates')
         setCerts([])
       } finally {
         setLoading(false)
       }
     }
-    fetchCerts()
+    fetch()
   }, [])
 
+  // Escape closes lightbox
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') setPreview(null) }
     window.addEventListener('keydown', handler)
@@ -63,6 +78,7 @@ export default function Certificates() {
     return () => clearInterval(timerRef.current)
   }, [useSlideshow, paused, next])
 
+  // For slideshow: 3 visible cards centered on current
   const getVisible = () => {
     const vis = []
     for (let offset = -1; offset <= 1; offset++) {
@@ -84,12 +100,18 @@ export default function Certificates() {
           <div className="certs-skeleton-grid">
             {[1,2,3,4,5,6].map(i => <div key={i} className="cert-skeleton" />)}
           </div>
+        ) : error ? (
+          <div style={{ textAlign: 'center', padding: '80px 0', color: '#5a5a72', fontSize: '16px' }}>
+            <FiAward style={{ fontSize: '48px', marginBottom: '16px', color: '#5a5a72' }} />
+            <p>{error}</p>
+          </div>
         ) : certs.length === 0 ? (
-          <div className="certs-empty">
-            <FiAward />
-            <p>Certificates coming soon!</p>
+          <div style={{ textAlign: 'center', padding: '80px 0', color: '#5a5a72', fontSize: '16px' }}>
+            <FiAward style={{ fontSize: '48px', marginBottom: '16px', color: '#5a5a72' }} />
+            <p>No certificates yet. Check back soon!</p>
           </div>
         ) : useSlideshow ? (
+          /* ── Slideshow mode ── */
           <div
             className="certs-slideshow"
             onMouseEnter={() => setPaused(true)}
@@ -131,6 +153,7 @@ export default function Certificates() {
             )}
           </div>
         ) : (
+          /* ── Grid mode ── */
           <div className="certs-grid">
             {certs.map((cert, i) => (
               <CertCard
@@ -145,6 +168,7 @@ export default function Certificates() {
         )}
       </div>
 
+      {/* Lightbox */}
       {preview && (
         <div className="cert-lightbox" onClick={() => setPreview(null)}>
           <div className="cert-lightbox-inner" onClick={e => e.stopPropagation()}>
@@ -180,12 +204,8 @@ function CertCard({ cert, index = 0, pos = 0, onPreview }) {
 
   return (
     <div
-      className={`cert-card glass-card ${pos === 0 && onPreview !== undefined
-        ? (index !== undefined && index >= 0 ? 'fade-in' : `cert-slide-card ${posClass}`)
-        : `cert-slide-card ${posClass}`}`}
-      style={index !== undefined && pos === 0 && onPreview !== undefined
-        ? { animationDelay: `${index * 0.08}s` }
-        : {}}
+      className={`cert-card glass-card ${pos === 0 && onPreview !== undefined ? (index !== undefined ? 'fade-in' : `cert-slide-card ${posClass}`) : `cert-slide-card ${posClass}`}`}
+      style={index !== undefined && pos === 0 && onPreview !== undefined && index >= 0 ? { animationDelay: `${index * 0.08}s` } : {}}
       onClick={onPreview}
       role={onPreview ? 'button' : undefined}
       tabIndex={onPreview ? 0 : undefined}

@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react'
 import { FiGithub, FiLinkedin, FiMail, FiArrowDown, FiInstagram } from 'react-icons/fi'
 import './Hero.css'
+import gokulImg from '../assets/Gokul.png'
 
 const roles = [
   'Software Developer',
@@ -88,6 +89,7 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="hero-social-link"
               aria-label="GitHub"
+              title="GitHub"
             >
               <FiGithub />
             </a>
@@ -97,6 +99,7 @@ export default function Hero() {
               rel="noopener noreferrer"
               className="hero-social-link"
               aria-label="LinkedIn"
+              title="LinkedIn"
             >
               <FiLinkedin />
             </a>
@@ -104,18 +107,17 @@ export default function Hero() {
               href="https://instagram.com/itz_goku.08"
               target="_blank"
               rel="noopener noreferrer"
-              className="hero-social-link hero-social-instagram"
+              className="hero-social-link"
               aria-label="Instagram"
+              title="Instagram"
             >
               <FiInstagram />
             </a>
-            {/* Mail — opens Gmail compose */}
             <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:rgokul08.in@gmail.com"
               className="hero-social-link"
               aria-label="Email"
+              title="Email"
             >
               <FiMail />
             </a>
@@ -126,14 +128,15 @@ export default function Hero() {
         <div className="hero-image-wrap fade-in delay-3">
           <div className="hero-image-card">
             <div className="hero-image-glow" />
+            {/* Fallback gradient avatar if image not available */}
             <div className="hero-image-fallback">
-              <div className="hero-avatar-letter">G</div>
+              <img src={gokulImg} alt="Gokul" className="hero-image" />
             </div>
             <div className="hero-image-badge hero-image-badge-1">
               <span>🎓</span> Engineering Student
             </div>
             <div className="hero-image-badge hero-image-badge-2">
-              <span>💻</span> Dev & Designer
+              <span>💻</span> Developer & Designer
             </div>
           </div>
           <div className="hero-orbit">

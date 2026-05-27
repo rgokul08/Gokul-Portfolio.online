@@ -22,7 +22,9 @@ Zion School
 
 🎓 Secondary Education (CBSE)
 Zion School
-2022 – 2023 | 89%`,
+2022 – 2023 | 89%
+
+`,
   skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript', 'Supabase', 'Git & GitHub'],
   email: 'rgokul08.in@gmail.com',
   contact: '+91 88382104XX',
@@ -38,7 +40,7 @@ const stats = [
   { label: 'Years Learning',  value: '2+',  icon: '📚' },
 ]
 
-function useIntersection(ref, threshold = 0.12) {
+function useIntersection(ref, threshold = 0.15) {
   const [visible, setVisible] = useState(false)
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -92,32 +94,28 @@ export default function About() {
             ) : (
               <div className="about-bio-wrap">
                 {info.bio.split('\n\n').map((para, i) => (
-                  <p
-                    key={i}
-                    className={`about-para ${visible ? 'reveal' : ''}`}
-                    style={{ animationDelay: `${0.3 + i * 0.12}s` }}
-                  >
+                  <p key={i} className={`about-para ${visible ? 'reveal' : ''}`} style={{ animationDelay: `${0.3 + i * 0.15}s` }}>
                     {para.trim()}
                   </p>
                 ))}
               </div>
             )}
             <div className="about-contacts">
-              <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${info.email}`} target="_blank" rel="noopener noreferrer" className="about-contact-item">
+              <a href={`mailto:${info.email}`} className="about-contact-item" title="Send Email">
                 <FiMail /> <span>{info.email}</span>
               </a>
               {info.contact && (
-                <div className="about-contact-item">
+                <div className="about-contact-item" title="Phone">
                   <FiPhone /> <span>{info.contact}</span>
                 </div>
               )}
-              <a href={info.linkedin} target="_blank" rel="noopener noreferrer" className="about-contact-item">
+              <a href={info.linkedin} target="_blank" rel="noopener noreferrer" className="about-contact-item" title="LinkedIn Profile">
                 <FiLinkedin /> <span>LinkedIn Profile</span>
               </a>
-              <a href={info.github} target="_blank" rel="noopener noreferrer" className="about-contact-item">
+              <a href={info.github} target="_blank" rel="noopener noreferrer" className="about-contact-item" title="GitHub Profile">
                 <FiGithub /> <span>GitHub Profile</span>
               </a>
-              <a href={info.instagram || DEFAULT_ABOUT.instagram} target="_blank" rel="noopener noreferrer" className="about-contact-item about-contact-instagram">
+              <a href={info.instagram} target="_blank" rel="noopener noreferrer" className="about-contact-item" title="Instagram Profile">
                 <FiInstagram /> <span>Instagram Profile</span>
               </a>
             </div>
