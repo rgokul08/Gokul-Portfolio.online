@@ -1,7 +1,7 @@
 // src/components/Feedback.jsx
 import React, { useState, useRef } from 'react'
 import { supabase } from '../lib/supabase'
-import { FiSend, FiCheckCircle, FiAlertCircle, FiMessageSquare } from 'react-icons/fi'
+import { FiSend, FiCheckCircle, FiAlertCircle, FiMessageSquare, FiInstagram } from 'react-icons/fi'
 import './Feedback.css'
 
 const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID  || ''
@@ -10,9 +10,9 @@ const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  || ''
 
 export default function Feedback() {
   const formRef = useRef(null)
-  const [form,    setForm]    = useState({ name: '', email: '', message: '' })
-  const [status,  setStatus]  = useState('idle') // idle | sending | success | error
-  const [errMsg,  setErrMsg]  = useState('')
+  const [form,   setForm]   = useState({ name: '', email: '', message: '' })
+  const [status, setStatus] = useState('idle')
+  const [errMsg, setErrMsg] = useState('')
 
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -20,7 +20,6 @@ export default function Feedback() {
 
   const sendEmail = async () => {
     if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) return
-    // Dynamically import EmailJS to avoid build issues when keys are empty
     try {
       const emailjs = (await import('emailjs-com')).default
       await emailjs.send(
@@ -48,18 +47,12 @@ export default function Feedback() {
     setErrMsg('')
 
     try {
-      // 1. Save to Supabase
       const { error } = await supabase
         .from('feedback')
-        .insert([{
-          name:    form.name,
-          email:   form.email,
-          message: form.message,
-        }])
+        .insert([{ name: form.name, email: form.email, message: form.message }])
 
       if (error) throw error
 
-      // 2. Send email via EmailJS (best-effort)
       await sendEmail()
 
       setStatus('success')
@@ -91,7 +84,7 @@ export default function Feedback() {
                 <div className="feedback-direct-icon">📧</div>
                 <div>
                   <div className="feedback-direct-label">Email</div>
-                  <a href="mailto:rgokul08.in@gmail.com" className="feedback-direct-value">
+                  <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com" target="_blank" rel="noopener noreferrer" className="feedback-direct-value">
                     rgokul08.in@gmail.com
                   </a>
                 </div>
@@ -124,6 +117,22 @@ export default function Feedback() {
                   </a>
                 </div>
               </div>
+              <div className="feedback-direct-item">
+                <div className="feedback-direct-icon feedback-instagram-icon">
+                  <FiInstagram />
+                </div>
+                <div>
+                  <div className="feedback-direct-label">Instagram</div>
+                  <a
+                    href="https://instagram.com/itz_goku.08"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="feedback-direct-value feedback-instagram-link"
+                  >
+                    @itz_goku.08
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -138,7 +147,7 @@ export default function Feedback() {
               <div className="feedback-success">
                 <FiCheckCircle />
                 <h3>Message Sent!</h3>
-                <p>Thanks for reaching out, {form.name || 'there'}! I'll reply soon.</p>
+                <p>Thanks for reaching out! I'll reply soon.</p>
                 <button className="btn-outline" onClick={() => setStatus('idle')}>
                   Send Another
                 </button>

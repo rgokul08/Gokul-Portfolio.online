@@ -1,6 +1,6 @@
 // src/components/Hero.jsx
 import React, { useEffect, useRef } from 'react'
-import { FiGithub, FiLinkedin, FiMail, FiArrowDown } from 'react-icons/fi'
+import { FiGithub, FiLinkedin, FiMail, FiArrowDown, FiInstagram } from 'react-icons/fi'
 import './Hero.css'
 
 const roles = [
@@ -76,7 +76,7 @@ export default function Hero() {
               View My Work
               <FiArrowDown />
             </a>
-            <a href="#contact" className="btn-outline" onClick={(e) => { e.preventDefault(); document.getElementById('feedback')?.scrollIntoView({ behavior: 'smooth' }) }}>
+            <a href="#feedback" className="btn-outline" onClick={(e) => { e.preventDefault(); document.getElementById('feedback')?.scrollIntoView({ behavior: 'smooth' }) }}>
               Let's Talk
             </a>
           </div>
@@ -100,7 +100,16 @@ export default function Hero() {
             >
               <FiLinkedin />
             </a>
-            {/* Mail icon — opens Gmail compose with pre-filled recipient */}
+            <a
+              href="https://instagram.com/itz_goku.08"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-social-link hero-social-instagram"
+              aria-label="Instagram"
+            >
+              <FiInstagram />
+            </a>
+            {/* Mail — opens Gmail compose */}
             <a
               href="https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com"
               target="_blank"
@@ -117,7 +126,6 @@ export default function Hero() {
         <div className="hero-image-wrap fade-in delay-3">
           <div className="hero-image-card">
             <div className="hero-image-glow" />
-            {/* Fallback gradient avatar if image not available */}
             <div className="hero-image-fallback">
               <div className="hero-avatar-letter">G</div>
             </div>

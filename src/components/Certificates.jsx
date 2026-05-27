@@ -8,22 +8,11 @@ const BUCKET = 'Portfolio'
 const FOLDER = 'certificates_image'
 const SLIDE_THRESHOLD = 3
 
-const FALLBACK_CERTS = [
-  { id: 1, title: 'React Developer Certification', description: 'Completed advanced React course covering hooks, context, and modern patterns.', authority: 'Udemy', image_url: null },
-  { id: 2, title: 'JavaScript Algorithms & Data Structures', description: 'Earned certification for mastering core algorithms and data structures in JavaScript.', authority: 'freeCodeCamp', image_url: null },
-  { id: 3, title: 'Full Stack Web Development', description: 'Comprehensive full-stack course covering Node.js, Express, MongoDB, and React.', authority: 'Coursera', image_url: null },
-  { id: 4, title: 'Python for Everybody', description: 'Learned Python fundamentals including data structures, networking, and databases.', authority: 'University of Michigan', image_url: null },
-  { id: 5, title: 'UI/UX Design Fundamentals', description: 'Principles of user-centered design, prototyping, and Figma workflows.', authority: 'Google', image_url: null },
-  { id: 6, title: 'Cloud Computing Essentials', description: 'Introduction to cloud architecture, AWS services, and deployment strategies.', authority: 'AWS', image_url: null },
-]
-
 function getImageUrl(item) {
-  if (item.image_url && item.image_url.startsWith('http')) return item.image_url
-  if (item.image_url) {
-    const { data } = supabase.storage.from(BUCKET).getPublicUrl(`${FOLDER}/${item.image_url}`)
-    return data.publicUrl
-  }
-  return null
+  if (!item.image_url) return null
+  if (item.image_url.startsWith('http')) return item.image_url
+  const { data } = supabase.storage.from(BUCKET).getPublicUrl(`${FOLDER}/${item.image_url}`)
+  return data.publicUrl
 }
 
 export default function Certificates() {
@@ -35,24 +24,23 @@ export default function Certificates() {
   const timerRef = useRef(null)
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchCerts = async () => {
       try {
         const { data, error } = await supabase
           .from('certificate')
           .select('*')
           .order('id', { ascending: false })
-        if (error || !data || data.length === 0) setCerts(FALLBACK_CERTS)
+        if (error || !data) setCerts([])
         else setCerts(data)
       } catch {
-        setCerts(FALLBACK_CERTS)
+        setCerts([])
       } finally {
         setLoading(false)
       }
     }
-    fetch()
+    fetchCerts()
   }, [])
 
-  // Escape closes lightbox
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape') setPreview(null) }
     window.addEventListener('keydown', handler)
@@ -75,7 +63,6 @@ export default function Certificates() {
     return () => clearInterval(timerRef.current)
   }, [useSlideshow, paused, next])
 
-  // For slideshow: 3 visible cards centered on current
   const getVisible = () => {
     const vis = []
     for (let offset = -1; offset <= 1; offset++) {
@@ -97,8 +84,12 @@ export default function Certificates() {
           <div className="certs-skeleton-grid">
             {[1,2,3,4,5,6].map(i => <div key={i} className="cert-skeleton" />)}
           </div>
+        ) : certs.length === 0 ? (
+          <div className="certs-empty">
+            <FiAward />
+            <p>Certificates coming soon!</p>
+          </div>
         ) : useSlideshow ? (
-          /* ── Slideshow mode ── */
           <div
             className="certs-slideshow"
             onMouseEnter={() => setPaused(true)}
@@ -140,7 +131,6 @@ export default function Certificates() {
             )}
           </div>
         ) : (
-          /* ── Grid mode ── */
           <div className="certs-grid">
             {certs.map((cert, i) => (
               <CertCard
@@ -155,7 +145,6 @@ export default function Certificates() {
         )}
       </div>
 
-      {/* Lightbox */}
       {preview && (
         <div className="cert-lightbox" onClick={() => setPreview(null)}>
           <div className="cert-lightbox-inner" onClick={e => e.stopPropagation()}>
@@ -191,8 +180,12 @@ function CertCard({ cert, index = 0, pos = 0, onPreview }) {
 
   return (
     <div
-      className={`cert-card glass-card ${pos === 0 && onPreview !== undefined ? (index !== undefined ? 'fade-in' : `cert-slide-card ${posClass}`) : `cert-slide-card ${posClass}`}`}
-      style={index !== undefined && pos === 0 && onPreview !== undefined && index >= 0 ? { animationDelay: `${index * 0.08}s` } : {}}
+      className={`cert-card glass-card ${pos === 0 && onPreview !== undefined
+        ? (index !== undefined && index >= 0 ? 'fade-in' : `cert-slide-card ${posClass}`)
+        : `cert-slide-card ${posClass}`}`}
+      style={index !== undefined && pos === 0 && onPreview !== undefined
+        ? { animationDelay: `${index * 0.08}s` }
+        : {}}
       onClick={onPreview}
       role={onPreview ? 'button' : undefined}
       tabIndex={onPreview ? 0 : undefined}

@@ -1,13 +1,11 @@
 /* src/components/Certificates.css */
 
-/* Grid */
 .certs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 24px;
 }
 
-/* Skeleton */
 .certs-skeleton-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -27,7 +25,17 @@
 }
 @keyframes shimmer { to { background-position: -200% 0; } }
 
-/* Card */
+.certs-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 80px 0;
+  color: #5a5a72;
+  font-size: 48px;
+}
+.certs-empty p { font-size: 16px; color: #5a5a72; }
+
 .cert-card {
   overflow: hidden;
   border-radius: 24px;
@@ -73,7 +81,6 @@
 .cert-slide-left  { transform: scale(0.86) translateX(-24px) rotateY(10deg); }
 .cert-slide-right { transform: scale(0.86) translateX(24px)  rotateY(-10deg); }
 
-/* Controls */
 .cert-slide-btn {
   position: absolute;
   top: 50%;
@@ -102,7 +109,6 @@
 .cert-slide-prev { left: 0; }
 .cert-slide-next { right: 0; }
 
-/* Dots */
 .cert-slide-dots {
   position: absolute;
   bottom: 24px;
@@ -129,7 +135,6 @@
 }
 .cert-slide-dot:hover { background: rgba(255,255,255,0.5); }
 
-/* Progress */
 .cert-progress {
   position: absolute;
   bottom: 0;
@@ -147,7 +152,6 @@
 }
 @keyframes certProgress { from { width: 0; } to { width: 100%; } }
 
-/* Image */
 .cert-image-wrap {
   position: relative;
   height: 180px;
@@ -192,7 +196,6 @@
 }
 .cert-card:hover .cert-zoom-hint { opacity: 1; }
 
-/* Body */
 .cert-body {
   padding: 20px 24px 24px;
   display: flex;
@@ -310,7 +313,6 @@
 .cert-lightbox-auth { font-size: 14px; color: #f6ad55; font-weight: 500; }
 .cert-lightbox-desc { font-size: 14px; color: #9898b0; line-height: 1.7; }
 
-/* Responsive */
 @media (max-width: 900px) {
   .certs-stage { gap: 0; }
   .cert-slide-left, .cert-slide-right { display: none; }

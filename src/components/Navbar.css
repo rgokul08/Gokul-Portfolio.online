@@ -32,7 +32,10 @@
   gap: 10px;
   text-decoration: none;
   flex-shrink: 0;
+  background: none;
+  border: none;
   cursor: pointer;
+  padding: 0;
 }
 .nav-logo-mark {
   width: 36px;
@@ -70,6 +73,8 @@
   border-radius: 100px;
   transition: all 0.3s;
   cursor: pointer;
+  background: none;
+  border: none;
 }
 .nav-link:hover,
 .nav-link.active {
@@ -130,6 +135,9 @@
   width: 100%;
   transition: all 0.2s;
   cursor: pointer;
+  background: none;
+  border: none;
+  text-align: left;
 }
 .nav-mobile-link:hover,
 .nav-mobile-link.active { color: #63b3ed; background: rgba(99, 179, 237, 0.08); }
@@ -188,10 +196,7 @@
   text-align: center;
   margin-bottom: 28px;
 }
-.hire-icon {
-  font-size: 48px;
-  margin-bottom: 12px;
-}
+.hire-icon { font-size: 48px; margin-bottom: 12px; }
 .hire-header h2 {
   font-family: 'Syne', sans-serif;
   font-size: 26px;
@@ -199,10 +204,7 @@
   color: #f0f0f5;
   margin-bottom: 8px;
 }
-.hire-header p {
-  font-size: 14px;
-  color: #9898b0;
-}
+.hire-header p { font-size: 14px; color: #9898b0; }
 
 .hire-form {
   display: flex;
@@ -218,10 +220,7 @@
   padding: 20px 0;
   text-align: center;
 }
-.hire-success svg {
-  font-size: 52px;
-  color: #4caf50;
-}
+.hire-success svg { font-size: 52px; color: #4caf50; }
 .hire-success h3 {
   font-family: 'Syne', sans-serif;
   font-size: 22px;
@@ -230,7 +229,6 @@
 }
 .hire-success p { font-size: 14px; color: #9898b0; }
 
-/* Shared form styles */
 .form-group {
   display: flex;
   flex-direction: column;

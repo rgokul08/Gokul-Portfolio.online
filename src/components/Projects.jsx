@@ -1,51 +1,18 @@
 // src/components/Projects.jsx
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
-import { FiExternalLink, FiGithub, FiClock, FiCode, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { FiExternalLink, FiGithub, FiClock, FiCode, FiChevronLeft, FiChevronRight, FiPackage } from 'react-icons/fi'
 import './Projects.css'
 
 const BUCKET = 'Portfolio'
 const FOLDER = 'projects_image'
-
-const FALLBACK_PROJECTS = [
-  {
-    id: 1,
-    title: 'Portfolio Website',
-    description: 'A fully responsive personal portfolio built with React + Vite, featuring smooth animations, Supabase integration, and a modern dark UI.',
-    tools: ['React', 'Vite', 'Supabase', 'CSS'],
-    duration: '2 weeks',
-    project_link: 'https://github.com/rgokul08',
-    image_url: null,
-  },
-  {
-    id: 2,
-    title: 'Task Manager App',
-    description: 'A productivity app with real-time task tracking, user authentication, and priority management built on Node.js and React.',
-    tools: ['React', 'Node.js', 'Express', 'MongoDB'],
-    duration: '3 weeks',
-    project_link: 'https://github.com/rgokul08',
-    image_url: null,
-  },
-  {
-    id: 3,
-    title: 'E-Commerce UI',
-    description: 'A sleek, mobile-first e-commerce front-end with cart functionality, product filtering, and clean component architecture.',
-    tools: ['React', 'Redux', 'TailwindCSS'],
-    duration: '4 weeks',
-    project_link: 'https://github.com/rgokul08',
-    image_url: null,
-  },
-]
-
-const SLIDE_THRESHOLD = 3 // Use slideshow when more than this many projects
+const SLIDE_THRESHOLD = 3
 
 function getImageUrl(item) {
-  if (item.image_url && item.image_url.startsWith('http')) return item.image_url
-  if (item.image_url) {
-    const { data } = supabase.storage.from(BUCKET).getPublicUrl(`${FOLDER}/${item.image_url}`)
-    return data.publicUrl
-  }
-  return null
+  if (!item.image_url) return null
+  if (item.image_url.startsWith('http')) return item.image_url
+  const { data } = supabase.storage.from(BUCKET).getPublicUrl(`${FOLDER}/${item.image_url}`)
+  return data.publicUrl
 }
 
 function parseTools(tools) {
@@ -59,10 +26,10 @@ function parseTools(tools) {
 
 export default function Projects() {
   const [projects, setProjects] = useState([])
-  const [loading, setLoading]   = useState(true)
-  const [filter,  setFilter]    = useState('All')
-  const [current, setCurrent]   = useState(0)
-  const [paused,  setPaused]    = useState(false)
+  const [loading,  setLoading]  = useState(true)
+  const [filter,   setFilter]   = useState('All')
+  const [current,  setCurrent]  = useState(0)
+  const [paused,   setPaused]   = useState(false)
   const timerRef = useRef(null)
 
   useEffect(() => {
@@ -72,10 +39,10 @@ export default function Projects() {
           .from('projects')
           .select('*')
           .order('id', { ascending: false })
-        if (error || !data || data.length === 0) setProjects(FALLBACK_PROJECTS)
+        if (error || !data) setProjects([])
         else setProjects(data)
       } catch {
-        setProjects(FALLBACK_PROJECTS)
+        setProjects([])
       } finally {
         setLoading(false)
       }
@@ -87,7 +54,6 @@ export default function Projects() {
   const filtered = filter === 'All' ? projects : projects.filter(p => parseTools(p.tools).includes(filter))
   const useSlideshow = filtered.length > SLIDE_THRESHOLD
 
-  // Auto-advance slideshow
   const next = useCallback(() => {
     if (useSlideshow) setCurrent(c => (c + 1) % filtered.length)
   }, [useSlideshow, filtered.length])
@@ -102,10 +68,8 @@ export default function Projects() {
     return () => clearInterval(timerRef.current)
   }, [useSlideshow, paused, next])
 
-  // Reset slide index when filter changes
   useEffect(() => { setCurrent(0) }, [filter])
 
-  // Visible projects for slideshow: show up to 3 centered on current
   const getVisible = () => {
     if (!useSlideshow) return filtered.map((p, i) => ({ project: p, pos: 0, idx: i }))
     const vis = []
@@ -142,8 +106,12 @@ export default function Projects() {
           <div className="projects-loading">
             {[1, 2, 3].map(i => <div key={i} className="project-skeleton" />)}
           </div>
+        ) : filtered.length === 0 ? (
+          <div className="projects-empty">
+            <FiPackage />
+            <p>{projects.length === 0 ? 'Projects coming soon!' : 'No projects match this filter.'}</p>
+          </div>
         ) : useSlideshow ? (
-          /* ── Slideshow mode ── */
           <div
             className="projects-slideshow"
             onMouseEnter={() => setPaused(true)}
@@ -155,7 +123,6 @@ export default function Projects() {
               ))}
             </div>
 
-            {/* Controls */}
             <button className="slide-btn slide-prev" onClick={() => { prev(); setPaused(true) }} aria-label="Previous">
               <FiChevronLeft />
             </button>
@@ -163,7 +130,6 @@ export default function Projects() {
               <FiChevronRight />
             </button>
 
-            {/* Dots */}
             <div className="slide-dots">
               {filtered.map((_, i) => (
                 <button
@@ -175,7 +141,6 @@ export default function Projects() {
               ))}
             </div>
 
-            {/* Progress bar */}
             {!paused && (
               <div className="slide-progress">
                 <div className="slide-progress-bar" key={current} />
@@ -183,18 +148,10 @@ export default function Projects() {
             )}
           </div>
         ) : (
-          /* ── Grid mode ── */
           <div className="projects-grid">
             {filtered.map((project, i) => (
               <ProjectCard key={project.id} project={project} index={i} pos={0} grid />
             ))}
-          </div>
-        )}
-
-        {filtered.length === 0 && !loading && (
-          <div className="projects-empty">
-            <FiCode />
-            <p>No projects match this filter.</p>
           </div>
         )}
       </div>
@@ -205,7 +162,6 @@ export default function Projects() {
 function ProjectCard({ project, index = 0, pos = 0, grid = false }) {
   const imgSrc = getImageUrl(project)
   const tools  = parseTools(project.tools)
-
   const posClass = pos === -1 ? 'slide-left' : pos === 1 ? 'slide-right' : 'slide-center'
 
   return (

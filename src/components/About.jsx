@@ -1,12 +1,12 @@
 // src/components/About.jsx
 import React, { useEffect, useState, useRef } from 'react'
 import { supabase } from '../lib/supabase'
-import { FiMail, FiPhone, FiLinkedin, FiGithub, FiUser } from 'react-icons/fi'
+import { FiMail, FiPhone, FiLinkedin, FiGithub, FiUser, FiInstagram } from 'react-icons/fi'
 import './About.css'
 
 const DEFAULT_ABOUT = {
   name: 'Gokul R',
-  bio: `I’m Gokul R, a passionate Software Developer and AI & Data Science student at Prince Dr. K. Vasudevan College (2025–2029). I have a strong interest in web development, coding, and creating modern digital experiences. With a background in CBSE education from Zion International Public School, I developed a solid foundation in problem-solving and analytical thinking.
+  bio: `I'm Gokul R, a passionate Software Developer and AI & Data Science student at Prince Dr. K. Vasudevan College (2025–2029). I have a strong interest in web development, coding, and creating modern digital experiences. With a background in CBSE education from Zion International Public School, I developed a solid foundation in problem-solving and analytical thinking.
 
 I specialize in web design, frontend development, and software development, with skills in building responsive and user-friendly websites. I enjoy learning new technologies, solving real-world problems, and continuously improving my technical abilities.
 
@@ -22,14 +22,13 @@ Zion School
 
 🎓 Secondary Education (CBSE)
 Zion School
-2022 – 2023 | 89%
-
-`,
+2022 – 2023 | 89%`,
   skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript', 'Supabase', 'Git & GitHub'],
   email: 'rgokul08.in@gmail.com',
   contact: '+91 88382104XX',
   linkedin: 'https://www.linkedin.com/in/gokul-r-69ab13385/',
   github: 'https://github.com/rgokul08',
+  instagram: 'https://instagram.com/itz_goku.08',
 }
 
 const stats = [
@@ -39,7 +38,7 @@ const stats = [
   { label: 'Years Learning',  value: '2+',  icon: '📚' },
 ]
 
-function useIntersection(ref, threshold = 0.15) {
+function useIntersection(ref, threshold = 0.12) {
   const [visible, setVisible] = useState(false)
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -93,14 +92,18 @@ export default function About() {
             ) : (
               <div className="about-bio-wrap">
                 {info.bio.split('\n\n').map((para, i) => (
-                  <p key={i} className={`about-para ${visible ? 'reveal' : ''}`} style={{ animationDelay: `${0.3 + i * 0.15}s` }}>
+                  <p
+                    key={i}
+                    className={`about-para ${visible ? 'reveal' : ''}`}
+                    style={{ animationDelay: `${0.3 + i * 0.12}s` }}
+                  >
                     {para.trim()}
                   </p>
                 ))}
               </div>
             )}
             <div className="about-contacts">
-              <a href={`mailto:${info.email}`} className="about-contact-item">
+              <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${info.email}`} target="_blank" rel="noopener noreferrer" className="about-contact-item">
                 <FiMail /> <span>{info.email}</span>
               </a>
               {info.contact && (
@@ -113,6 +116,9 @@ export default function About() {
               </a>
               <a href={info.github} target="_blank" rel="noopener noreferrer" className="about-contact-item">
                 <FiGithub /> <span>GitHub Profile</span>
+              </a>
+              <a href={info.instagram || DEFAULT_ABOUT.instagram} target="_blank" rel="noopener noreferrer" className="about-contact-item about-contact-instagram">
+                <FiInstagram /> <span>Instagram Profile</span>
               </a>
             </div>
           </div>

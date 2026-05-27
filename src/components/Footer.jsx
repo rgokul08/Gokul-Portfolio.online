@@ -1,30 +1,16 @@
 // src/components/Footer.jsx
 import React from 'react'
-import { FiGithub, FiLinkedin, FiMail, FiArrowUp, FiHeart } from 'react-icons/fi'
+import { FiGithub, FiLinkedin, FiMail, FiInstagram, FiHeart } from 'react-icons/fi'
 import './Footer.css'
 
-const navLinks = [
-  { label: 'Home',         href: '#home' },
-  { label: 'About',        href: '#about' },
-  { label: 'Projects',     href: '#projects' },
-  { label: 'Certificates', href: '#certificates' },
-  { label: 'Feedback',     href: '#feedback' },
-]
-
 const socials = [
-  { icon: <FiGithub />,   href: 'https://github.com/rgokul08',                            label: 'GitHub' },
-  { icon: <FiLinkedin />, href: 'https://www.linkedin.com/in/gokul-r-69ab13385/',         label: 'LinkedIn' },
-  { icon: <FiMail />,     href: 'mailto:rgokul08.in@gmail.com',                           label: 'Email' },
+  { icon: <FiGithub />,    href: 'https://github.com/rgokul08',                           label: 'GitHub',    cls: '' },
+  { icon: <FiLinkedin />,  href: 'https://www.linkedin.com/in/gokul-r-69ab13385/',        label: 'LinkedIn',  cls: '' },
+  { icon: <FiInstagram />, href: 'https://instagram.com/itz_goku.08',                     label: 'Instagram', cls: 'instagram' },
+  { icon: <FiMail />,      href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com', label: 'Email', cls: '' },
 ]
 
 export default function Footer() {
-  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
-
-  const handleNav = (href) => {
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
     <footer className="footer">
       <div className="footer-top-line" />
@@ -42,46 +28,41 @@ export default function Footer() {
           <div className="footer-socials">
             {socials.map(s => (
               <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                className="footer-social" aria-label={s.label}>
+                className={`footer-social ${s.cls}`} aria-label={s.label}>
                 {s.icon}
               </a>
             ))}
           </div>
         </div>
 
-        {/* Quick links */}
-        <div className="footer-links">
-          <h4 className="footer-col-title">Quick Links</h4>
-          {navLinks.map(link => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="footer-link"
-              onClick={(e) => { e.preventDefault(); handleNav(link.href) }}
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-
         {/* Contact */}
-        <div className="footer-contact">
+        <div className="footer-contact-col">
           <h4 className="footer-col-title">Contact</h4>
-          <div className="footer-contact-item">
-            <FiMail />
-            <a href="mailto:rgokul08.in@gmail.com">rgokul08.in@gmail.com</a>
-          </div>
-          <div className="footer-contact-item">
-            <FiLinkedin />
-            <a href="https://www.linkedin.com/in/gokul-r-69ab13385/" target="_blank" rel="noopener noreferrer">
-              LinkedIn
-            </a>
-          </div>
-          <div className="footer-contact-item">
-            <FiGithub />
-            <a href="https://github.com/rgokul08" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
+          <div className="footer-contact-list">
+            <div className="footer-contact-item">
+              <FiMail />
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com" target="_blank" rel="noopener noreferrer">
+                rgokul08.in@gmail.com
+              </a>
+            </div>
+            <div className="footer-contact-item">
+              <FiLinkedin />
+              <a href="https://www.linkedin.com/in/gokul-r-69ab13385/" target="_blank" rel="noopener noreferrer">
+                LinkedIn
+              </a>
+            </div>
+            <div className="footer-contact-item">
+              <FiGithub />
+              <a href="https://github.com/rgokul08" target="_blank" rel="noopener noreferrer">
+                GitHub
+              </a>
+            </div>
+            <div className="footer-contact-item footer-contact-instagram">
+              <FiInstagram />
+              <a href="https://instagram.com/itz_goku.08" target="_blank" rel="noopener noreferrer">
+                @itz_goku.08
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -92,10 +73,6 @@ export default function Footer() {
           <p>
             Made with <FiHeart style={{ color: '#fc4b4b', display: 'inline', verticalAlign: 'middle' }} /> by Gokul — {new Date().getFullYear()}
           </p>
-          <button className="footer-back-top" onClick={scrollTop} aria-label="Back to top">
-            <FiArrowUp />
-            Back to top
-          </button>
         </div>
       </div>
     </footer>
