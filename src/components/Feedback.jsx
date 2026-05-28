@@ -1,75 +1,123 @@
 // src/components/Feedback.jsx
-import React,{useState,useRef} from 'react'
-import {supabase} from '../lib/supabase'
-import {FiSend,FiCheckCircle,FiAlertCircle,FiMessageSquare,FiInstagram,FiMail,FiGithub,FiLinkedin} from 'react-icons/fi'
-import {SiBehance} from 'react-icons/si'
+import React, { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
+import {
+  FiSend, FiCheckCircle, FiAlertCircle,
+  FiMessageSquare, FiInstagram, FiMail, FiGithub, FiLinkedin
+} from 'react-icons/fi'
+import { SiBehance } from 'react-icons/si'
 import './Feedback.css'
 
-const SVC=import.meta.env.VITE_EMAILJS_SERVICE_ID||''
-const TPL=import.meta.env.VITE_EMAILJS_TEMPLATE_ID||''
-const KEY=import.meta.env.VITE_EMAILJS_PUBLIC_KEY||''
+const SVC = import.meta.env.VITE_EMAILJS_SERVICE_ID  || ''
+const TPL = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || ''
+const KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  || ''
 
-const CONTACTS=[
-  {icon:<FiMail/>,      label:'Primary Email',   value:'rgokul08.in@gmail.com',    href:'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com',cls:''},
-  {icon:<FiMail/>,      label:'Figma / Design',  value:'rffgokul@gmail.com',       href:'https://mail.google.com/mail/?view=cm&fs=1&to=rffgokul@gmail.com',cls:'figma'},
-  {icon:<FiLinkedin/>,  label:'LinkedIn',         value:'Gokul R',                  href:'https://www.linkedin.com/in/gokul-r-69ab13385/',cls:''},
-  {icon:<FiGithub/>,    label:'GitHub',           value:'@rgokul08',                href:'https://github.com/rgokul08',cls:''},
-  {icon:<FiInstagram/>, label:'Instagram',        value:'@itz_goku.08',             href:'https://instagram.com/itz_goku.08',cls:'insta'},
-  {icon:<SiBehance/>,   label:'Behance',          value:'behance.net/gokul08',      href:'https://www.behance.net/gokul08',cls:'behance'},
+const CONTACTS = [
+  { icon: <FiMail />,      label: 'Primary Email',  value: 'rgokul08.in@gmail.com',  href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com', cls: '' },
+  { icon: <FiMail />,      label: 'Figma / Design', value: 'rffgokul@gmail.com',      href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rffgokul@gmail.com',   cls: 'figma' },
+  { icon: <FiLinkedin />,  label: 'LinkedIn',        value: 'Gokul R',                href: 'https://www.linkedin.com/in/gokul-r-69ab13385/',                     cls: '' },
+  { icon: <FiGithub />,    label: 'GitHub',          value: '@rgokul08',              href: 'https://github.com/rgokul08',                                        cls: '' },
+  { icon: <FiInstagram />, label: 'Instagram',       value: '@itz_goku.08',           href: 'https://instagram.com/itz_goku.08',                                  cls: 'insta' },
+  { icon: <SiBehance />,   label: 'Behance',         value: 'behance.net/gokul08',    href: 'https://www.behance.net/gokul08',                                    cls: 'behance' },
 ]
 
-export default function Feedback(){
-  const[form,setForm]=useState({name:'',email:'',message:''})
-  const[status,setStatus]=useState('idle')
-  const[err,setErr]=useState('')
+export default function Feedback() {
+  const [form,   setForm]   = useState({ name: '', email: '', message: '' })
+  const [status, setStatus] = useState('idle')
+  const [err,    setErr]    = useState('')
 
-  const onChange=e=>setForm(p=>({...p,[e.target.name]:e.target.value}))
+  // Initialize EmailJS once on mount
+  useEffect(() => {
+    if (!KEY) return
+    import('emailjs-com').then(mod => {
+      const ejs = mod.default
+      try { ejs.init(KEY) } catch (_) { /* already inited */ }
+    })
+  }, [])
 
-  const sendEmail=async()=>{
-    if(!SVC||!TPL||!KEY)return
-    try{
-      const ejs=(await import('emailjs-com')).default
-      await ejs.send(SVC,TPL,{
-        from_name:form.name, from_email:form.email,
-        message:form.message,
-        to_email:'rgokul08.in@gmail.com',
-        reply_to:form.email,
-      },KEY)
-    }catch(e){console.warn('emailjs',e)}
+  const onChange = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }))
+
+  const sendEmail = async () => {
+    if (!SVC || !TPL || !KEY) {
+      console.warn('EmailJS env vars missing:', { SVC, TPL, KEY: KEY ? '***' : 'MISSING' })
+      return
+    }
+    const mod = await import('emailjs-com')
+    const ejs = mod.default
+    // Re-init to be safe
+    try { ejs.init(KEY) } catch (_) {}
+
+    const templateParams = {
+      from_name:  form.name,
+      from_email: form.email,
+      message:    form.message,
+      to_email:   'rgokul08.in@gmail.com',
+      reply_to:   form.email,
+    }
+
+    const response = await ejs.send(SVC, TPL, templateParams)
+    console.log('EmailJS response:', response)
+    return response
   }
 
-  const onSubmit=async e=>{
+  const onSubmit = async e => {
     e.preventDefault()
-    if(!form.name||!form.email||!form.message)return
-    setStatus('sending');setErr('')
-    try{
-      const{error}=await supabase.from('feedback').insert([{name:form.name,email:form.email,message:form.message}])
-      if(error)throw error
+    if (!form.name || !form.email || !form.message) return
+    setStatus('sending')
+    setErr('')
+
+    let supabaseOk = false
+    let emailOk    = false
+
+    // 1. Try Supabase insert
+    try {
+      const { error } = await supabase
+        .from('feedback')
+        .insert([{ name: form.name, email: form.email, message: form.message }])
+      if (error) {
+        console.error('Supabase insert error:', error)
+      } else {
+        supabaseOk = true
+      }
+    } catch (ex) {
+      console.error('Supabase exception:', ex)
+    }
+
+    // 2. Try EmailJS
+    try {
       await sendEmail()
+      emailOk = true
+    } catch (ex) {
+      console.error('EmailJS error:', ex)
+    }
+
+    if (supabaseOk || emailOk) {
       setStatus('success')
-      setForm({name:'',email:'',message:''})
-    }catch(ex){
-      console.error(ex)
-      setErr('Something went wrong. Please try again or email directly.')
+      setForm({ name: '', email: '', message: '' })
+    } else {
+      setErr('Something went wrong. Please email rgokul08.in@gmail.com directly.')
       setStatus('error')
     }
   }
 
-  return(
+  return (
     <div className="feedback" id="contact">
       <div className="container">
         <div className="fb-grid">
           {/* info */}
           <div className="fb-info">
             <div className="section-label">Get In Touch</div>
-            <h2 className="section-title" style={{marginBottom:20}}>Let's <span>Connect</span></h2>
+            <h2 className="section-title" style={{ marginBottom: 20 }}>
+              Let's <span>Connect</span>
+            </h2>
             <p className="fb-tagline">
-              Have a project in mind, a question, or just want to say hi?<br/>
+              Have a project in mind, a question, or just want to say hi?<br />
               I'd love to hear from you — I'll reply within 24 hours.
             </p>
             <div className="fb-contacts">
-              {CONTACTS.map((c,i)=>(
-                <a key={i} href={c.href} target="_blank" rel="noopener noreferrer" className={`fb-contact-item ${c.cls}`}>
+              {CONTACTS.map((c, i) => (
+                <a key={i} href={c.href} target="_blank" rel="noopener noreferrer"
+                   className={`fb-contact-item ${c.cls}`}>
                   <div className={`fb-contact-icon ${c.cls}`}>{c.icon}</div>
                   <div>
                     <div className="fb-contact-label">{c.label}</div>
@@ -82,25 +130,46 @@ export default function Feedback(){
 
           {/* form */}
           <div className="fb-form-card glass-card">
-            <div className="fb-form-head"><FiMessageSquare/><span>Send a Message</span></div>
-            {status==='success'?(
+            <div className="fb-form-head">
+              <FiMessageSquare /><span>Send a Message</span>
+            </div>
+
+            {status === 'success' ? (
               <div className="fb-success">
-                <FiCheckCircle/>
+                <FiCheckCircle />
                 <h3>Message Sent! 🎉</h3>
                 <p>Thanks for reaching out! I'll get back to you soon.</p>
-                <button className="btn-outline" onClick={()=>setStatus('idle')}>Send Another</button>
+                <button className="btn-outline" onClick={() => setStatus('idle')}>
+                  Send Another
+                </button>
               </div>
-            ):(
+            ) : (
               <form onSubmit={onSubmit} className="fb-form" noValidate>
-                <div className="form-group"><label>Your Name</label>
-                  <input name="name" className="form-input" placeholder="John Doe" value={form.name} onChange={onChange} required/></div>
-                <div className="form-group"><label>Email Address</label>
-                  <input name="email" type="email" className="form-input" placeholder="john@example.com" value={form.email} onChange={onChange} required/></div>
-                <div className="form-group"><label>Message</label>
-                  <textarea name="message" className="form-input form-textarea" placeholder="Tell me about your project or say hello…" value={form.message} onChange={onChange} required rows={5}/></div>
-                {status==='error'&&<div className="form-error"><FiAlertCircle/>{err}</div>}
-                <button type="submit" className="btn-primary form-submit" disabled={status==='sending'}>
-                  {status==='sending'?<><div className="spinner"/>Sending…</>:<><FiSend/>Send Message</>}
+                <div className="form-group">
+                  <label>Your Name</label>
+                  <input name="name" className="form-input" placeholder="John Doe"
+                         value={form.name} onChange={onChange} required />
+                </div>
+                <div className="form-group">
+                  <label>Email Address</label>
+                  <input name="email" type="email" className="form-input"
+                         placeholder="john@example.com"
+                         value={form.email} onChange={onChange} required />
+                </div>
+                <div className="form-group">
+                  <label>Message</label>
+                  <textarea name="message" className="form-input form-textarea"
+                            placeholder="Tell me about your project or say hello…"
+                            value={form.message} onChange={onChange} required rows={5} />
+                </div>
+                {status === 'error' && (
+                  <div className="form-error"><FiAlertCircle />{err}</div>
+                )}
+                <button type="submit" className="btn-primary form-submit"
+                        disabled={status === 'sending'}>
+                  {status === 'sending'
+                    ? <><div className="spinner" />Sending…</>
+                    : <><FiSend />Send Message</>}
                 </button>
               </form>
             )}
