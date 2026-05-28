@@ -1,32 +1,5 @@
-/* src/components/CustomCursor.css */
-.cursor-dot,
-.cursor-ring {
-  position: fixed;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  transition: opacity 0.3s;
-}
-
-.cursor-dot {
-  width: 6px;
-  height: 6px;
-  background: #63b3ed;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-}
-
-.cursor-ring {
-  width: 36px;
-  height: 36px;
-  border: 1.5px solid rgba(99, 179, 237, 0.6);
-  border-radius: 50%;
-  transition: width 0.25s, height 0.25s, border-color 0.25s, background 0.25s;
-}
-
-.cursor-ring.cursor-expand {
-  width: 56px;
-  height: 56px;
-  border-color: rgba(183, 148, 244, 0.8);
-  background: rgba(183, 148, 244, 0.05);
-}
+/* CustomCursor.css */
+.c-dot,.c-ring{position:fixed;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);}
+.c-dot{width:5px;height:5px;background:#63b3ed;border-radius:50%;mix-blend-mode:screen;}
+.c-ring{width:34px;height:34px;border:1.5px solid rgba(99,179,237,0.55);border-radius:50%;transition:width .22s,height .22s,border-color .22s,background .22s;}
+.c-ring.expand{width:52px;height:52px;border-color:rgba(183,148,244,0.75);background:rgba(183,148,244,0.04);}

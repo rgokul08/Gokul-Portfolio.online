@@ -1,101 +1,115 @@
 // src/components/Footer.jsx
 import React from 'react'
-import { FiGithub, FiLinkedin, FiMail, FiArrowUp, FiHeart } from 'react-icons/fi'
+import { FiGithub, FiLinkedin, FiMail, FiInstagram, FiHeart, FiMapPin, FiPhone } from 'react-icons/fi'
+import { SiBehance } from 'react-icons/si'
 import './Footer.css'
 
-const navLinks = [
-  { label: 'Home',         href: '#home' },
-  { label: 'About',        href: '#about' },
-  { label: 'Projects',     href: '#projects' },
-  { label: 'Certificates', href: '#certificates' },
-  { label: 'Feedback',     href: '#feedback' },
+const SOCIALS = [
+  { icon: <FiGithub />,    href: 'https://github.com/rgokul08',                                          label: 'GitHub',    cls: '' },
+  { icon: <FiLinkedin />,  href: 'https://www.linkedin.com/in/gokul-r-69ab13385/',                      label: 'LinkedIn',  cls: '' },
+  { icon: <FiInstagram />, href: 'https://instagram.com/itz_goku.08',                                   label: 'Instagram', cls: 'insta' },
+  { icon: <SiBehance />,   href: 'https://www.behance.net/gokul08',                                     label: 'Behance',   cls: 'behance' },
+  { icon: <FiMail />,      href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com', label: 'Email',     cls: '' },
 ]
 
-const socials = [
-  { icon: <FiGithub />,   href: 'https://github.com/rgokul08',                            label: 'GitHub' },
-  { icon: <FiLinkedin />, href: 'https://www.linkedin.com/in/gokul-r-69ab13385/',         label: 'LinkedIn' },
-  { icon: <FiMail />,     href: 'mailto:rgokul08.in@gmail.com',                           label: 'Email' },
+const CONTACT_ITEMS = [
+  { icon: <FiMail />,      label: 'Primary Email',  value: 'rgokul08.in@gmail.com',   href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com', cls: '' },
+  { icon: <FiMail />,      label: 'Figma / Design', value: 'rffgokul@gmail.com',      href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rffgokul@gmail.com',   cls: 'figma' },
+  { icon: <FiLinkedin />,  label: 'LinkedIn',       value: 'Gokul R',                 href: 'https://www.linkedin.com/in/gokul-r-69ab13385/',                     cls: '' },
+  { icon: <FiGithub />,    label: 'GitHub',         value: '@rgokul08',               href: 'https://github.com/rgokul08',                                        cls: '' },
+  { icon: <FiInstagram />, label: 'Instagram',      value: '@itz_goku.08',            href: 'https://instagram.com/itz_goku.08',                                  cls: 'insta' },
+  { icon: <SiBehance />,   label: 'Behance',        value: 'behance.net/gokul08',     href: 'https://www.behance.net/gokul08',                                    cls: 'behance' },
+]
+
+const SERVICES = [
+  'Frontend Development',
+  'UI / UX Design',
+  'Web Applications',
+  'Data Analysis',
+  'Python Scripting',
+  'Figma Prototyping',
 ]
 
 export default function Footer() {
-  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
-
-  const handleNav = (href) => {
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
     <footer className="footer">
+      {/* top gradient line */}
       <div className="footer-top-line" />
-      <div className="container footer-container">
-        {/* Brand */}
+
+      <div className="container footer-main">
+        {/* ── Brand column ── */}
         <div className="footer-brand">
           <div className="footer-logo">
             <div className="footer-logo-mark">G</div>
-            <span>Gokul</span>
+            <span className="footer-logo-name">Gokul R</span>
           </div>
           <p className="footer-bio">
-            Aspiring Software Developer & Engineering Student passionate 
-            about building meaningful digital experiences.
+            Aspiring Software Developer &amp; AI/Data Science student passionate
+            about building meaningful digital experiences with clean code and
+            modern design.
           </p>
+
+          {/* availability badge */}
+          <div className="footer-availability">
+            <span className="fa-dot" />
+            Available for freelance &amp; internships
+          </div>
+
+          {/* socials */}
           <div className="footer-socials">
-            {socials.map(s => (
+            {SOCIALS.map(s => (
               <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                className="footer-social" aria-label={s.label}>
+                 className={`footer-social ${s.cls}`} aria-label={s.label}>
                 {s.icon}
               </a>
             ))}
           </div>
         </div>
 
-        {/* Quick links */}
-        <div className="footer-links">
-          <h4 className="footer-col-title">Quick Links</h4>
-          {navLinks.map(link => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="footer-link"
-              onClick={(e) => { e.preventDefault(); handleNav(link.href) }}
-            >
-              {link.label}
-            </a>
-          ))}
+        {/* ── Services column ── */}
+        <div className="footer-col">
+          <h4 className="footer-col-title">What I Do</h4>
+          <ul className="footer-services">
+            {SERVICES.map(s => (
+              <li key={s} className="footer-service-item">
+                <span className="fsi-dot" />
+                {s}
+              </li>
+            ))}
+          </ul>
         </div>
 
-        {/* Contact */}
-        <div className="footer-contact">
-          <h4 className="footer-col-title">Contact</h4>
-          <div className="footer-contact-item">
-            <FiMail />
-            <a href="mailto:rgokul08.in@gmail.com">rgokul08.in@gmail.com</a>
-          </div>
-          <div className="footer-contact-item">
-            <FiLinkedin />
-            <a href="https://www.linkedin.com/in/gokul-r-69ab13385/" target="_blank" rel="noopener noreferrer">
-              LinkedIn
-            </a>
-          </div>
-          <div className="footer-contact-item">
-            <FiGithub />
-            <a href="https://github.com/rgokul08" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
+        {/* ── Contact column ── */}
+        <div className="footer-col">
+          <h4 className="footer-col-title">Connect With Me</h4>
+          <div className="footer-contact-list">
+            {CONTACT_ITEMS.map((c, i) => (
+              <a key={i} href={c.href} target="_blank" rel="noopener noreferrer"
+                 className={`footer-contact-item ${c.cls}`}>
+                <span className={`footer-ci-icon ${c.cls}`}>{c.icon}</span>
+                <div>
+                  <div className="footer-ci-label">{c.label}</div>
+                  <div className="footer-ci-val">{c.value}</div>
+                </div>
+              </a>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Bottom bar */}
+      {/* ── Bottom bar ── */}
       <div className="footer-bottom">
         <div className="container footer-bottom-inner">
-          <p>
-            Made with <FiHeart style={{ color: '#fc4b4b', display: 'inline', verticalAlign: 'middle' }} /> by Gokul — {new Date().getFullYear()}
+          <p className="footer-copy">
+            &copy; {new Date().getFullYear()} Gokul R — Designed &amp; Built with{' '}
+            <FiHeart style={{ display: 'inline', verticalAlign: 'middle', color: '#fc6b6b' }} />{' '}
+            in Tamil Nadu, India
           </p>
-          <button className="footer-back-top" onClick={scrollTop} aria-label="Back to top">
-            <FiArrowUp />
-            Back to top
-          </button>
+          <div className="footer-bottom-badges">
+            <span className="footer-badge">React</span>
+            <span className="footer-badge">Vite</span>
+            <span className="footer-badge">Supabase</span>
+          </div>
         </div>
       </div>
     </footer>
