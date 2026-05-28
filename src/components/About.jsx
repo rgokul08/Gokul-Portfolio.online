@@ -65,7 +65,7 @@ Education Journey
 🎓 Higher Secondary (CBSE) — Zion School — 2024–2025 | 92%
 
 🎓 Secondary (CBSE) — Zion School — 2022–2023 | 89%`,
-  skills:['Java','Python','Figma','HTML & CSS','JavaScript','Supabase','Git & GitHub'],
+  skills:['Java','Python','Figma','HTML & CSS','JavaScript','Vite','Supabase','Git ',' GitHub'],
   email:'rgokul08.in@gmail.com',
   figma_email:'rffgokul@gmail.com',
   contact:'+91 88382104XX',
@@ -76,10 +76,10 @@ Education Journey
 }
 
 const STATS=[
-  {label:'Projects Built',value:'3+',icon:'🚀'},
-  {label:'Certificates',  value:'25+',icon:'🏆'},
-  {label:'Technologies',  value:'7+', icon:'⚡'},
-  {label:'Years Learning',value:'2+', icon:'📚'},
+  {label:'Projects Built',value:'3+',icon:''},
+  {label:'Certificates',  value:'25+',icon:''},
+  {label:'Technologies',  value:'7+', icon:''},
+  {label:'Years Learning',value:'2+', icon:''},
 ]
 
 function useVisible(ref,thresh=0.1){

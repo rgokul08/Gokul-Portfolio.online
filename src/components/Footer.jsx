@@ -79,22 +79,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* ── Contact column ── */}
-        <div className="footer-col">
-          <h4 className="footer-col-title">Connect With Me</h4>
-          <div className="footer-contact-list">
-            {CONTACT_ITEMS.map((c, i) => (
-              <a key={i} href={c.href} target="_blank" rel="noopener noreferrer"
-                 className={`footer-contact-item ${c.cls}`}>
-                <span className={`footer-ci-icon ${c.cls}`}>{c.icon}</span>
-                <div>
-                  <div className="footer-ci-label">{c.label}</div>
-                  <div className="footer-ci-val">{c.value}</div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
+       
       </div>
 
       {/* ── Bottom bar ── */}
@@ -105,11 +90,6 @@ export default function Footer() {
             <FiHeart style={{ display: 'inline', verticalAlign: 'middle', color: '#fc6b6b' }} />{' '}
             in Tamil Nadu, India
           </p>
-          <div className="footer-bottom-badges">
-            <span className="footer-badge">React</span>
-            <span className="footer-badge">Vite</span>
-            <span className="footer-badge">Supabase</span>
-          </div>
         </div>
       </div>
     </footer>

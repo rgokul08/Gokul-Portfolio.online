@@ -83,7 +83,7 @@ export default function Hero(){
               View My Work <FiArrowDown/>
             </button>
             <button className="btn-outline" onClick={()=>document.getElementById('feedback')?.scrollIntoView({behavior:'smooth'})}>
-              Let's Talk
+              Let's Talk💭
             </button>
           </div>
 
@@ -104,8 +104,8 @@ export default function Hero(){
               ? <img src={imgUrl} alt="Gokul" className="hero-photo"/>
               : <div className="hero-avatar"><span>G</span></div>
             }
-            <div className="hero-badge-float badge-1"><span>🎓</span>Engineering Student</div>
-            <div className="hero-badge-float badge-2"><span>💻</span>Dev & Designer</div>
+            <div className="hero-badge-float badge-1"><span></span>🎓Engineering Student</div>
+            <div className="hero-badge-float badge-2"><span></span>💻Developer & Designer</div>
           </div>
           <div className="hero-orbit"><div className="hero-orbit-dot"/></div>
         </div>
