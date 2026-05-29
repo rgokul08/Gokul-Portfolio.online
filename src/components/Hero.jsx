@@ -58,7 +58,7 @@ export default function Hero(){
         {/* — text — */}
         <div className="hero-text">
           <div className="hero-badge fade-in delay-1">
-            <span className="hero-dot"/>Available for opportunities
+            <span className="hero-dot"/>Looking to Contribute and Grow
           </div>
 
           <h1 className="hero-name fade-in delay-2">
