@@ -77,11 +77,7 @@ export default function Hero() {
             and <strong>data analysis</strong>.
           </p>
 
-          {/* Location badge */}
-          <div className="hero-location fade-in delay-4">
-            <FiMapPin />
-            <span>Thambaram, Chengalpattu, Tamil Nadu 🇮🇳</span>
-          </div>
+         
 
           <div className="hero-actions fade-in delay-5">
             <button className="btn-primary"

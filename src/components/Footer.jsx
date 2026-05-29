@@ -13,11 +13,11 @@ const SOCIALS = [
 ]
 
 const SERVICES = [
-  'Frontend Development',
+  'Full Stack Web Development',
   'UI / UX Design',
   'Web Applications',
   'Data Analysis',
-  'Python Scripting',
+  'Java & Python Scripting',
   'Figma Prototyping',
 ]
 
@@ -43,7 +43,7 @@ export default function Footer() {
           {/* location */}
           <div className="footer-location">
             <FiMapPin />
-            <span>Thambaram, Chengalpattu, Tamil Nadu 🇮🇳</span>
+            <span> Chengalpattu, Tamil Nadu, India</span>
           </div>
 
           {/* availability badge */}
@@ -83,7 +83,7 @@ export default function Footer() {
           <p className="footer-copy">
             &copy; {new Date().getFullYear()} Gokul R — Designed &amp; Built with{' '}
             <FiHeart style={{ display: 'inline', verticalAlign: 'middle', color: '#fc6b6b' }} />{' '}
-            in Thambaram, Tamil Nadu, India
+            in Tambaram, Tamil Nadu, India
           </p>
         </div>
       </div>

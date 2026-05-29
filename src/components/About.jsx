@@ -62,10 +62,10 @@ Education Journey
 
 🎓 B.Tech in AI & Data Science — Prince Dr. K. Vasudevan College — 2025–2029 | CGPA: 8.2/10
 
-🎓 Higher Secondary (CBSE) — Zion School — 2024–2025 | 92%
+🎓 Higher Secondary — Zion International Public School (CBSE) — 2024–2025 | 80%
 
-🎓 Secondary (CBSE) — Zion School — 2022–2023 | 89%`,
-  skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript', 'Vite', 'Supabase', 'Git', 'GitHub'],
+🎓 Secondary — Zion International Public School (CBSE) — 2022–2023 | 78%`,
+  skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript','React','NodeJs', 'Vite', 'Supabase', 'Git', 'GitHub'],
   email: 'rgokul08.in@gmail.com',
   figma_email: 'rffgokul@gmail.com',
   contact: '+91 88382104XX',
@@ -73,14 +73,14 @@ Education Journey
   github: 'https://github.com/rgokul08',
   instagram: 'https://instagram.com/itz_goku.08',
   behance: 'https://www.behance.net/gokul08',
-  location: 'Thambaram, Chengalpattu, Tamil Nadu',
+  location: 'Tambaram, Chengalpattu, Tamil Nadu',
 }
 
 const STATS = [
-  { label: 'Projects Built', value: '3+',  icon: '🚀' },
-  { label: 'Certificates',   value: '25+', icon: '🏆' },
-  { label: 'Technologies',   value: '7+',  icon: '⚡' },
-  { label: 'Years Learning', value: '2+',  icon: '📚' },
+  { label: 'Projects Built', value: '3+',  icon: '' },
+  { label: 'Certificates',   value: '25+', icon: '' },
+  { label: 'Technologies',   value: '7+',  icon: '' },
+  { label: 'Years Learning', value: '2+',  icon: '' },
 ]
 
 function useVisible(ref, thresh = 0.1) {
@@ -140,7 +140,7 @@ export default function About() {
               {/* Location */}
               <div className="ac-item ac-location">
                 <FiMapPin />
-                <span>Thambaram, Chengalpattu, Tamil Nadu</span>
+                <span>Tambaram, Chengalpattu, Tamil Nadu</span>
               </div>
               <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${info.email}`}
                  target="_blank" rel="noopener noreferrer" className="ac-item">
@@ -188,17 +188,7 @@ export default function About() {
               ))}
             </div>
 
-            {/* Location card */}
-            <div className={`about-location-card glass-card${vis ? ' anim delay-3' : ''}`}>
-              <div className="alc-inner">
-                <span className="alc-icon">📍</span>
-                <div>
-                  <div className="alc-label">Based in</div>
-                  <div className="alc-value">Thambaram, Chengalpattu</div>
-                  <div className="alc-region">Tamil Nadu, India 🇮🇳</div>
-                </div>
-              </div>
-            </div>
+          
 
             <div className={`about-skills-card glass-card${vis ? ' anim delay-4' : ''}`}>
               <h3 className="skills-title">Tech Stack & Skills</h3>
