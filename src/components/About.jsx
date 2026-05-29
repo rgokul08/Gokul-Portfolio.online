@@ -1,12 +1,12 @@
 // src/components/About.jsx
-import React,{useEffect,useState,useRef} from 'react'
-import {supabase} from '../lib/supabase'
-import {FiMail,FiPhone,FiLinkedin,FiGithub,FiUser,FiInstagram} from 'react-icons/fi'
-import {SiBehance} from 'react-icons/si'
+import React, { useEffect, useState, useRef } from 'react'
+import { supabase } from '../lib/supabase'
+import { FiMail, FiPhone, FiLinkedin, FiGithub, FiUser, FiInstagram, FiMapPin } from 'react-icons/fi'
+import { SiBehance } from 'react-icons/si'
 import './About.css'
 
 /* ── Skill → logo mapping ── */
-const SKILL_LOGOS={
+const SKILL_LOGOS = {
   'java':         'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg',
   'python':       'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg',
   'javascript':   'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
@@ -47,14 +47,14 @@ const SKILL_LOGOS={
   'php':          'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg',
 }
 
-function getLogo(skill){
-  const key=skill.toLowerCase().trim()
-  return SKILL_LOGOS[key]||null
+function getLogo(skill) {
+  const key = skill.toLowerCase().trim()
+  return SKILL_LOGOS[key] || null
 }
 
-const DEFAULT={
-  name:'Gokul R',
-  bio:`I'm Gokul R, a passionate Software Developer and AI & Data Science student at Prince Dr. K. Vasudevan College (2025–2029). I have a strong interest in web development, coding, and creating modern digital experiences.
+const DEFAULT = {
+  name: 'Gokul R',
+  bio: `I'm Gokul R, a passionate Software Developer and AI & Data Science student at Prince Dr. K. Vasudevan College (2025–2029). I have a strong interest in web development, coding, and creating modern digital experiences.
 
 I specialize in web design, frontend development, and software development, with skills in building responsive and user-friendly websites. I enjoy learning new technologies, solving real-world problems, and continuously improving my technical abilities.
 
@@ -65,97 +65,122 @@ Education Journey
 🎓 Higher Secondary (CBSE) — Zion School — 2024–2025 | 92%
 
 🎓 Secondary (CBSE) — Zion School — 2022–2023 | 89%`,
-  skills:['Java','Python','Figma','HTML & CSS','JavaScript','Vite','Supabase','Git ',' GitHub'],
-  email:'rgokul08.in@gmail.com',
-  figma_email:'rffgokul@gmail.com',
-  contact:'+91 88382104XX',
-  linkedin:'https://www.linkedin.com/in/gokul-r-69ab13385/',
-  github:'https://github.com/rgokul08',
-  instagram:'https://instagram.com/itz_goku.08',
-  behance:'https://www.behance.net/gokul08',
+  skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript', 'Vite', 'Supabase', 'Git', 'GitHub'],
+  email: 'rgokul08.in@gmail.com',
+  figma_email: 'rffgokul@gmail.com',
+  contact: '+91 88382104XX',
+  linkedin: 'https://www.linkedin.com/in/gokul-r-69ab13385/',
+  github: 'https://github.com/rgokul08',
+  instagram: 'https://instagram.com/itz_goku.08',
+  behance: 'https://www.behance.net/gokul08',
+  location: 'Thambaram, Chengalpattu, Tamil Nadu',
 }
 
-const STATS=[
-  {label:'Projects Built',value:'3+',icon:''},
-  {label:'Certificates',  value:'25+',icon:''},
-  {label:'Technologies',  value:'7+', icon:''},
-  {label:'Years Learning',value:'2+', icon:''},
+const STATS = [
+  { label: 'Projects Built', value: '3+',  icon: '🚀' },
+  { label: 'Certificates',   value: '25+', icon: '🏆' },
+  { label: 'Technologies',   value: '7+',  icon: '⚡' },
+  { label: 'Years Learning', value: '2+',  icon: '📚' },
 ]
 
-function useVisible(ref,thresh=0.1){
-  const[v,setV]=useState(false)
-  useEffect(()=>{
-    const ob=new IntersectionObserver(([e])=>{if(e.isIntersecting)setV(true)},{threshold:thresh})
-    if(ref.current)ob.observe(ref.current)
-    return()=>ob.disconnect()
-  },[ref,thresh])
+function useVisible(ref, thresh = 0.1) {
+  const [v, setV] = useState(false)
+  useEffect(() => {
+    const ob = new IntersectionObserver(([e]) => { if (e.isIntersecting) setV(true) }, { threshold: thresh })
+    if (ref.current) ob.observe(ref.current)
+    return () => ob.disconnect()
+  }, [ref, thresh])
   return v
 }
 
-export default function About(){
-  const[data,setData]=useState(null)
-  const[loading,setLoading]=useState(true)
-  const ref=useRef(null)
-  const vis=useVisible(ref)
+export default function About() {
+  const [data,    setData]    = useState(null)
+  const [loading, setLoading] = useState(true)
+  const ref = useRef(null)
+  const vis = useVisible(ref)
 
-  useEffect(()=>{
+  useEffect(() => {
     supabase.from('about').select('*').single()
-      .then(({data:d,error})=>{
-        setData(error||!d?DEFAULT:{...DEFAULT,...d})
+      .then(({ data: d, error }) => {
+        setData(error || !d ? DEFAULT : { ...DEFAULT, ...d })
       })
-      .catch(()=>setData(DEFAULT))
-      .finally(()=>setLoading(false))
-  },[])
+      .catch(() => setData(DEFAULT))
+      .finally(() => setLoading(false))
+  }, [])
 
-  const info=data||DEFAULT
+  const info = data || DEFAULT
 
-  return(
+  return (
     <div className="about" ref={ref}>
       <div className="container">
-        <div className={`section-label${vis?' anim':''}`}>About Me</div>
-        <h2 className={`section-title${vis?' anim delay-1':''}`}>
+        <div className={`section-label${vis ? ' anim' : ''}`}>About Me</div>
+        <h2 className={`section-title${vis ? ' anim delay-1' : ''}`}>
           Turning Ideas into <span>Reality</span>
         </h2>
 
         <div className="about-grid">
           {/* — left story — */}
-          <div className={`about-story glass-card${vis?' anim delay-2':''}`}>
-            <div className="about-icon-wrap"><FiUser/></div>
+          <div className={`about-story glass-card${vis ? ' anim delay-2' : ''}`}>
+            <div className="about-icon-wrap"><FiUser /></div>
             <h3 className="about-story-title">My Story</h3>
 
             {loading
-              ? <div style={{display:'flex',justifyContent:'center',padding:'32px 0'}}><div className="spinner" style={{width:36,height:36}}/></div>
+              ? <div style={{ display: 'flex', justifyContent: 'center', padding: '32px 0' }}>
+                  <div className="spinner" style={{ width: 36, height: 36 }} />
+                </div>
               : <div className="about-bio">
-                  {info.bio.split('\n\n').filter(Boolean).map((p,i)=>(
-                    <p key={i} className={`about-para${vis?' anim':''}`}
-                       style={{animationDelay:`${0.28+i*0.11}s`}}>{p.trim()}</p>
+                  {info.bio.split('\n\n').filter(Boolean).map((p, i) => (
+                    <p key={i} className={`about-para${vis ? ' anim' : ''}`}
+                       style={{ animationDelay: `${0.28 + i * 0.11}s` }}>{p.trim()}</p>
                   ))}
                 </div>
             }
 
             <div className="about-contacts">
-              <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${info.email}`} target="_blank" rel="noopener noreferrer" className="ac-item">
-                <FiMail/><span>{info.email}</span>
+              {/* Location */}
+              <div className="ac-item ac-location">
+                <FiMapPin />
+                <span>Thambaram, Chengalpattu, Tamil Nadu</span>
+              </div>
+              <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${info.email}`}
+                 target="_blank" rel="noopener noreferrer" className="ac-item">
+                <FiMail /><span>{info.email}</span>
               </a>
-              {info.figma_email&&(
-                <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${info.figma_email}`} target="_blank" rel="noopener noreferrer" className="ac-item ac-figma">
-                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="figma" style={{width:15,height:15}}/>
+              {info.figma_email && (
+                <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${info.figma_email}`}
+                   target="_blank" rel="noopener noreferrer" className="ac-item ac-figma">
+                  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+                       alt="figma" style={{ width: 15, height: 15 }} />
                   <span>{info.figma_email}</span>
                 </a>
               )}
-              {info.contact&&<div className="ac-item"><FiPhone/><span>{info.contact}</span></div>}
-              <a href={info.linkedin} target="_blank" rel="noopener noreferrer" className="ac-item"><FiLinkedin/><span>LinkedIn</span></a>
-              <a href={info.github}   target="_blank" rel="noopener noreferrer" className="ac-item"><FiGithub/><span>GitHub</span></a>
-              <a href={info.instagram||DEFAULT.instagram} target="_blank" rel="noopener noreferrer" className="ac-item ac-insta"><FiInstagram/><span>Instagram</span></a>
-              <a href={info.behance||DEFAULT.behance} target="_blank" rel="noopener noreferrer" className="ac-item ac-behance"><SiBehance/><span>Behance</span></a>
+              {info.contact && (
+                <div className="ac-item"><FiPhone /><span>{info.contact}</span></div>
+              )}
+              <a href={info.linkedin}  target="_blank" rel="noopener noreferrer" className="ac-item">
+                <FiLinkedin /><span>LinkedIn</span>
+              </a>
+              <a href={info.github}    target="_blank" rel="noopener noreferrer" className="ac-item">
+                <FiGithub /><span>GitHub</span>
+              </a>
+              <a href={info.instagram || DEFAULT.instagram}
+                 target="_blank" rel="noopener noreferrer" className="ac-item ac-insta">
+                <FiInstagram /><span>Instagram</span>
+              </a>
+              <a href={info.behance || DEFAULT.behance}
+                 target="_blank" rel="noopener noreferrer" className="ac-item ac-behance">
+                <SiBehance /><span>Behance</span>
+              </a>
             </div>
           </div>
 
           {/* — right — */}
           <div className="about-right">
             <div className="about-stats">
-              {STATS.map((s,i)=>(
-                <div key={s.label} className={`about-stat glass-card${vis?' anim':''}`} style={{animationDelay:`${0.18+i*0.09}s`}}>
+              {STATS.map((s, i) => (
+                <div key={s.label}
+                  className={`about-stat glass-card${vis ? ' anim' : ''}`}
+                  style={{ animationDelay: `${0.18 + i * 0.09}s` }}>
                   <span className="stat-icon">{s.icon}</span>
                   <span className="stat-value">{s.value}</span>
                   <span className="stat-label">{s.label}</span>
@@ -163,14 +188,30 @@ export default function About(){
               ))}
             </div>
 
-            <div className={`about-skills-card glass-card${vis?' anim delay-4':''}`}>
+            {/* Location card */}
+            <div className={`about-location-card glass-card${vis ? ' anim delay-3' : ''}`}>
+              <div className="alc-inner">
+                <span className="alc-icon">📍</span>
+                <div>
+                  <div className="alc-label">Based in</div>
+                  <div className="alc-value">Thambaram, Chengalpattu</div>
+                  <div className="alc-region">Tamil Nadu, India 🇮🇳</div>
+                </div>
+              </div>
+            </div>
+
+            <div className={`about-skills-card glass-card${vis ? ' anim delay-4' : ''}`}>
               <h3 className="skills-title">Tech Stack & Skills</h3>
               <div className="skills-grid">
-                {(info.skills||[]).map((sk,i)=>{
-                  const logo=getLogo(sk)
-                  return(
-                    <span key={i} className={`skill-tag${vis?' anim':''}`} style={{animationDelay:`${0.48+i*0.06}s`}}>
-                      {logo&&<img src={logo} alt={sk} onError={e=>e.target.style.display='none'}/>}
+                {(info.skills || []).map((sk, i) => {
+                  const logo = getLogo(sk)
+                  return (
+                    <span key={i} className={`skill-tag${vis ? ' anim' : ''}`}
+                          style={{ animationDelay: `${0.48 + i * 0.06}s` }}>
+                      {logo && (
+                        <img src={logo} alt={sk}
+                             onError={e => e.target.style.display = 'none'} />
+                      )}
                       {sk}
                     </span>
                   )

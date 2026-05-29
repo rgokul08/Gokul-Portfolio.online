@@ -1,6 +1,6 @@
 // src/components/Footer.jsx
 import React from 'react'
-import { FiGithub, FiLinkedin, FiMail, FiInstagram, FiHeart, FiMapPin, FiPhone } from 'react-icons/fi'
+import { FiGithub, FiLinkedin, FiMail, FiInstagram, FiHeart, FiMapPin } from 'react-icons/fi'
 import { SiBehance } from 'react-icons/si'
 import './Footer.css'
 
@@ -10,15 +10,6 @@ const SOCIALS = [
   { icon: <FiInstagram />, href: 'https://instagram.com/itz_goku.08',                                   label: 'Instagram', cls: 'insta' },
   { icon: <SiBehance />,   href: 'https://www.behance.net/gokul08',                                     label: 'Behance',   cls: 'behance' },
   { icon: <FiMail />,      href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com', label: 'Email',     cls: '' },
-]
-
-const CONTACT_ITEMS = [
-  { icon: <FiMail />,      label: 'Primary Email',  value: 'rgokul08.in@gmail.com',   href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com', cls: '' },
-  { icon: <FiMail />,      label: 'Figma / Design', value: 'rffgokul@gmail.com',      href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rffgokul@gmail.com',   cls: 'figma' },
-  { icon: <FiLinkedin />,  label: 'LinkedIn',       value: 'Gokul R',                 href: 'https://www.linkedin.com/in/gokul-r-69ab13385/',                     cls: '' },
-  { icon: <FiGithub />,    label: 'GitHub',         value: '@rgokul08',               href: 'https://github.com/rgokul08',                                        cls: '' },
-  { icon: <FiInstagram />, label: 'Instagram',      value: '@itz_goku.08',            href: 'https://instagram.com/itz_goku.08',                                  cls: 'insta' },
-  { icon: <SiBehance />,   label: 'Behance',        value: 'behance.net/gokul08',     href: 'https://www.behance.net/gokul08',                                    cls: 'behance' },
 ]
 
 const SERVICES = [
@@ -44,10 +35,16 @@ export default function Footer() {
             <span className="footer-logo-name">Gokul R</span>
           </div>
           <p className="footer-bio">
-            Aspiring Software Developer &amp; AI/Data Science student passionate
-            about building meaningful digital experiences with clean code and
-            modern design.
+            Aspiring Software Developer &amp; AI/Data Science student from
+            Thambaram, Chengalpattu, Tamil Nadu — passionate about building
+            meaningful digital experiences with clean code and modern design.
           </p>
+
+          {/* location */}
+          <div className="footer-location">
+            <FiMapPin />
+            <span>Thambaram, Chengalpattu, Tamil Nadu 🇮🇳</span>
+          </div>
 
           {/* availability badge */}
           <div className="footer-availability">
@@ -78,8 +75,6 @@ export default function Footer() {
             ))}
           </ul>
         </div>
-
-       
       </div>
 
       {/* ── Bottom bar ── */}
@@ -88,7 +83,7 @@ export default function Footer() {
           <p className="footer-copy">
             &copy; {new Date().getFullYear()} Gokul R — Designed &amp; Built with{' '}
             <FiHeart style={{ display: 'inline', verticalAlign: 'middle', color: '#fc6b6b' }} />{' '}
-            in Tamil Nadu, India
+            in Thambaram, Tamil Nadu, India
           </p>
         </div>
       </div>

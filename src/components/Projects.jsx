@@ -3,13 +3,13 @@ import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 import {
   FiExternalLink, FiGithub, FiClock, FiCode,
-  FiChevronLeft, FiChevronRight, FiPackage
+  FiChevronLeft, FiChevronRight, FiPackage, FiAlertCircle, FiRefreshCw
 } from 'react-icons/fi'
 import './Projects.css'
 
 const BUCKET   = 'Portfolio'
 const FOLDER   = 'projects_image'
-const SLIDE_AT = 3   // slideshow when count > this
+const SLIDE_AT = 3
 
 function imgUrl(item) {
   if (!item?.image_url) return null
@@ -23,7 +23,7 @@ function imgUrl(item) {
 function parseTools(t) {
   if (!t) return []
   if (Array.isArray(t)) return t
-  try { return JSON.parse(t) } catch { return t.split(',').map(s => s.trim()) }
+  try { return JSON.parse(t) } catch { return t.split(',').map(s => s.trim()).filter(Boolean) }
 }
 
 async function fetchProjects() {
@@ -34,7 +34,7 @@ async function fetchProjects() {
 
   if (error) {
     console.error('Projects fetch error:', error.message, error.details, error.hint)
-    return []
+    throw error
   }
   console.log('Projects fetched:', data?.length ?? 0)
   return data ?? []
@@ -43,19 +43,25 @@ async function fetchProjects() {
 export default function Projects() {
   const [projects, setProjects] = useState([])
   const [loading,  setLoading]  = useState(true)
+  const [fetchErr, setFetchErr] = useState(null)
   const [filter,   setFilter]   = useState('All')
   const [cur,      setCur]      = useState(0)
   const [paused,   setPaused]   = useState(false)
   const timer = useRef(null)
 
-  // Initial load
-  useEffect(() => {
+  const load = useCallback(() => {
+    setLoading(true)
+    setFetchErr(null)
     fetchProjects()
-      .then(setProjects)
+      .then(data => { setProjects(data); setFetchErr(null) })
+      .catch(err  => setFetchErr(err.message || 'Failed to load projects'))
       .finally(() => setLoading(false))
   }, [])
 
-  // Realtime subscription — reflects add/update/delete instantly
+  // Initial load
+  useEffect(() => { load() }, [load])
+
+  // Realtime subscription
   useEffect(() => {
     const channel = supabase
       .channel('projects-changes')
@@ -64,7 +70,9 @@ export default function Projects() {
         { event: '*', schema: 'public', table: 'projects' },
         payload => {
           console.log('Realtime projects event:', payload.eventType)
-          fetchProjects().then(setProjects)
+          fetchProjects()
+            .then(setProjects)
+            .catch(console.error)
         }
       )
       .subscribe(status => {
@@ -106,7 +114,7 @@ export default function Projects() {
         <div className="section-label">My Work</div>
         <h2 className="section-title">Featured <span>Projects</span></h2>
 
-        {!loading && allTags.length > 1 && (
+        {!loading && !fetchErr && allTags.length > 1 && (
           <div className="proj-filters">
             {allTags.slice(0, 9).map(t => (
               <button key={t}
@@ -121,6 +129,15 @@ export default function Projects() {
         {loading ? (
           <div className="proj-skel-grid">
             {[1, 2, 3].map(i => <div key={i} className="proj-skel" />)}
+          </div>
+        ) : fetchErr ? (
+          <div className="proj-error">
+            <FiAlertCircle />
+            <p>Could not load projects from database.</p>
+            <p className="proj-error-detail">{fetchErr}</p>
+            <button className="btn-outline proj-retry" onClick={load}>
+              <FiRefreshCw /> Retry
+            </button>
           </div>
         ) : list.length === 0 ? (
           <div className="proj-empty">
@@ -206,9 +223,11 @@ function ProjCard({ project: p, index = 0, pos = 0, grid = false }) {
         )}
         <h3 className="proj-title">{p.title}</h3>
         <p className="proj-desc">{p.description}</p>
-        <div className="proj-tools">
-          {tools.map((t, i) => <span key={i} className="pt">{t}</span>)}
-        </div>
+        {tools.length > 0 && (
+          <div className="proj-tools">
+            {tools.map((t, i) => <span key={i} className="pt">{t}</span>)}
+          </div>
+        )}
         <div className="proj-links">
           {p.project_link && (
             <a href={p.project_link} target="_blank" rel="noopener noreferrer"
