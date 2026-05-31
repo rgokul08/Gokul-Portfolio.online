@@ -5,7 +5,7 @@ import { SiBehance } from 'react-icons/si'
 import { supabase } from '../lib/supabase'
 import './Hero.css'
 
-const ROLES = ['Software Developer', 'Engineering Student', 'Problem Solver', 'UI Enthusiast']
+const ROLES = ['Software Developer','Full Stack Developer', 'Engineering Student', 'Problem Solver', 'UI & UX Enthusiast']
 const BUCKET = 'Portfolio'
 const FOLDER = 'user_image'
 

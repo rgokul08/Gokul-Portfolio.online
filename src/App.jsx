@@ -1,5 +1,6 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react'
+import { ThemeProvider } from './context/ThemeContext'
 import Navbar       from './components/Navbar'
 import Hero         from './components/Hero'
 import About        from './components/About'
@@ -36,7 +37,7 @@ function BackToTop() {
   )
 }
 
-export default function App() {
+function PortfolioApp() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -60,5 +61,13 @@ export default function App() {
       <Footer />
       <BackToTop />
     </>
+  )
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <PortfolioApp />
+    </ThemeProvider>
   )
 }

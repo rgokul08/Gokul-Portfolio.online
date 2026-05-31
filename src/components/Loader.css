@@ -1,10 +1,10 @@
 /* Loader.css */
-.loader{position:fixed;inset:0;background:#07070f;display:flex;align-items:center;justify-content:center;z-index:9999;animation:loaderOut .5s ease 2s forwards;}
+.loader{position:fixed;inset:0;background:var(--bg, #07070f);display:flex;align-items:center;justify-content:center;z-index:9999;animation:loaderOut .5s ease 2s forwards;}
 @keyframes loaderOut{to{opacity:0;pointer-events:none;}}
 .loader-inner{display:flex;flex-direction:column;align-items:center;gap:18px;animation:loaderIn .5s ease forwards;}
 @keyframes loaderIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
 .loader-logo{width:76px;height:76px;border-radius:22px;background:linear-gradient(135deg,#63b3ed,#b794f4);display:flex;align-items:center;justify-content:center;animation:pulse 1.4s ease-in-out infinite;}
-.loader-logo span{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:#07070f;}
+.loader-logo span{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:#fff;}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(99,179,237,0.35);}50%{box-shadow:0 0 0 18px rgba(99,179,237,0);}}
 .loader-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.45em;color:rgba(255,255,255,0.3);}
 .loader-bar-wrap{width:180px;height:2px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;}

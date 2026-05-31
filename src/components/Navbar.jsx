@@ -1,15 +1,15 @@
 // src/components/Navbar.jsx
-import React,{useState,useEffect,useRef} from 'react'
+import React,{useState,useEffect} from 'react'
 import {FiX,FiSend,FiAlertCircle,FiCheckCircle,FiMenu} from 'react-icons/fi'
+import ThemeToggle from './ThemeToggle'
 import './Navbar.css'
 
 const LINKS=[
-  {label:'Home',      id:'home'},
-  {label:'About',     id:'about'},
-  {label:'Projects',  id:'projects'},
+  {label:'Home',        id:'home'},
+  {label:'About',       id:'about'},
+  {label:'Projects',    id:'projects'},
   {label:'Certificates',id:'certificates'},
-  {label:'Feedback',  id:'feedback'},
-  {label:'Contact',   id:'feedback'},
+  {label:'Contact',     id:'feedback'},
 ]
 
 const SVC  = import.meta.env.VITE_EMAILJS_SERVICE_ID  ||''
@@ -25,7 +25,6 @@ export default function Navbar(){
   const[status,setStatus]=useState('idle')
   const[err,setErr]=useState('')
 
-  /* ── scroll spy ── */
   useEffect(()=>{
     const ids=['home','about','projects','certificates','feedback']
     const onScroll=()=>{
@@ -42,16 +41,23 @@ export default function Navbar(){
     return()=>window.removeEventListener('scroll',onScroll)
   },[])
 
-  /* ── esc closes ── */
   useEffect(()=>{
     const h=e=>{if(e.key==='Escape'){setHireOpen(false);setMobileOpen(false)}}
     window.addEventListener('keydown',h)
     return()=>window.removeEventListener('keydown',h)
   },[])
 
+  // Lock body scroll when mobile menu open
+  useEffect(()=>{
+    document.body.style.overflow = mobileOpen ? 'hidden' : ''
+    return()=>{document.body.style.overflow=''}
+  },[mobileOpen])
+
   const nav=id=>{
     setMobileOpen(false)
-    document.getElementById(id)?.scrollIntoView({behavior:'smooth'})
+    setTimeout(()=>{
+      document.getElementById(id)?.scrollIntoView({behavior:'smooth'})
+    }, mobileOpen ? 300 : 0)
   }
 
   const onChange=e=>setForm(p=>({...p,[e.target.name]:e.target.value}))
@@ -92,11 +98,17 @@ export default function Navbar(){
             ))}
           </nav>
 
-          <button className="btn-primary nav-cta" onClick={()=>setHireOpen(true)}>Hire Me</button>
+          <div className="nav-right">
+            <ThemeToggle />
+            <button className="btn-primary nav-cta" onClick={()=>setHireOpen(true)}>Hire Me</button>
+          </div>
 
-          <button className={`nav-ham${mobileOpen?' open':''}`} onClick={()=>setMobileOpen(v=>!v)} aria-label="menu">
-            <span/><span/><span/>
-          </button>
+          <div className="nav-mobile-right">
+            <ThemeToggle />
+            <button className={`nav-ham${mobileOpen?' open':''}`} onClick={()=>setMobileOpen(v=>!v)} aria-label="menu">
+              <span/><span/><span/>
+            </button>
+          </div>
         </div>
 
         {/* mobile drawer */}
@@ -110,6 +122,11 @@ export default function Navbar(){
             onClick={()=>{setMobileOpen(false);setHireOpen(true)}}>Hire Me</button>
         </div>
       </header>
+
+      {/* Overlay for mobile menu */}
+      {mobileOpen && (
+        <div className="nav-overlay" onClick={()=>setMobileOpen(false)} />
+      )}
 
       {/* Hire Me Modal */}
       {hireOpen&&(
