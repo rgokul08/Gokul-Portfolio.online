@@ -8,9 +8,9 @@ import {
 import { SiBehance } from 'react-icons/si'
 import './Feedback.css'
 
-const SVC = import.meta.env.VITE_EMAILJS_SERVICE_ID  || ''
-const TPL = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || ''
-const KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  || ''
+const SVC ='service_goku08'
+const TPL = 'template_95bsjjz'
+const KEY ='vME-mdDF8y05MgnRa'
 
 const CONTACTS = [
   { icon: <FiMail />,      label: 'Primary Email',  value: 'rgokul08.in@gmail.com',  href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com', cls: '' },

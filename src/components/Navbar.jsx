@@ -12,9 +12,9 @@ const LINKS=[
   {label:'Contact',     id:'feedback'},
 ]
 
-const SVC  = import.meta.env.VITE_EMAILJS_SERVICE_ID  ||''
-const TPL  = import.meta.env.VITE_EMAILJS_TEMPLATE_ID ||''
-const KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  ||''
+const SVC  = 'service_goku08'
+const TPL  = 'template_95bsjjz'
+const KEY  = 'vME-mdDF8y05MgnRa'
 
 export default function Navbar(){
   const[scrolled,setScrolled]=useState(false)
