@@ -1,7 +1,7 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react'
 import { Analytics } from '@vercel/analytics/react'
-import { ThemeProvider } from './components/Themecontext'
+import { ThemeProvider } from './context/ThemeContext'
 import Navbar       from './components/Navbar'
 import Hero         from './components/Hero'
 import About        from './components/About'
