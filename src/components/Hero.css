@@ -1,7 +1,7 @@
 /* Hero.css — Ultra 3D Neon */
 .hero {
   min-height:100vh; display:flex; flex-direction:column;
-  justify-content:center; padding:100px 0 80px;
+  justify-content:center; padding:10px 0 80px;
   position:relative; overflow:hidden;
 }
 
