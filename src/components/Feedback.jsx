@@ -147,13 +147,13 @@ export default function Feedback() {
               <form onSubmit={onSubmit} className="fb-form" noValidate>
                 <div className="form-group">
                   <label>Your Name</label>
-                  <input name="name" className="form-input" placeholder="John Doe"
+                  <input name="name" className="form-input" placeholder="Enter your name"
                          value={form.name} onChange={onChange} required />
                 </div>
                 <div className="form-group">
                   <label>Email Address</label>
                   <input name="email" type="email" className="form-input"
-                         placeholder="john@example.com"
+                         placeholder="xyz@example.com"
                          value={form.email} onChange={onChange} required />
                 </div>
                 <div className="form-group">
