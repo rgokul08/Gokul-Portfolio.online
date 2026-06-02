@@ -1,12 +1,113 @@
-/* Loader.css */
-.loader{position:fixed;inset:0;background:var(--bg, #07070f);display:flex;align-items:center;justify-content:center;z-index:9999;animation:loaderOut .5s ease 2s forwards;}
-@keyframes loaderOut{to{opacity:0;pointer-events:none;}}
-.loader-inner{display:flex;flex-direction:column;align-items:center;gap:18px;animation:loaderIn .5s ease forwards;}
-@keyframes loaderIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
-.loader-logo{width:76px;height:76px;border-radius:22px;background:linear-gradient(135deg,#63b3ed,#b794f4);display:flex;align-items:center;justify-content:center;animation:pulse 1.4s ease-in-out infinite;}
-.loader-logo span{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;color:#fff;}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(99,179,237,0.35);}50%{box-shadow:0 0 0 18px rgba(99,179,237,0);}}
-.loader-name{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.45em;color:rgba(255,255,255,0.3);}
-.loader-bar-wrap{width:180px;height:2px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;}
-.loader-bar{height:100%;background:linear-gradient(90deg,#63b3ed,#b794f4);border-radius:2px;transition:width .1s linear;}
-.loader-text{font-size:11px;color:rgba(255,255,255,0.25);letter-spacing:.1em;}
+/* Loader.css — Ultra Neon Boot */
+.loader {
+  position:fixed; inset:0;
+  background: #020008;
+  display:flex; align-items:center; justify-content:center;
+  z-index:9999;
+  overflow:hidden;
+}
+.loader-scan {
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,255,238,0.04) 50%, transparent 100%);
+  animation: scanLine 2s linear infinite;
+}
+@keyframes scanLine {
+  from { transform:translateY(-100%); }
+  to   { transform:translateY(100vh); }
+}
+.loader-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(124,58,237,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124,58,237,0.05) 1px, transparent 1px);
+  background-size:60px 60px;
+  animation: gridPulse 2s ease-in-out infinite alternate;
+}
+@keyframes gridPulse {
+  from { opacity:0.5; }
+  to   { opacity:1; }
+}
+.loader-inner {
+  display:flex; flex-direction:column; align-items:center; gap:24px;
+  position:relative; z-index:1;
+  animation: loaderIn 0.6s cubic-bezier(0.19,1,0.22,1) forwards;
+}
+@keyframes loaderIn {
+  from { opacity:0; transform:translateY(30px) scale(0.9); }
+  to   { opacity:1; transform:none; }
+}
+.loader-logo {
+  width:90px; height:90px;
+  border-radius:28px;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4, #10b981);
+  background-size: 200% 200%;
+  display:flex; align-items:center; justify-content:center;
+  animation: logoSpin 3s ease-in-out infinite, gradFlow 3s ease infinite;
+  box-shadow: 0 0 40px rgba(124,58,237,0.8), 0 0 80px rgba(0,255,238,0.3);
+  position:relative;
+}
+@keyframes logoSpin {
+  0%,100% { border-radius:28px; transform:rotate(0deg); }
+  25%     { border-radius:50%; transform:rotate(5deg); }
+  75%     { border-radius:20px; transform:rotate(-5deg); }
+}
+@keyframes gradFlow {
+  0%  { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+  100%{ background-position:0% 50%; }
+}
+.loader-logo::before {
+  content:'';
+  position:absolute; inset:-3px;
+  border-radius:inherit;
+  background: linear-gradient(135deg, #00ffee, #bf00ff, #ff0080, #00ffee);
+  background-size:300% 300%;
+  border-radius:30px;
+  z-index:-1;
+  animation: borderSpin 2s linear infinite;
+  padding:3px;
+}
+@keyframes borderSpin {
+  0%  { background-position:0% 50%; }
+  100%{ background-position:200% 50%; }
+}
+.loader-logo span {
+  font-family:'Orbitron',monospace; font-size:42px; font-weight:900; color:#fff;
+  text-shadow: 0 0 20px rgba(255,255,255,0.8);
+  z-index:1;
+}
+.loader-name {
+  font-family:'Orbitron',monospace; font-size:11px; font-weight:700;
+  letter-spacing:0.6em; color:rgba(0,255,238,0.7);
+  text-shadow:0 0 20px rgba(0,255,238,0.5);
+  animation: namePulse 1.5s ease-in-out infinite alternate;
+}
+@keyframes namePulse {
+  from { opacity:0.5; letter-spacing:0.5em; }
+  to   { opacity:1;   letter-spacing:0.7em; }
+}
+.loader-bar-wrap {
+  width:220px; height:3px;
+  background:rgba(255,255,255,0.06);
+  border-radius:3px; overflow:hidden;
+  box-shadow: 0 0 10px rgba(124,58,237,0.3);
+}
+.loader-bar {
+  height:100%;
+  background: linear-gradient(90deg, #7c3aed, #00ffee, #bf00ff);
+  background-size:200% 100%;
+  border-radius:3px;
+  transition:width 0.1s linear;
+  animation:barGlow 1s ease-in-out infinite alternate;
+  box-shadow:0 0 8px rgba(0,255,238,0.6);
+}
+@keyframes barGlow {
+  from { box-shadow:0 0 8px rgba(0,255,238,0.4); }
+  to   { box-shadow:0 0 16px rgba(0,255,238,0.9), 0 0 30px rgba(0,255,238,0.4); }
+}
+.loader-text {
+  font-family:'Rajdhani',sans-serif; font-size:12px;
+  color:rgba(255,255,255,0.3); letter-spacing:0.15em;
+  animation: textBlink 1.2s step-end infinite;
+}
+@keyframes textBlink { 50% { opacity:0.2; } }

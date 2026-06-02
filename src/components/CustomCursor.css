@@ -1,5 +1,36 @@
-/* CustomCursor.css */
-.c-dot,.c-ring{position:fixed;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);}
-.c-dot{width:5px;height:5px;background:#63b3ed;border-radius:50%;mix-blend-mode:screen;}
-.c-ring{width:34px;height:34px;border:1.5px solid rgba(99,179,237,0.55);border-radius:50%;transition:width .22s,height .22s,border-color .22s,background .22s;}
-.c-ring.expand{width:52px;height:52px;border-color:rgba(183,148,244,0.75);background:rgba(183,148,244,0.04);}
+/* CustomCursor.css — Ultra Neon */
+.c-dot {
+  position:fixed; pointer-events:none; z-index:99999;
+  transform:translate(-50%,-50%);
+  width:6px; height:6px;
+  background: var(--neon-cyan);
+  border-radius:50%;
+  box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+  mix-blend-mode: screen;
+  transition: width 0.15s, height 0.15s, background 0.2s;
+}
+.c-ring {
+  position:fixed; pointer-events:none; z-index:99998;
+  transform:translate(-50%,-50%);
+  width:36px; height:36px;
+  border:1.5px solid rgba(0,255,238,0.6);
+  border-radius:50%;
+  mix-blend-mode: screen;
+  transition: width 0.25s, height 0.25s, border-color 0.25s, background 0.25s;
+  box-shadow: 0 0 12px rgba(0,255,238,0.3);
+}
+.c-ring.expand {
+  width:56px; height:56px;
+  border-color: rgba(191,0,255,0.8);
+  background: rgba(191,0,255,0.05);
+  box-shadow: 0 0 24px rgba(191,0,255,0.4), 0 0 48px rgba(191,0,255,0.1);
+}
+.c-trail {
+  position:fixed; pointer-events:none; z-index:99997;
+  transform:translate(-50%,-50%);
+  width:60px; height:60px;
+  border:1px solid rgba(0,255,238,0.15);
+  border-radius:50%;
+  mix-blend-mode: screen;
+  transition: width 0.4s, height 0.4s, opacity 0.4s;
+}
