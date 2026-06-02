@@ -83,7 +83,7 @@
   letter-spacing:-0.02em;
 }
 .hero-name-line {
-  display:block; font-size:0.55em; font-weight:400;
+  display:block; font-size:clamp(40px,6vw,78px); font-weight:800;
   color:var(--text-secondary); letter-spacing:0.08em; margin-bottom:6px;
   font-family:'Rajdhani',sans-serif;
 }

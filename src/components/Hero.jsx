@@ -57,11 +57,12 @@ export default function Hero(){
         <div className="hero-text">
           <div className="hero-badge fade-in delay-1">
             <span className="hero-dot"/>
-            Available for Freelance & Internships
+           
+          Seeking for Opportunity to Contribute and Grow
           </div>
 
           <h1 className="hero-name fade-in delay-2">
-            <span className="hero-name-line">Hey There, I'm</span>
+            <span className="hero-name-line">Hey, I'm</span>
             <span className="hero-name-grad">Gokul R</span>
           </h1>
 

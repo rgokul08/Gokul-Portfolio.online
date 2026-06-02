@@ -7,7 +7,7 @@ const LINKS=[
   {label:'Home',id:'home'},
   {label:'About',id:'about'},
   {label:'Projects',id:'projects'},
-  {label:'Certs',id:'certificates'},
+  {label:'Certificates',id:'certificates'},
   {label:'Contact',id:'feedback'},
 ]
 
