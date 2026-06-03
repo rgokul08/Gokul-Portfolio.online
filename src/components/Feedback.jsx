@@ -1,5 +1,5 @@
 // src/components/Feedback.jsx
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { supabase } from '../lib/supabase'
 import {
   FiSend, FiCheckCircle, FiAlertCircle,
@@ -8,9 +8,9 @@ import {
 import { SiBehance } from 'react-icons/si'
 import './Feedback.css'
 
-const SVC ='service_goku08'
+const SVC = 'service_goku08'
 const TPL = 'template_95bsjjz'
-const KEY ='vME-mdDF8y05MgnRa'
+const KEY = 'vME-mdDF8y05MgnRa'
 
 const CONTACTS = [
   { icon: <FiMail />,      label: 'Primary Email',  value: 'rgokul08.in@gmail.com',  href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com', cls: '' },
@@ -23,42 +23,19 @@ const CONTACTS = [
 
 export default function Feedback() {
   const [form,   setForm]   = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState('idle')
+  const [status, setStatus] = useState('idle')  // idle | sending | success | error
   const [err,    setErr]    = useState('')
+  const ejsRef = useRef(null)
 
-  // Initialize EmailJS once on mount
+  /* Init EmailJS once */
   useEffect(() => {
-    if (!KEY) return
     import('emailjs-com').then(mod => {
-      const ejs = mod.default
-      try { ejs.init(KEY) } catch (_) { /* already inited */ }
+      ejsRef.current = mod.default
+      try { ejsRef.current.init(KEY) } catch (_) {}
     })
   }, [])
 
   const onChange = e => setForm(p => ({ ...p, [e.target.name]: e.target.value }))
-
-  const sendEmail = async () => {
-    if (!SVC || !TPL || !KEY) {
-      console.warn('EmailJS env vars missing:', { SVC, TPL, KEY: KEY ? '***' : 'MISSING' })
-      return
-    }
-    const mod = await import('emailjs-com')
-    const ejs = mod.default
-    // Re-init to be safe
-    try { ejs.init(KEY) } catch (_) {}
-
-    const templateParams = {
-      from_name:  form.name,
-      from_email: form.email,
-      message:    form.message,
-      to_email:   'rgokul08.in@gmail.com',
-      reply_to:   form.email,
-    }
-
-    const response = await ejs.send(SVC, TPL, templateParams)
-    console.log('EmailJS response:', response)
-    return response
-  }
 
   const onSubmit = async e => {
     e.preventDefault()
@@ -69,23 +46,30 @@ export default function Feedback() {
     let supabaseOk = false
     let emailOk    = false
 
-    // 1. Try Supabase insert
+    /* 1. Supabase */
     try {
       const { error } = await supabase
         .from('feedback')
         .insert([{ name: form.name, email: form.email, message: form.message }])
-      if (error) {
-        console.error('Supabase insert error:', error)
-      } else {
-        supabaseOk = true
-      }
+      if (error) console.error('Supabase insert error:', error)
+      else supabaseOk = true
     } catch (ex) {
       console.error('Supabase exception:', ex)
     }
 
-    // 2. Try EmailJS
+    /* 2. EmailJS */
     try {
-      await sendEmail()
+      const ejs = ejsRef.current
+      if (!ejs) throw new Error('EmailJS not loaded')
+
+      const res = await ejs.send(SVC, TPL, {
+        from_name:  form.name,
+        from_email: form.email,
+        message:    form.message,
+        to_email:   'rgokul08.in@gmail.com',
+        reply_to:   form.email,
+      }, KEY)
+      console.log('EmailJS OK:', res.status, res.text)
       emailOk = true
     } catch (ex) {
       console.error('EmailJS error:', ex)
@@ -104,7 +88,7 @@ export default function Feedback() {
     <div className="feedback" id="contact">
       <div className="container">
         <div className="fb-grid">
-          {/* info */}
+          {/* Left: info */}
           <div className="fb-info">
             <div className="section-label">Get In Touch</div>
             <h2 className="section-title" style={{ marginBottom: 20 }}>
@@ -128,7 +112,7 @@ export default function Feedback() {
             </div>
           </div>
 
-          {/* form */}
+          {/* Right: form */}
           <div className="fb-form-card glass-card">
             <div className="fb-form-head">
               <FiMessageSquare /><span>Send a Message</span>
@@ -147,26 +131,34 @@ export default function Feedback() {
               <form onSubmit={onSubmit} className="fb-form" noValidate>
                 <div className="form-group">
                   <label>Your Name</label>
-                  <input name="name" className="form-input" placeholder="Enter your name"
-                         value={form.name} onChange={onChange} required />
+                  <input
+                    name="name" className="form-input" placeholder="Enter your name"
+                    value={form.name} onChange={onChange} required
+                  />
                 </div>
                 <div className="form-group">
                   <label>Email Address</label>
-                  <input name="email" type="email" className="form-input"
-                         placeholder="xyz@example.com"
-                         value={form.email} onChange={onChange} required />
+                  <input
+                    name="email" type="email" className="form-input"
+                    placeholder="xyz@example.com"
+                    value={form.email} onChange={onChange} required
+                  />
                 </div>
                 <div className="form-group">
                   <label>Message</label>
-                  <textarea name="message" className="form-input form-textarea"
-                            placeholder="Tell me about your project or say hello…"
-                            value={form.message} onChange={onChange} required rows={5} />
+                  <textarea
+                    name="message" className="form-input form-textarea"
+                    placeholder="Tell me about your project or say hello…"
+                    value={form.message} onChange={onChange} required rows={5}
+                  />
                 </div>
                 {status === 'error' && (
                   <div className="form-error"><FiAlertCircle />{err}</div>
                 )}
-                <button type="submit" className="btn-primary form-submit"
-                        disabled={status === 'sending'}>
+                <button
+                  type="submit" className="btn-primary form-submit"
+                  disabled={status === 'sending'}
+                >
                   {status === 'sending'
                     ? <><div className="spinner" />Sending…</>
                     : <><FiSend />Send Message</>}

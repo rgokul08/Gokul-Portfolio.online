@@ -1,3 +1,4 @@
+// src/components/Certificates.jsx
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 import {
@@ -6,8 +7,8 @@ import {
 } from 'react-icons/fi'
 import './Certificates.css'
 
-const BUCKET = 'Portfolio'
-const FOLDER = 'certificates_image'
+const BUCKET   = 'Portfolio'
+const FOLDER   = 'certificates_image'
 const SLIDE_AT = 3
 
 function imgUrl(item) {
@@ -34,6 +35,7 @@ export default function Certificates() {
   const [paused,   setPaused]   = useState(false)
   const timer = useRef(null)
 
+  /* ── load ── */
   const load = useCallback(() => {
     setLoading(true); setFetchErr(null)
     fetchCerts()
@@ -44,33 +46,32 @@ export default function Certificates() {
 
   useEffect(() => { load() }, [load])
 
-  /* Real-time updates */
+  /* realtime */
   useEffect(() => {
-    const ch = supabase.channel('certificate-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'certificate' }, () =>
-        fetchCerts().then(setCerts).catch(console.error)
-      )
+    const ch = supabase.channel('cert-rt')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'certificate' },
+          () => fetchCerts().then(setCerts).catch(console.error))
       .subscribe()
-    return () => { supabase.removeChannel(ch) }
+    return () => supabase.removeChannel(ch)
   }, [])
 
-  /* Escape key */
+  /* Escape to close lightbox */
   useEffect(() => {
     const h = e => { if (e.key === 'Escape') setPreview(null) }
     window.addEventListener('keydown', h)
     return () => window.removeEventListener('keydown', h)
   }, [])
 
-  /* Lock scroll when lightbox open */
+  /* lock body scroll when lightbox open */
   useEffect(() => {
     document.body.style.overflow = preview ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [preview])
 
+  /* ── slideshow ── */
   const slide = certs.length > SLIDE_AT
-
-  const next = useCallback(() => { if (slide) setCur(c => (c + 1) % certs.length) }, [slide, certs.length])
-  const prev = useCallback(() => { if (slide) setCur(c => (c - 1 + certs.length) % certs.length) }, [slide, certs.length])
+  const next  = useCallback(() => { if (slide) setCur(c => (c + 1) % certs.length) }, [slide, certs.length])
+  const prev  = useCallback(() => { if (slide) setCur(c => (c - 1 + certs.length) % certs.length) }, [slide, certs.length])
 
   useEffect(() => {
     if (!slide || paused) return
@@ -120,15 +121,12 @@ export default function Certificates() {
                 />
               ))}
             </div>
-            <button className="cert-arrow left" onClick={() => { prev(); setPaused(true) }}><FiChevronLeft /></button>
+            <button className="cert-arrow left"  onClick={() => { prev(); setPaused(true) }}><FiChevronLeft /></button>
             <button className="cert-arrow right" onClick={() => { next(); setPaused(true) }}><FiChevronRight /></button>
             <div className="cert-dots">
               {certs.map((_, i) => (
-                <button
-                  key={i}
-                  className={`csd${i === cur ? ' on' : ''}`}
-                  onClick={() => { setCur(i); setPaused(true) }}
-                />
+                <button key={i} className={`csd${i === cur ? ' on' : ''}`}
+                        onClick={() => { setCur(i); setPaused(true) }} />
               ))}
             </div>
             {!paused && <div className="cert-prog"><div className="cert-prog-bar" key={cur} /></div>}
@@ -142,22 +140,22 @@ export default function Certificates() {
         )}
       </div>
 
-      {/* ── Lightbox — fully adaptive ── */}
+      {/* ════════════════════════════════
+          LIGHTBOX — scrollable, adaptive
+          ════════════════════════════════ */}
       {preview && (
         <div className="cert-lightbox" onClick={() => setPreview(null)}>
           <div className="cert-lb-inner" onClick={e => e.stopPropagation()}>
-            {/* close button */}
+
+            {/* sticky close */}
             <button className="cert-lb-close" onClick={() => setPreview(null)} aria-label="Close">
               <FiX />
             </button>
 
-            {/* image area */}
+            {/* image */}
             <div className="cert-lb-img-wrap">
               {imgUrl(preview) ? (
-                <img
-                  src={imgUrl(preview)} alt={preview.title}
-                  className="cert-lb-img"
-                />
+                <img src={imgUrl(preview)} alt={preview.title} className="cert-lb-img" />
               ) : (
                 <div className="cert-lb-ph">
                   <FiAward />
@@ -166,7 +164,7 @@ export default function Certificates() {
               )}
             </div>
 
-            {/* info area */}
+            {/* scrollable info panel */}
             <div className="cert-lb-info">
               <h3>{preview.title}</h3>
               {preview.authority && (
@@ -176,10 +174,8 @@ export default function Certificates() {
                 <p className="cert-lb-desc">{preview.description}</p>
               )}
               {preview.verification_url && (
-                <a
-                  href={preview.verification_url} target="_blank" rel="noopener noreferrer"
-                  className="btn-primary" style={{ width: 'fit-content', marginTop: 12 }}
-                >
+                <a href={preview.verification_url} target="_blank" rel="noopener noreferrer"
+                   className="btn-primary cert-lb-verify">
                   <FiExternalLink /> Verify Certificate
                 </a>
               )}
@@ -194,12 +190,12 @@ export default function Certificates() {
 function CertCard({ cert: c, index = 0, pos = 0, onPreview }) {
   const src = imgUrl(c)
   const pc  = pos === -1 ? 'cs-left' : pos === 1 ? 'cs-right' : 'cs-center'
-  const isGrid = onPreview && typeof index === 'number' && pos === 0
+  const isGrid = pos === 0 && typeof index === 'number'
 
   return (
     <div
       className={`cert-card glass-card${isGrid ? ' fade-in' : ` cs-card ${pc}`}`}
-      style={isGrid ? { animationDelay: `${index * 0.08}s` } : {}}
+      style={isGrid ? { animationDelay:`${index * 0.08}s` } : {}}
       onClick={onPreview}
       role={onPreview ? 'button' : undefined}
       tabIndex={onPreview ? 0 : undefined}
