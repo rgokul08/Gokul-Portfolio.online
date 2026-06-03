@@ -1,21 +1,30 @@
-/* About.css */
+/* About.css — Galaxy Level */
 
-/* reveal system */
+/* ── Reveal system ── */
 .about .section-label,
 .about .section-title,
 .about-story,
 .about-stat,
 .about-skills-card,
-.about-location-card,
+.about-ai-card,
 .about-para,
 .skill-tag { opacity: 0; }
 
 .anim { animation: revealUp .65s cubic-bezier(.4,0,.2,1) forwards; }
-@keyframes revealUp { from { opacity:0; transform:translateY(26px); } to { opacity:1; transform:none; } }
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
+}
 
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
+/* ── Layout ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  align-items: start;
+}
 
-/* story */
+/* ── Story card ── */
 .about-story { padding: 38px; display: flex; flex-direction: column; gap: 18px; }
 .about-icon-wrap {
   width: 46px; height: 46px; border-radius: 13px;
@@ -24,7 +33,10 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 20px; color: var(--accent);
 }
-.about-story-title { font-family: 'Syne', sans-serif; font-size: 21px; font-weight: 700; color: var(--text-primary); }
+.about-story-title {
+  font-family: 'Syne', 'Orbitron', sans-serif;
+  font-size: 21px; font-weight: 700; color: var(--text-primary);
+}
 .about-bio { display: flex; flex-direction: column; gap: 12px; }
 .about-para {
   font-size: 14.5px; color: var(--text-secondary); line-height: 1.88;
@@ -33,7 +45,7 @@
 }
 .about-para:hover { border-color: rgba(99,179,237,0.5); color: var(--text-primary); }
 
-/* contacts */
+/* ── Contacts ── */
 .about-contacts {
   display: flex; flex-direction: column; gap: 11px;
   padding-top: 14px; border-top: 1px solid var(--border); margin-top: 4px;
@@ -54,10 +66,10 @@
 .ac-behance:hover { color: #1769ff !important; }
 .ac-figma:hover { color: #a259ff !important; }
 
-/* right */
-.about-right { display: flex; flex-direction: column; gap: 24px; }
+/* ── Right column ── */
+.about-right { display: flex; flex-direction: column; gap: 22px; }
 
-/* stats */
+/* ── Stats ── */
 .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .about-stat {
   padding: 26px 18px; text-align: center; cursor: default;
@@ -74,40 +86,204 @@
 .stat-icon { font-size: 22px; display: block; margin-bottom: 7px; }
 .stat-value {
   display: block;
-  font-family: 'Syne', sans-serif; font-size: 34px; font-weight: 800; line-height: 1;
+  font-family: 'Orbitron', monospace; font-size: 34px; font-weight: 800; line-height: 1;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   margin-bottom: 5px;
 }
-.stat-label { font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: .07em; text-transform: uppercase; }
+.stat-label {
+  font-size: 11px; color: var(--text-muted); font-weight: 600;
+  letter-spacing: .07em; text-transform: uppercase;
+}
 
-/* skills */
-.about-skills-card { padding: 30px; }
-.skills-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; color: var(--text-primary); margin-bottom: 18px; }
+/* ── Skills card ── */
+.about-skills-card { padding: 28px; }
+.skills-title {
+  font-family: 'Orbitron', monospace; font-size: 16px; font-weight: 700;
+  color: var(--text-primary); margin-bottom: 16px;
+}
 .skills-grid { display: flex; flex-wrap: wrap; gap: 9px; }
 .skill-tag img { width: 15px; height: 15px; object-fit: contain; flex-shrink: 0; }
 
-/* ── Responsive ── */
-@media (max-width: 1024px) {
-  .about-story { padding: 30px; }
+/* ══════════════════════════════
+   AI TOOLS CARD — Galaxy Level
+══════════════════════════════ */
+.about-ai-card {
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  /* cosmic background */
+  background:
+    radial-gradient(ellipse at 80% 10%, rgba(124,58,237,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 90%, rgba(0,255,238,0.08) 0%, transparent 60%),
+    var(--bg-card);
+  border-color: rgba(124,58,237,0.25);
+  animation: aiCardPulse 6s ease-in-out infinite alternate;
+}
+@keyframes aiCardPulse {
+  from { border-color: rgba(124,58,237,0.2); box-shadow: 0 0 0 0 transparent; }
+  to   { border-color: rgba(0,255,238,0.3);  box-shadow: 0 0 30px rgba(0,255,238,0.06); }
 }
 
+.ai-card-header {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-bottom: 18px;
+}
+.ai-card-icon {
+  font-size: 28px;
+  animation: robotFloat 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes robotFloat {
+  0%,100% { transform: translateY(0) rotate(-5deg); }
+  50%     { transform: translateY(-6px) rotate(5deg); }
+}
+.ai-card-sub {
+  font-size: 12px; color: var(--text-muted); line-height: 1.5;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* AI skills grid */
+.ai-skills-grid { gap: 10px; }
+
+/* base AI tag */
+.ai-skill-tag {
+  font-weight: 600; font-size: 12.5px;
+  position: relative; overflow: hidden;
+}
+.ai-skill-tag::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  transform: translateX(-100%);
+  animation: aiSheen 3s ease-in-out infinite;
+}
+@keyframes aiSheen {
+  0%   { transform: translateX(-100%); }
+  40%  { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Per-AI colours */
+.ai-claude {
+  background: rgba(204,120,92,0.12);
+  border-color: rgba(204,120,92,0.35);
+  color: #e08060;
+}
+.ai-claude:hover {
+  background: rgba(204,120,92,0.2);
+  border-color: #e08060;
+  box-shadow: 0 6px 20px rgba(204,120,92,0.3);
+  color: #fff;
+}
+
+.ai-openai {
+  background: rgba(16,163,127,0.1);
+  border-color: rgba(16,163,127,0.35);
+  color: #10a37f;
+}
+.ai-openai:hover {
+  background: rgba(16,163,127,0.2);
+  border-color: #10a37f;
+  box-shadow: 0 6px 20px rgba(16,163,127,0.3);
+  color: #fff;
+}
+
+.ai-gemini {
+  background: rgba(66,133,244,0.1);
+  border-color: rgba(66,133,244,0.35);
+  color: #4285f4;
+}
+.ai-gemini:hover {
+  background: rgba(66,133,244,0.2);
+  border-color: #4285f4;
+  box-shadow: 0 6px 20px rgba(66,133,244,0.3);
+  color: #fff;
+}
+
+.ai-copilot {
+  background: rgba(0,120,212,0.1);
+  border-color: rgba(0,120,212,0.35);
+  color: #0078d4;
+}
+.ai-copilot:hover {
+  background: rgba(0,120,212,0.2);
+  border-color: #0078d4;
+  box-shadow: 0 6px 20px rgba(0,120,212,0.3);
+  color: #fff;
+}
+
+.ai-mid {
+  background: rgba(255,100,50,0.1);
+  border-color: rgba(255,100,50,0.35);
+  color: #ff6432;
+}
+.ai-mid:hover {
+  background: rgba(255,100,50,0.2);
+  border-color: #ff6432;
+  box-shadow: 0 6px 20px rgba(255,100,50,0.3);
+  color: #fff;
+}
+
+.ai-hf {
+  background: rgba(255,196,0,0.1);
+  border-color: rgba(255,196,0,0.35);
+  color: #e0a800;
+}
+.ai-hf:hover {
+  background: rgba(255,196,0,0.2);
+  border-color: #ffc400;
+  box-shadow: 0 6px 20px rgba(255,196,0,0.3);
+  color: #000;
+}
+
+.ai-generic {
+  background: rgba(124,58,237,0.1);
+  border-color: rgba(124,58,237,0.3);
+  color: var(--neon-cyan);
+}
+
+.ai-emoji-icon { font-size: 13px; }
+
+/* Orbit decoration inside AI card */
+.ai-orbit-ring {
+  position: absolute; right: -60px; bottom: -60px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 1px dashed rgba(0,255,238,0.12);
+  animation: aiOrbit 15s linear infinite;
+  pointer-events: none;
+}
+.ai-orbit-dot {
+  position: absolute; top: -5px; left: 50%;
+  width: 10px; height: 10px;
+  background: var(--neon-cyan); border-radius: 50%;
+  box-shadow: 0 0 12px var(--neon-cyan);
+  transform: translateX(-50%);
+}
+@keyframes aiOrbit { to { transform: rotate(360deg); } }
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .about-story { padding: 28px; }
+  .about-skills-card, .about-ai-card { padding: 24px; }
+}
 @media (max-width: 900px) {
   .about-grid { grid-template-columns: 1fr; gap: 20px; }
   .about-story { padding: 26px; }
   .about-right { gap: 18px; }
 }
-
 @media (max-width: 600px) {
   .about-story { padding: 20px; }
   .about-stats { gap: 10px; }
   .about-stat { padding: 20px 14px; }
   .stat-value { font-size: 28px; }
-  .about-skills-card { padding: 22px; }
+  .about-skills-card, .about-ai-card { padding: 18px; }
   .skills-grid { gap: 7px; }
   .skill-tag { font-size: 12px; padding: 5px 11px; }
+  .ai-card-header { gap: 10px; }
+  .ai-card-icon { font-size: 22px; }
 }
-
 @media (max-width: 400px) {
   .about-stats { grid-template-columns: repeat(2, 1fr); }
 }
