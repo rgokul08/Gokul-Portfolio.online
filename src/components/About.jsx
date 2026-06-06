@@ -58,21 +58,23 @@ const SKILL_LOGOS = {
 /* ── AI tool logos (CDN-safe SVG / PNG) ── */
 const AI_LOGOS = {
   'claude ai':      'https://anthropic.com/favicon.ico',
+  'genspark ai':    'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg',
   'chatgpt':        'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/120px-ChatGPT_logo.svg.png',
   'gemini':         'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg',
-  'github copilot': 'https://github.githubassets.com/assets/copilot-f50b7c2f2c1e.png',
-  'midjourney':     'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Midjourney_Emblem.png/120px-Midjourney_Emblem.png',
-  'perplexity':     'https://www.perplexity.ai/favicon.ico',
+  'github copilot': 'https://github.githubassets.com/images/modules/site/copilot/copilot-mark.svg',
+  'grok ai':     'https://www.bing.com/th?id=OHR.GrokAI_Icon_EN-CA1111b9cbd8a7e089d2c8a9cbbfbb4&pid=Api&rs=1',
+  'perplexity':     'https://www.perplexity.ai/icons/icon-96x96.png',
   'hugging face':   'https://huggingface.co/front/assets/huggingface_logo-noborder.svg',
 }
 
 /* per-AI accent colour class */
 const AI_CLS = {
   'claude ai':      'ai-claude',
+  'genspark ai':'ai-genspark',
   'chatgpt':        'ai-openai',
   'gemini':         'ai-gemini',
   'github copilot': 'ai-copilot',
-  'midjourney':     'ai-mid',
+  'grok ai':     'ai-grok',
   'perplexity':     'ai-perplexity',
   'hugging face':   'ai-hf',
 }
@@ -82,7 +84,8 @@ const AI_TOOLS = [
   { name: 'ChatGPT',        emoji: '🟢' },
   { name: 'Gemini',         emoji: '🔵' },
   { name: 'GitHub Copilot', emoji: '⚫' },
-  { name: 'Midjourney',     emoji: '🟣' },
+  { name: 'Grok AI',        emoji: '🟣' },
+  { name: 'Genspark AI',    emoji: '🟣' },
   { name: 'Perplexity',     emoji: '🔷' },
   { name: 'Hugging Face',   emoji: '🤗' },
 ]
@@ -121,10 +124,10 @@ Education Journey
 }
 
 const STATS = [
-  { label: 'Projects Built', value: '3+',  icon: '🚀' },
-  { label: 'Certificates',   value: '25+', icon: '🏆' },
-  { label: 'Technologies',   value: '12+', icon: '⚡' },
-  { label: 'Years Learning', value: '2+',  icon: '📚' },
+  { label: 'Projects Built', value: '3+',  icon: '' },
+  { label: 'Certificates',   value: '25+', icon: '' },
+  { label: 'Technologies',   value: '12+', icon: '' },
+  { label: 'Years Learning', value: '2+',  icon: '' },
 ]
 
 function useVisible(ref, thresh = 0.1) {
@@ -248,7 +251,7 @@ export default function About() {
 
               {/* Section 1 — Tech Stack */}
               <div className="skills-section-head">
-                <span className="skills-section-icon">⚡</span>
+                <span className="skills-section-icon"></span>
                 <h3 className="skills-title">Tech Stack &amp; Skills</h3>
               </div>
               <div className="skills-grid">
@@ -273,7 +276,7 @@ export default function About() {
               {/* Divider */}
               <div className="skills-divider">
                 <span className="sd-line" />
-                <span className="sd-text">🤖 AI Tools I Use</span>
+                <span className="sd-text"> AI Tools Skills</span>
                 <span className="sd-line" />
               </div>
 
