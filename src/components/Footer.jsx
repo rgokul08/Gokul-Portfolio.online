@@ -82,8 +82,8 @@ export default function Footer() {
         <div className="container footer-bottom-inner">
           <p className="footer-copy">
             &copy; {new Date().getFullYear()} Gokul R — Designed &amp; Built with{' '}
-            <FiHeart style={{ display: 'inline', verticalAlign: 'middle', color: '#fc6b6b' }} />{' '}
-            in Tambaram, Tamil Nadu, India
+            <FiHeart style={{ display: 'inline', verticalAlign: 'middle', color: '#fc6b6b' }} />{' '} by Gokul from 
+            Tambaram, Tamil Nadu, India
           </p>
         </div>
       </div>
