@@ -58,12 +58,12 @@ const SKILL_LOGOS = {
 /* ── AI tool logos (CDN-safe SVG / PNG) ── */
 const AI_LOGOS = {
   'claude ai':      'https://anthropic.com/favicon.ico',
-  'genspark ai':    'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg',
+  'genspark ai':    'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/genspark-ai-icon.png',
   'chatgpt':        'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/ChatGPT_logo.svg/120px-ChatGPT_logo.svg.png',
   'gemini':         'https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg',
-  'github copilot': 'https://github.githubassets.com/images/modules/site/copilot/copilot-mark.svg',
-  'grok ai':     'https://www.bing.com/th?id=OHR.GrokAI_Icon_EN-CA1111b9cbd8a7e089d2c8a9cbbfbb4&pid=Api&rs=1',
-  'perplexity':     'https://www.perplexity.ai/icons/icon-96x96.png',
+  'copilot ai':       'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/github-copilot-icon.png',
+  'grok ai':     'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/grok-icon.png',
+  'perplexity':     'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/perplexity-ai-icon.png',
   'hugging face':   'https://huggingface.co/front/assets/huggingface_logo-noborder.svg',
 }
 
@@ -73,7 +73,7 @@ const AI_CLS = {
   'genspark ai':'ai-genspark',
   'chatgpt':        'ai-openai',
   'gemini':         'ai-gemini',
-  'github copilot': 'ai-copilot',
+  'copilot ai': 'ai-copilot',
   'grok ai':     'ai-grok',
   'perplexity':     'ai-perplexity',
   'hugging face':   'ai-hf',
@@ -83,7 +83,7 @@ const AI_TOOLS = [
   { name: 'Claude AI',      emoji: '🟠' },
   { name: 'ChatGPT',        emoji: '🟢' },
   { name: 'Gemini',         emoji: '🔵' },
-  { name: 'GitHub Copilot', emoji: '⚫' },
+  { name: 'Copilot AI', emoji: '⚫' },
   { name: 'Grok AI',        emoji: '🟣' },
   { name: 'Genspark AI',    emoji: '🟣' },
   { name: 'Perplexity',     emoji: '🔷' },
