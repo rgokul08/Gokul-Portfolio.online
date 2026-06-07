@@ -132,16 +132,21 @@
 
 /* tag grid */
 .skills-grid { display: flex; flex-wrap: wrap; gap: 9px;
-
-
 }
-.skills-grid::after{
-   background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
+
+.skill-tag img { width: 15px; height: 15px; object-fit: contain; flex-shrink: 0; }
+
+.skill-tag{
+   font-weight: 600; font-size: 12.5px;
+  position: relative; overflow: hidden;
+}
+.skill-tag::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.12) 50%, transparent 70%);
   transform: translateX(-100%);
   animation: aiSheen 4s ease-in-out infinite;
 }
-.skill-tag img { width: 15px; height: 15px; object-fit: contain; flex-shrink: 0; }
-
 /* ── Divider between tech stack & AI ── */
 .skills-divider {
   display: flex; align-items: center; gap: 12px;
