@@ -1,36 +1,150 @@
-/* CustomCursor.css — Ultra Neon */
+/* ══════════════════════════════════════════
+   CustomCursor.css — Ultra Neon v3.0
+   Full theme-aware: dark = cyan glow
+                     light = violet-gold glow
+   Smooth color transitions on theme toggle
+══════════════════════════════════════════ */
+
+/* ── Base dot ── */
 .c-dot {
-  position:fixed; pointer-events:none; z-index:99999;
-  transform:translate(-50%,-50%);
-  width:6px; height:6px;
-  background: var(--neon-cyan);
-  border-radius:50%;
-  box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  width: 7px;
+  height: 7px;
+  background: var(--cursor-dot-color);
+  border-radius: 50%;
+  box-shadow: var(--cursor-glow);
   mix-blend-mode: screen;
-  transition: width 0.15s, height 0.15s, background 0.2s;
+  transition:
+    width 0.18s var(--ease-back),
+    height 0.18s var(--ease-back),
+    background 0.5s ease,
+    box-shadow 0.5s ease;
 }
+
+/* ── Outer ring ── */
 .c-ring {
-  position:fixed; pointer-events:none; z-index:99998;
-  transform:translate(-50%,-50%);
-  width:36px; height:36px;
-  border:1.5px solid rgba(0,255,238,0.6);
-  border-radius:50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid var(--cursor-ring-color);
+  border-radius: 50%;
   mix-blend-mode: screen;
-  transition: width 0.25s, height 0.25s, border-color 0.25s, background 0.25s;
-  box-shadow: 0 0 12px rgba(0,255,238,0.3);
+  box-shadow: var(--cursor-ring-glow);
+  transition:
+    width 0.28s var(--ease-back),
+    height 0.28s var(--ease-back),
+    border-color 0.5s ease,
+    background 0.28s ease,
+    box-shadow 0.5s ease;
 }
+
+/* ── Expand state (hovering interactive elements) ── */
 .c-ring.expand {
-  width:56px; height:56px;
-  border-color: rgba(191,0,255,0.8);
-  background: rgba(191,0,255,0.05);
-  box-shadow: 0 0 24px rgba(191,0,255,0.4), 0 0 48px rgba(191,0,255,0.1);
+  width: 62px;
+  height: 62px;
+  border-color: var(--cursor-ring-expand);
+  background: rgba(124, 58, 237, 0.04);
+  box-shadow: var(--cursor-expand-glow);
 }
+
+/* Dark mode specific expand */
+[data-theme='dark'] .c-ring.expand {
+  background: rgba(191, 0, 255, 0.05);
+}
+
+/* Light mode specific expand */
+[data-theme='light'] .c-ring.expand {
+  background: rgba(217, 119, 6, 0.05);
+}
+
+/* ── Trail ring ── */
 .c-trail {
-  position:fixed; pointer-events:none; z-index:99997;
-  transform:translate(-50%,-50%);
-  width:60px; height:60px;
-  border:1px solid rgba(18, 12, 12, 0.724);
-  border-radius:50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99997;
+  transform: translate(-50%, -50%);
+  width: 66px;
+  height: 66px;
+  border: 1px solid var(--cursor-trail-color);
+  border-radius: 50%;
   mix-blend-mode: screen;
-  transition: width 0.4s, height 0.4s, opacity 0.4s;
+  transition:
+    width 0.45s ease,
+    height 0.45s ease,
+    opacity 0.45s ease,
+    border-color 0.5s ease;
+}
+
+/* ── Click burst animation ── */
+.c-dot.clicking {
+  animation: dotBurst 0.35s var(--ease-back);
+}
+@keyframes dotBurst {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  40%  { transform: translate(-50%, -50%) scale(2.8); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.c-ring.clicking {
+  animation: ringBurst 0.4s var(--ease-expo);
+}
+@keyframes ringBurst {
+  0%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50%  { transform: translate(-50%, -50%) scale(1.9); opacity: 0.3; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* ── Spinning ring variant for links ── */
+.c-ring.on-link {
+  animation: ringRotate 1.8s linear infinite;
+  border-style: dashed;
+}
+@keyframes ringRotate {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ── Particle burst on click ── */
+.c-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99996;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--cursor-dot-color);
+  transform: translate(-50%, -50%);
+  box-shadow: var(--cursor-glow);
+  animation: particleBurst 0.6s ease-out forwards;
+}
+@keyframes particleBurst {
+  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py))) scale(0); }
+}
+
+/* ── Magnetic dot trail ── */
+.c-mag-dot {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99995;
+  border-radius: 50%;
+  background: var(--cursor-dot-color);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: background 0.5s ease;
+  animation: magFade 0.5s ease-out forwards;
+}
+@keyframes magFade {
+  0%   { opacity: 0.6; width: 5px; height: 5px; }
+  100% { opacity: 0; width: 2px; height: 2px; }
+}
+
+/* ── Hide on mobile ── */
+@media (max-width: 768px) {
+  .c-dot, .c-ring, .c-trail, .c-particle, .c-mag-dot { display: none !important; }
 }
