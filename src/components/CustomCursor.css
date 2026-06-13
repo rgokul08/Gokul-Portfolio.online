@@ -55,12 +55,12 @@
 
 /* Dark mode specific expand */
 [data-theme='dark'] .c-ring.expand {
-  background: rgba(191, 0, 255, 0.05);
+  background: rgba(191, 0, 255, 0.174);
 }
 
 /* Light mode specific expand */
 [data-theme='light'] .c-ring.expand {
-  background: rgba(217, 119, 6, 0.05);
+  background: rgb(217, 119, 6);
 }
 
 /* ── Trail ring ── */
