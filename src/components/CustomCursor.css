@@ -1,150 +1,281 @@
-/* ══════════════════════════════════════════
-   CustomCursor.css — Ultra Neon v3.0
-   Full theme-aware: dark = cyan glow
-                     light = violet-gold glow
-   Smooth color transitions on theme toggle
-══════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CustomCursor.css — QUANTUM THEME-REACTIVE v5.0
+   PASTE THIS → src/components/CustomCursor.css
 
-/* ── Base dot ── */
+   How theme reactivity works:
+   • All cursor colors use CSS variables (--cursor-dot-color, etc.)
+   • ThemeContext sets [data-theme='dark'|'light'] on <html>
+   • global.css defines different values per theme
+   • All cursor elements inherit the right color INSTANTLY on toggle
+   • Zero JS needed for color — pure CSS variable propagation
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────
+   BASE DOT — inner precision core
+───────────────────────────────────────────────────────────── */
 .c-dot {
   position: fixed;
   pointer-events: none;
   z-index: 99999;
+  top: 0; left: 0;
   transform: translate(-50%, -50%);
-  width: 7px;
-  height: 7px;
-  background: var(--cursor-dot-color);
+
+  width: var(--cursor-dot-size, 8px);
+  height: var(--cursor-dot-size, 8px);
   border-radius: 50%;
+
+  background: var(--cursor-dot-color);
   box-shadow: var(--cursor-glow);
-  mix-blend-mode: screen;
+
+  mix-blend-mode: var(--cursor-blend, screen);
+
+  /* Color transitions follow theme-toggle speed */
   transition:
-    width 0.18s var(--ease-back),
-    height 0.18s var(--ease-back),
-    background 0.5s ease,
-    box-shadow 0.5s ease;
+    background    0.55s cubic-bezier(0.4,0,0.2,1),
+    box-shadow    0.55s cubic-bezier(0.4,0,0.2,1),
+    mix-blend-mode 0.55s ease,
+    width         0.18s cubic-bezier(0.34,1.56,0.64,1),
+    height        0.18s cubic-bezier(0.34,1.56,0.64,1),
+    opacity       0.18s ease;
+
+  will-change: left, top, width, height;
 }
 
-/* ── Outer ring ── */
+/* ─────────────────────────────────────────────────────────────
+   OUTER RING — lagged follower
+───────────────────────────────────────────────────────────── */
 .c-ring {
   position: fixed;
   pointer-events: none;
   z-index: 99998;
+  top: 0; left: 0;
   transform: translate(-50%, -50%);
+
   width: 38px;
   height: 38px;
-  border: 1.5px solid var(--cursor-ring-color);
   border-radius: 50%;
-  mix-blend-mode: screen;
+
+  border: var(--cursor-ring-border, 2px solid rgba(0,255,238,0.65));
   box-shadow: var(--cursor-ring-glow);
+
+  mix-blend-mode: var(--cursor-blend, screen);
+
   transition:
-    width 0.28s var(--ease-back),
-    height 0.28s var(--ease-back),
-    border-color 0.5s ease,
-    background 0.28s ease,
-    box-shadow 0.5s ease;
+    border-color  0.55s cubic-bezier(0.4,0,0.2,1),
+    box-shadow    0.55s cubic-bezier(0.4,0,0.2,1),
+    background    0.35s ease,
+    mix-blend-mode 0.55s ease,
+    width         0.32s cubic-bezier(0.34,1.56,0.64,1),
+    height        0.32s cubic-bezier(0.34,1.56,0.64,1),
+    opacity       0.22s ease;
+
+  will-change: left, top, width, height;
 }
 
-/* ── Expand state (hovering interactive elements) ── */
+/* ─────────────────────────────────────────────────────────────
+   EXPANDED STATE — on hover of interactive elements
+───────────────────────────────────────────────────────────── */
 .c-ring.expand {
   width: 62px;
   height: 62px;
-  border-color: var(--cursor-ring-expand);
-  background: rgba(124, 58, 237, 0.04);
+  border: var(--cursor-ring-expand-border, 2px solid rgba(191,0,255,0.85));
   box-shadow: var(--cursor-expand-glow);
+  background: rgba(124,58,237,0.06);
 }
 
-/* Dark mode specific expand */
+/* Dark expand bg */
 [data-theme='dark'] .c-ring.expand {
-  background: rgba(191, 0, 255, 0.174);
+  background: rgba(191,0,255,0.10);
 }
-
-/* Light mode specific expand */
+/* Light expand bg — warm gold tint */
 [data-theme='light'] .c-ring.expand {
-  background: rgb(217, 119, 6);
+  background: rgba(217,119,6,0.10);
 }
 
-/* ── Trail ring ── */
+/* ─────────────────────────────────────────────────────────────
+   MAGNETIC DOT STATE — on links (dashed spinner)
+───────────────────────────────────────────────────────────── */
+.c-ring.on-link {
+  animation: ringMagSpin 1.6s linear infinite;
+  border-style: dashed;
+  border-width: 1.5px;
+}
+@keyframes ringMagSpin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TRAIL RING — furthest lag, dreamy echo
+───────────────────────────────────────────────────────────── */
 .c-trail {
   position: fixed;
   pointer-events: none;
   z-index: 99997;
+  top: 0; left: 0;
   transform: translate(-50%, -50%);
-  width: 66px;
-  height: 66px;
-  border: 1px solid var(--cursor-trail-color);
+
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  mix-blend-mode: screen;
+
+  border: 1px solid var(--cursor-trail-color);
+  box-shadow: var(--cursor-trail-glow);
+  opacity: 0.55;
+
+  mix-blend-mode: var(--cursor-blend, screen);
+
   transition:
-    width 0.45s ease,
-    height 0.45s ease,
-    opacity 0.45s ease,
-    border-color 0.5s ease;
+    border-color  0.55s ease,
+    box-shadow    0.55s ease,
+    width         0.5s ease,
+    height        0.5s ease,
+    opacity       0.5s ease;
+
+  will-change: left, top;
 }
 
-/* ── Click burst animation ── */
+/* ─────────────────────────────────────────────────────────────
+   CLICK BURST — dot pulses
+───────────────────────────────────────────────────────────── */
 .c-dot.clicking {
-  animation: dotBurst 0.35s var(--ease-back);
+  animation: dotQuantumBurst 0.38s cubic-bezier(0.34,1.56,0.64,1);
 }
-@keyframes dotBurst {
-  0%   { transform: translate(-50%, -50%) scale(1); }
-  40%  { transform: translate(-50%, -50%) scale(2.8); opacity: 0.5; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+@keyframes dotQuantumBurst {
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+  35%  { transform: translate(-50%, -50%) scale(3.2); opacity: 0.5; }
+  65%  { transform: translate(-50%, -50%) scale(1.5); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   CLICK BURST — ring ripples
+───────────────────────────────────────────────────────────── */
 .c-ring.clicking {
-  animation: ringBurst 0.4s var(--ease-expo);
+  animation: ringQuantumBurst 0.45s cubic-bezier(0.19,1,0.22,1);
 }
-@keyframes ringBurst {
-  0%   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  50%  { transform: translate(-50%, -50%) scale(1.9); opacity: 0.3; }
-  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-
-/* ── Spinning ring variant for links ── */
-.c-ring.on-link {
-  animation: ringRotate 1.8s linear infinite;
-  border-style: dashed;
-}
-@keyframes ringRotate {
-  to { transform: translate(-50%, -50%) rotate(360deg); }
+@keyframes ringQuantumBurst {
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
+  45%  { transform: translate(-50%, -50%) scale(2.2); opacity: 0.3; }
+  100% { transform: translate(-50%, -50%) scale(1);   opacity: 1; }
 }
 
-/* ── Particle burst on click ── */
+/* ─────────────────────────────────────────────────────────────
+   PARTICLE BURST — spawned on click via JS
+───────────────────────────────────────────────────────────── */
 .c-particle {
   position: fixed;
   pointer-events: none;
   z-index: 99996;
-  width: 4px;
-  height: 4px;
+  top: 0; left: 0;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: var(--cursor-dot-color);
-  transform: translate(-50%, -50%);
+  background: var(--cursor-particle-color);
   box-shadow: var(--cursor-glow);
-  animation: particleBurst 0.6s ease-out forwards;
+  transform: translate(-50%, -50%);
+  animation: particleQuantum 0.7s ease-out forwards;
+  transition: background 0.55s ease, box-shadow 0.55s ease;
 }
-@keyframes particleBurst {
-  0%   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py))) scale(0); }
+@keyframes particleQuantum {
+  0%   { opacity: 1; transform: translate(calc(-50% + 0px), calc(-50% + 0px)) scale(1); }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + var(--px, 30px)),
+      calc(-50% + var(--py, -30px))
+    ) scale(0.2);
+  }
 }
 
-/* ── Magnetic dot trail ── */
+/* ─────────────────────────────────────────────────────────────
+   MAGNETIC TRAIL DOTS — fading orbs left behind
+───────────────────────────────────────────────────────────── */
 .c-mag-dot {
   position: fixed;
   pointer-events: none;
   z-index: 99995;
   border-radius: 50%;
   background: var(--cursor-dot-color);
-  opacity: 0;
   transform: translate(-50%, -50%);
-  transition: background 0.5s ease;
-  animation: magFade 0.5s ease-out forwards;
+  animation: magTrailFade 0.55s ease-out forwards;
+  transition: background 0.55s ease;
 }
-@keyframes magFade {
-  0%   { opacity: 0.6; width: 5px; height: 5px; }
-  100% { opacity: 0; width: 2px; height: 2px; }
+@keyframes magTrailFade {
+  0%   { opacity: 0.55; width: 6px; height: 6px; }
+  100% { opacity: 0;    width: 2px; height: 2px; }
 }
 
-/* ── Hide on mobile ── */
-@media (max-width: 768px) {
-  .c-dot, .c-ring, .c-trail, .c-particle, .c-mag-dot { display: none !important; }
+/* ─────────────────────────────────────────────────────────────
+   SCAN LINE — sweeps across cursor area on theme toggle
+───────────────────────────────────────────────────────────── */
+.c-scan {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99994;
+  top: 0; left: -100%;
+  width: 200px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cursor-dot-color), transparent);
+  box-shadow: var(--cursor-glow);
+  animation: scanSweep 0.6s ease-out forwards;
+  transition: background 0.55s ease;
+}
+@keyframes scanSweep {
+  0%   { left: -200px; opacity: 1; }
+  100% { left: calc(100vw + 200px); opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TEXT CURSOR STATE — when hovering text
+───────────────────────────────────────────────────────────── */
+.c-dot.on-text {
+  width: 3px;
+  height: 20px;
+  border-radius: 2px;
+  animation: textCursorBlink 1.1s step-end infinite;
+}
+@keyframes textCursorBlink {
+  50% { opacity: 0; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   IMAGE CURSOR STATE — crosshair on images
+───────────────────────────────────────────────────────────── */
+.c-dot.on-image {
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 2px solid var(--cursor-dot-color);
+  box-shadow: var(--cursor-ring-glow), inset 0 0 8px rgba(0,255,238,0.15);
+}
+.c-dot.on-image::before,
+.c-dot.on-image::after {
+  content: '';
+  position: absolute;
+  background: var(--cursor-dot-color);
+}
+.c-dot.on-image::before {
+  width: 1px; height: 12px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.c-dot.on-image::after {
+  width: 12px; height: 1px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HIDE ON MOBILE / TOUCH
+───────────────────────────────────────────────────────────── */
+@media (max-width: 768px),
+       (hover: none),
+       (pointer: coarse) {
+  .c-dot,
+  .c-ring,
+  .c-trail,
+  .c-particle,
+  .c-mag-dot,
+  .c-scan {
+    display: none !important;
+  }
 }
