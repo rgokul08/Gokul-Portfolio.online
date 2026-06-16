@@ -1,7 +1,7 @@
 # 🌐 Gokul Portfolio
 
 Welcome to my personal portfolio website! This portfolio showcases my skills, projects, achievements, and journey as a Full-Stack Developer.
-
+<img width="958" height="403" alt="image" src="https://github.com/user-attachments/assets/f5a03e43-d157-41f2-8df5-56ee0bf62a89" />
 ## 🚀 About Me
 
 Hi, I'm **Gokul R**, an aspiring Full-Stack Developer and Artificial Intelligence & Data Science student. I am passionate about building modern, responsive, and user-friendly web applications. I enjoy solving real-world problems through technology and continuously learning new tools and frameworks.
