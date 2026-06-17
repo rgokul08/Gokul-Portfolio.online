@@ -1,4 +1,4 @@
-/* GitProjects.css — GitHub Projects Slideshow */
+/* GitProjects.css — GitHub Projects Slideshow with Neon Effects */
 
 .git-projects {
   padding: 120px 0;
@@ -23,6 +23,12 @@
   );
   background-size: 200% 100%;
   animation: shimmer 1.8s infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
 }
 
 /* error/empty */

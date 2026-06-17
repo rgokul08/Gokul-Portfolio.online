@@ -12,19 +12,29 @@ function parseLanguages(t) {
   if (!t) return []
   if (Array.isArray(t)) return t
   try {
-    return JSON.parse(t)
+    const parsed = JSON.parse(t)
+    return Array.isArray(parsed) ? parsed : []
   } catch {
-    return t.split(',').map(s => s.trim()).filter(Boolean)
+    if (typeof t === 'string') {
+      return t.split(',').map(s => s.trim()).filter(Boolean)
+    }
+    return []
   }
 }
 
 async function fetchGitProjects() {
-  const { data, error } = await supabase
-    .from('github')
-    .select('*')
-    .order('id', { ascending: false })
-  if (error) throw error
-  return data ?? []
+  try {
+    const { data, error } = await supabase
+      .from('github')
+      .select('*')
+      .order('id', { ascending: false })
+    
+    if (error) throw error
+    return data ?? []
+  } catch (err) {
+    console.error('GitProjects fetch error:', err)
+    throw err
+  }
 }
 
 export default function GitProjects() {
@@ -43,7 +53,9 @@ export default function GitProjects() {
         setProjects(data)
         setFetchErr(null)
       })
-      .catch(err => setFetchErr(err.message || 'Failed to load projects'))
+      .catch(err => {
+        setFetchErr(err.message || 'Failed to load GitHub projects')
+      })
       .finally(() => setLoading(false))
   }, [])
 
@@ -51,19 +63,23 @@ export default function GitProjects() {
     load()
   }, [load])
 
+  // Real-time subscription
   useEffect(() => {
     const ch = supabase
-      .channel('github-changes')
+      .channel('github-real-time')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'github' },
-        () => fetchGitProjects().then(setProjects).catch(console.error)
+        () => {
+          load()
+        }
       )
       .subscribe()
+
     return () => {
       supabase.removeChannel(ch)
     }
-  }, [])
+  }, [load])
 
   const slide = projects.length > SLIDE_AT
 
@@ -107,7 +123,7 @@ export default function GitProjects() {
         ) : fetchErr ? (
           <div className="git-error">
             <FiAlertCircle />
-            <p>Could not load projects.</p>
+            <p>Could not load GitHub projects.</p>
             <p className="git-error-detail">{fetchErr}</p>
             <button className="btn-outline git-retry" onClick={load}>
               <FiRefreshCw /> Retry
@@ -116,7 +132,7 @@ export default function GitProjects() {
         ) : projects.length === 0 ? (
           <div className="git-empty">
             <FiPackage />
-            <p>GitHub projects coming soon!</p>
+            <p>No GitHub projects yet. Add projects to the Supabase 'github' table!</p>
           </div>
         ) : slide ? (
           <div
@@ -190,11 +206,11 @@ function GitProjCard({ project: p, index = 0, pos = 0, grid = false }) {
         <div className="git-icon">
           <FiGithub />
         </div>
-        <h3 className="git-title">{p.title}</h3>
+        <h3 className="git-title">{p.title || 'Untitled'}</h3>
       </div>
 
       <div className="git-body">
-        <p className="git-desc">{p.description}</p>
+        {p.description && <p className="git-desc">{p.description}</p>}
 
         {languages.length > 0 && (
           <div className="git-langs">
@@ -223,7 +239,6 @@ function GitProjCard({ project: p, index = 0, pos = 0, grid = false }) {
         </div>
       </div>
 
-      {/* Animated gradient border */}
       <div className="git-border-glow" />
     </div>
   )

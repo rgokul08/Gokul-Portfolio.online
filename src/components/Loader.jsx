@@ -20,29 +20,31 @@ export default function Loader() {
 
   return (
     <div className="loader">
-      {/* Wind Waves Background */}
-      <div className="loader-waves">
-        <div className="wave wave-1" />
-        <div className="wave wave-2" />
-        <div className="wave wave-3" />
+      {/* Cloud Waves Background */}
+      <div className="loader-clouds">
+        <div className="cloud cloud-1" />
+        <div className="cloud cloud-2" />
+        <div className="cloud cloud-3" />
+        <div className="cloud cloud-4" />
+        <div className="cloud cloud-5" />
       </div>
 
       {/* Galaxy Particles */}
       <div className="loader-galaxy">
-        {[...Array(12)].map((_, i) => (
+        {[...Array(15)].map((_, i) => (
           <div
             key={i}
             className="galaxy-particle"
             style={{
-              '--delay': `${i * 0.15}s`,
-              '--duration': `${4 + i * 0.3}s`,
-              '--size': `${Math.random() * 80 + 40}px`,
+              '--delay': `${i * 0.12}s`,
+              '--duration': `${3.5 + i * 0.25}s`,
+              '--size': `${Math.random() * 100 + 30}px`,
             }}
           />
         ))}
       </div>
 
-      {/* Original Grid */}
+      {/* Grid Background */}
       <div className="loader-grid" />
 
       {/* Scan Line */}

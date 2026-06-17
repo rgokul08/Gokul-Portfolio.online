@@ -6,7 +6,7 @@ import Navbar       from './components/Navbar'
 import Hero         from './components/Hero'
 import About        from './components/About'
 import Projects     from './components/Projects'
-import GitProjects  from './components/GitProjects'  // ADD THIS
+import GitProjects  from './components/GitProjects'
 import Certificates from './components/Certificates'
 import Feedback     from './components/Feedback'
 import Footer       from './components/Footer'
@@ -57,7 +57,7 @@ function PortfolioApp() {
         <section id="home">         <Hero />         </section>
         <section id="about">        <About />        </section>
         <section id="projects">     <Projects />     </section>
-        <section id="git-projects"> <GitProjects />  </section>  {/* ADD THIS */}
+        <section id="git-projects"> <GitProjects />  </section>
         <section id="certificates"> <Certificates /> </section>
         <section id="feedback">     <Feedback />     </section>
       </main>
