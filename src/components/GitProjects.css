@@ -222,7 +222,7 @@
 .slide-prog-bar {
   height: 100%;
   background: var(--grad-aurora);
-  animation: progFill 5s linear forwards;
+  animation: progFill 1.5s linear forwards;
   box-shadow: 0 0 8px rgba(0, 255, 238, 0.5);
 }
 
