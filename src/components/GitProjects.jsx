@@ -93,7 +93,7 @@ export default function GitProjects() {
 
   useEffect(() => {
     if (!slide || paused) return
-    timer.current = setInterval(next, 5000)
+    timer.current = setInterval(next, 1500)
     return () => clearInterval(timer.current)
   }, [slide, paused, next])
 
