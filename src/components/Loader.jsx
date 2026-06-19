@@ -24,29 +24,6 @@ export default function Loader() {
       {/* NEW: animated WebGL shader backdrop */}
       <ShaderBackground />
 
-      {/* Cloud Waves Background */}
-      <div className="loader-clouds">
-        <div className="cloud cloud-1" />
-        <div className="cloud cloud-2" />
-        <div className="cloud cloud-3" />
-        <div className="cloud cloud-4" />
-        <div className="cloud cloud-5" />
-      </div>
-
-      {/* Galaxy Particles */}
-      <div className="loader-galaxy">
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={i}
-            className="galaxy-particle"
-            style={{
-              '--delay': `${i * 0.12}s`,
-              '--duration': `${3.5 + i * 0.25}s`,
-              '--size': `${Math.random() * 100 + 30}px`,
-            }}
-          />
-        ))}
-      </div>
 
       {/* Grid Background */}
       <div className="loader-grid" />
