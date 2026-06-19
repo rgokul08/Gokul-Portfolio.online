@@ -44,12 +44,8 @@
   position: relative;
   z-index: 10;
   padding: 40px 48px;
-  border-radius: var(--radius-lg, 24px);
-  background: var(--bg-card);
-  border: 1px solid var(--border);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  box-shadow: var(--shadow-neon);
   animation: loaderIn 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
