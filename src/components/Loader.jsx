@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import ShaderBackground from './ShaderBackground'
 import './Loader.css'
 
 export default function Loader() {
   const [p, setP] = useState(0)
-  
+
   useEffect(() => {
     const iv = setInterval(() =>
       setP(v => {
@@ -20,6 +21,9 @@ export default function Loader() {
 
   return (
     <div className="loader">
+      {/* NEW: animated WebGL shader backdrop */}
+      <ShaderBackground />
+
       {/* Cloud Waves Background */}
       <div className="loader-clouds">
         <div className="cloud cloud-1" />
