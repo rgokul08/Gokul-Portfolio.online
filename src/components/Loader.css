@@ -104,7 +104,7 @@
 .loader-name {
   font-family: 'Orbitron', monospace;
   font-weight: 800;
-  font-size: 24px;
+  font-size: 50px;
   color: var(--text-primary);
   letter-spacing: 0.14em;
   text-shadow: 0 0 20px var(--neon-cyan);
@@ -135,7 +135,7 @@
 
 .loader-text {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 11px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
