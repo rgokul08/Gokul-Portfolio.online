@@ -44,9 +44,6 @@
   position: relative;
   z-index: 10;
   padding: 40px 48px;
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  animation: loaderIn 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
 @keyframes loaderIn {
