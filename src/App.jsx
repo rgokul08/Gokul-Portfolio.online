@@ -43,7 +43,7 @@ function PortfolioApp() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 5000)
+    const t = setTimeout(() => setLoading(false), 4500)
     return () => clearTimeout(t)
   }, [])
 

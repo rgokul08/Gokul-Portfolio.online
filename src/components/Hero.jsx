@@ -11,6 +11,8 @@ export default function Hero(){
   const roleRef=useRef(null)
   const idx=useRef(0), chars=useRef(0), del=useRef(false)
   const[imgUrl,setImgUrl]=useState(null)
+  const videoRef=useRef(null)
+  const[videoReady,setVideoReady]=useState(false)
 
   useEffect(()=>{
     const tick=()=>{
@@ -44,8 +46,35 @@ export default function Hero(){
     load()
   },[])
 
+  /* Try to force-play the launch video (mobile autoplay can be finicky) */
+  useEffect(()=>{
+    const v=videoRef.current
+    if(!v) return
+    const play=()=>v.play().catch(()=>{})
+    play()
+    document.addEventListener('click',play,{once:true})
+    return()=>document.removeEventListener('click',play)
+  },[])
+
   return(
     <div className="hero">
+      {/* ── ROCKET LAUNCH VIDEO BACKGROUND ── */}
+      <div className="hero-video-wrap">
+        <video
+          ref={videoRef}
+          className={`hero-video${videoReady ? ' ready' : ''}`}
+          autoPlay muted loop playsInline preload="auto"
+          onCanPlay={()=>setVideoReady(true)}
+          poster="/favicon.svg"
+        >
+          <source src="/rocket-launch-bg.mp4" type="video/mp4" />
+        </video>
+        <div className="hero-video-scrim" />
+        <div className="hero-video-grain" />
+        <div className="hero-video-vignette" />
+        <div className="hero-horizon-glow" />
+      </div>
+
       <div className="orb orb-1"/><div className="orb orb-2"/><div className="orb orb-3"/><div className="orb orb-4"/>
       <div className="hero-grid"/>
       <div className="hero-particles">
@@ -75,7 +104,7 @@ export default function Hero(){
           <p className="hero-tagline fade-in delay-4">
             Transforming ideas into impactful applications through&nbsp;
             <strong>clean code</strong>, <strong>modern web development</strong>&nbsp;
-            and <strong>data analysis</strong>.
+            and <strong>data analysis</strong> — launched with the same precision as a rocket leaving the pad.
           </p>
 
           <div className="hero-actions fade-in delay-5">
