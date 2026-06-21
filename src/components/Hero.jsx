@@ -67,7 +67,7 @@ export default function Hero(){
           onCanPlay={()=>setVideoReady(true)}
           poster="/favicon.svg"
         >
-          <source src="rgokul08/Gokul-Portfolio.online/public/rocket-launch-bg.mp4" type="video/mp4" />
+          <source src="https://rshbwueoscurgzfkouuh.supabase.co/storage/v1/object/public/Portfolio/Background/rocket-launch-bg.mp4" type="video/mp4" />
         </video>
         <div className="hero-video-scrim" />
         <div className="hero-video-grain" />
