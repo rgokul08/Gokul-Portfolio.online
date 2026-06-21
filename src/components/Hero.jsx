@@ -136,9 +136,6 @@ export default function Hero(){
                 ?<img src={imgUrl} alt="Gokul" className="hero-photo"/>
                 :<div className="hero-avatar"><span>G</span></div>
               }
-              <div className="hero-badge-float badge-1">
-                <span className="bf-dot"/>🎓 Engineering Student
-              </div>
               <div className="hero-badge-float badge-2">
                 <span className="bf-dot"/>💻 Dev &amp; Designer
               </div>
