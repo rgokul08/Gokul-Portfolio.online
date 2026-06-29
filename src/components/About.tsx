@@ -32,6 +32,7 @@ const SKILL_LOGOS: Record<string, string> = {
   'supabase': 'https://seeklogo.com/images/S/supabase-logo-DCC676FFE2-seeklogo.com.png',
   'firebase': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg',
   'vite': 'https://vitejs.dev/logo.svg',
+  'vs code': 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
 }
 
 const AI_LOGOS: Record<string, string> = {
@@ -43,6 +44,7 @@ const AI_LOGOS: Record<string, string> = {
   'grok ai': 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/grok-icon.png',
   'perplexity': 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/perplexity-ai-icon.png',
   'hugging face': 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg',
+  'arena ai': 'https://arena.ai/favicon.ico'
 }
 
 const AI_TOOLS = [
@@ -54,6 +56,7 @@ const AI_TOOLS = [
   { name: 'Genspark AI' },
   { name: 'Perplexity' },
   { name: 'Hugging Face' },
+  { name: 'Arena AI' },
 ]
 
 const EDUCATION = [
@@ -62,28 +65,25 @@ const EDUCATION = [
     school: 'Prince Dr. K. Vasudevan College',
     year: '2025–2029',
     score: 'CGPA: 8.2/10',
-    logo: 'https://rshbwueoscurgzfkouuh.supabase.co/storage/v1/object/public/Portfolio/logos/college-logo.png',
+    logo: 'https://yt3.googleusercontent.com/ytc/AIdro_k_qv60q5J-ADkI2QNCezEuT1zrK5KTSCIZMtIrhxphKU8=s900-c-k-c0x00ffffff-no-rj',
   },
   {
     degree: 'Higher Secondary (12th)',
     school: 'Zion International Public School (CBSE)',
     year: '2024–2025',
     score: '80%',
-    logo: 'https://rshbwueoscurgzfkouuh.supabase.co/storage/v1/object/public/Portfolio/logos/school-logo.png',
-  },
-  {
-    degree: 'Secondary (10th)',
-    school: 'Zion International Public School (CBSE)',
-    year: '2022–2023',
-    score: '78%',
-    logo: 'https://rshbwueoscurgzfkouuh.supabase.co/storage/v1/object/public/Portfolio/logos/school-logo.png',
-  },
+    logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ07s-XizXZz4c2mh2uIeoXZr_voHZOIqx4Li0SZV1ePDSMfJymMEgnDj4S&s=10',
+  }
 ]
 
 const DEFAULT = {
   name: 'Gokul R',
-  bio: `I'm Gokul R, a passionate Software Developer and AI & Data Science student. I specialize in web design, frontend development, and software development, with skills in building responsive and user-friendly websites. I enjoy learning new technologies, solving real-world problems, and continuously improving my technical abilities.`,
-  skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript', 'React', 'NodeJs', 'Vite', 'Supabase', 'Git', 'GitHub'],
+  bio: `I'm Gokul R, a passionate Software Developer and AI & Data Science undergraduate currently pursuing my degree at Prince Dr. K. Vasudevan College (2025–2029). My journey into programming started with curiosity and has grown into a passion for building modern, scalable, and user-friendly applications.
+
+I specialize in web development, software engineering, and UI/UX-focused frontend development, creating experiences that are both visually appealing and highly functional. Alongside development, I actively explore Artificial Intelligence and Data Science, combining intelligent technologies with practical software solutions.
+
+My mission is to leverage technology, creativity, and continuous learning to build innovative software solutions that create meaningful value and make a positive impact on the world. `,
+  skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript', 'React', 'NodeJs', 'Vite', 'Supabase', 'Git', 'GitHub','VS Code'],
   email: 'rgokul08.in@gmail.com',
   contact: '+91 88382104XX',
   linkedin: 'https://www.linkedin.com/in/gokul-r-69ab13385/',
@@ -159,7 +159,7 @@ export default function About() {
           {/* Left Column: Bio + Contact */}
           <div>
             <div className="about-bio">
-              <h3>Who I Am 🚀</h3>
+              <h3>Who I Am </h3>
               <p className="about-bio-text">{profile.bio}</p>
             </div>
 
@@ -216,7 +216,7 @@ export default function About() {
 
             {/* Tech Skills */}
             <div className="about-skills-section">
-              <div className="about-skills-title">⚡ Tech Stack</div>
+              <div className="about-skills-title"> Tech Stack</div>
               <div className="skills-grid">
                 {skills.map((skill: string, i: number) => {
                   const logo = getLogo(skill)
@@ -236,7 +236,7 @@ export default function About() {
 
             {/* AI Tools */}
             <div className="ai-tools-section">
-              <div className="about-skills-title">🤖 AI Tools I Use</div>
+              <div className="about-skills-title"> AI Tools I Use</div>
               <div className="ai-grid">
                 {AI_TOOLS.map((tool, i) => {
                   const logo = getAiLogo(tool.name)
