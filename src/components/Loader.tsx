@@ -23,7 +23,7 @@ export default function Loader() {
 
   useEffect(() => {
     if (p >= 100) {
-      const t = setTimeout(() => setFadeOut(true), 3500)
+      const t = setTimeout(() => setFadeOut(true), 3000)
       return () => clearTimeout(t)
     }
   }, [p])

@@ -10,9 +10,9 @@ const SOCIALS = [
 ]
 
 const SERVICES = [
+  'Software Developer',
   'Full Stack Web Development',
   'UI / UX Design',
-  'Web Applications',
   'Data Analysis',
   'Java & Python Scripting',
   'Figma Prototyping',
@@ -31,7 +31,7 @@ export default function Footer() {
           <p className="footer-bio">
             Aspiring Software Developer &amp; AI/Data Science student from
             Thambaram, Chengalpattu, Tamil Nadu — passionate about building
-            meaningful digital experiences with clean code and modern design.
+            meaningful digital experiences with Ai and modern design.
           </p>
           <div className="footer-location">
             <FiMapPin />

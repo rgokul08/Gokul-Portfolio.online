@@ -6,7 +6,7 @@ import {
   FiMessageSquare, FiInstagram, FiMail, FiGithub, FiLinkedin
 } from 'react-icons/fi'
 import { SiBehance } from 'react-icons/si'
-import './Feedback.css'
+import './styles/global.css'
 
 const SVC = 'service_goku08'
 const TPL = 'template_95bsjjz'

@@ -129,11 +129,11 @@ export default function Hero() {
           </div>
 
           <p className="hero-tagline">
-         Transforming ideas into impactful digital experiences through
-          <strong>modern web development</strong>,
-          <strong>AI-powered solutions</strong>, and
-          <strong>data-driven innovation</strong> to
-          <strong>create a better future.</strong>
+         Transforming ideas into impactful digital experiences through  
+          <strong> modern web development </strong> , 
+          <strong> AI-powered solutions </strong> , and
+          <strong> data-driven innovation </strong> to 
+          <strong> create a better future. </strong>
           </p>
 
           <div className="hero-actions">
