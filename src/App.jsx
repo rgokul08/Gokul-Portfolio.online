@@ -1,6 +1,5 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react'
-import { Analytics } from '@vercel/analytics/react'
 import { ThemeProvider } from './context/ThemeContext'
 import Navbar       from './components/Navbar'
 import Hero         from './components/Hero'
@@ -43,7 +42,7 @@ function PortfolioApp() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 4500)
+    const t = setTimeout(() => setLoading(false), 3000)
     return () => clearTimeout(t)
   }, [])
 
@@ -71,7 +70,6 @@ export default function App() {
   return (
     <ThemeProvider>
       <PortfolioApp />
-      <Analytics />
     </ThemeProvider>
   )
 }
