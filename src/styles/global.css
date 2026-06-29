@@ -559,6 +559,7 @@ section[id] {
   position: fixed;
   top: 0;
   left: 0;
+  bottom: 493px;
   right: 0;
   z-index: 1000;
   padding: 16px 0;
@@ -1736,7 +1737,7 @@ section[id] {
 .proj-slide-wrap, .git-slide-wrap, .cert-slide-wrap {
   position: relative;
   overflow: hidden;
-  padding: 20px 0 60px;
+  padding: 35px 0 60px;
 }
 .proj-stage, .git-stage, .cert-stage {
   display: flex;
@@ -2008,6 +2009,7 @@ section[id] {
 .marquee-row-track {
   display: flex;
   gap: 24px;
+  padding-top: 20px;
   width: max-content;
   will-change: transform;
   /* GPU compositing layer — no paint on scroll */
