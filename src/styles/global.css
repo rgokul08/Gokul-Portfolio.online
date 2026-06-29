@@ -2308,14 +2308,32 @@ section[id] {
 /* ══════════════════════════════════════
    FEEDBACK / CONTACT
 ══════════════════════════════════════ */
-/* Feedback.css */
-.feedback { padding: 120px 0; }
+/* ==========================================================
+   FEEDBACK SECTION
+========================================================== */
 
+.feedback {
+  padding: 120px 0;
+}
+
+/* Layout */
 .fb-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
   align-items: start;
+}
+
+.feedback-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.feedback-intro {
+  text-align: center;
+  margin-bottom: 40px;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
 }
 
 .fb-tagline {
@@ -2325,7 +2343,10 @@ section[id] {
   margin-bottom: 36px;
 }
 
-/* contacts list */
+/* ==========================================================
+   CONTACTS
+========================================================== */
+
 .fb-contacts {
   display: flex;
   flex-direction: column;
@@ -2341,31 +2362,63 @@ section[id] {
   background: var(--bg-glass-2);
   border: 1px solid var(--border);
   border-radius: 14px;
-  transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
+  transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
+
 .fb-contact-item:hover {
   background: var(--accent-glow);
   border-color: var(--accent);
   transform: translateX(5px);
 }
-.fb-contact-item.insta:hover  { background: rgba(225,48,108,0.07); border-color: rgba(225,48,108,0.28); }
-.fb-contact-item.behance:hover{ background: rgba(23,105,255,0.07); border-color: rgba(23,105,255,0.28); }
-.fb-contact-item.figma:hover  { background: rgba(162,89,255,0.07); border-color: rgba(162,89,255,0.28); }
+
+.fb-contact-item.insta:hover {
+  background: rgba(225, 48, 108, 0.07);
+  border-color: rgba(225, 48, 108, 0.28);
+}
+
+.fb-contact-item.behance:hover {
+  background: rgba(23, 105, 255, 0.07);
+  border-color: rgba(23, 105, 255, 0.28);
+}
+
+.fb-contact-item.figma:hover {
+  background: rgba(162, 89, 255, 0.07);
+  border-color: rgba(162, 89, 255, 0.28);
+}
 
 .fb-contact-icon {
-  width: 40px; height: 40px;
+  width: 40px;
+  height: 40px;
   border-radius: 11px;
   background: var(--accent-glow);
-  border: 1px solid rgba(99,179,237,0.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 17px; color: var(--accent);
+  border: 1px solid rgba(99, 179, 237, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  color: var(--accent);
   flex-shrink: 0;
   transition: all 0.28s;
 }
-.fb-contact-icon.insta   { background: rgba(225,48,108,0.1);  border-color: rgba(225,48,108,0.22);  color: var(--accent-pink); }
-.fb-contact-icon.behance { background: rgba(23,105,255,0.1);  border-color: rgba(23,105,255,0.22);  color: #1769ff; }
-.fb-contact-icon.figma   { background: rgba(162,89,255,0.1);  border-color: rgba(162,89,255,0.22);  color: #a259ff; }
+
+.fb-contact-icon.insta {
+  background: rgba(225, 48, 108, 0.1);
+  border-color: rgba(225, 48, 108, 0.22);
+  color: var(--accent-pink);
+}
+
+.fb-contact-icon.behance {
+  background: rgba(23, 105, 255, 0.1);
+  border-color: rgba(23, 105, 255, 0.22);
+  color: #1769ff;
+}
+
+.fb-contact-icon.figma {
+  background: rgba(162, 89, 255, 0.1);
+  border-color: rgba(162, 89, 255, 0.22);
+  color: #a259ff;
+}
 
 .fb-contact-label {
   font-size: 11px;
@@ -2375,26 +2428,36 @@ section[id] {
   text-transform: uppercase;
   margin-bottom: 3px;
 }
+
 .fb-contact-val {
   font-size: 14px;
   color: var(--text-primary);
   font-weight: 500;
 }
 
-/* form card */
-.fb-form-card { padding: 38px; }
+/* ==========================================================
+   FORM
+========================================================== */
+
+.fb-form-card {
+  padding: 38px;
+}
 
 .fb-form-head {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Syne', sans-serif;
+  font-family: "Syne", sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 26px;
 }
-.fb-form-head svg { color: var(--accent); font-size: 19px; }
+
+.fb-form-head svg {
+  color: var(--accent);
+  font-size: 19px;
+}
 
 .fb-form {
   display: flex;
@@ -2402,31 +2465,242 @@ section[id] {
   gap: 18px;
 }
 
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 14px 18px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg-glass);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  color: var(--neon-pink);
+  background: rgba(255, 61, 107, 0.1);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+.form-submit {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ==========================================================
+   LOADING SPINNER
+========================================================== */
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================
+   SUCCESS MESSAGE
+========================================================== */
+
 .fb-success {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  padding: 36px 0;
   text-align: center;
+  padding: 40px;
 }
-.fb-success svg  { font-size: 50px; color: var(--accent-green); }
-.fb-success h3   { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: var(--text-primary); }
-.fb-success p    { font-size: 14px; color: var(--text-secondary); }
 
-/* ── Responsive ── */
+.fb-success svg {
+  font-size: 3rem;
+  color: var(--accent-green);
+}
+
+.fb-success h3 {
+  font-family: var(--font-ui);
+  font-size: 1.3rem;
+  color: var(--text-primary);
+}
+
+.fb-success p {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+/* ==========================================================
+   SOCIAL LINKS
+========================================================== */
+
+.feedback-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.feedback-divider-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.feedback-divider-text {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.feedback-socials {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.feedback-social-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  transition: all 0.3s var(--ease-spring);
+}
+
+.feedback-social-link svg {
+  font-size: 1.1rem;
+}
+
+.feedback-social-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 90, 31, 0.15);
+}
+
+.feedback-social-link.github:hover {
+  color: #333;
+  border-color: #333;
+}
+
+[data-theme="dark"] .feedback-social-link.github:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+.feedback-social-link.linkedin:hover {
+  color: #0077b5;
+  border-color: #0077b5;
+}
+
+.feedback-social-link.instagram:hover {
+  color: #e4405f;
+  border-color: #e4405f;
+}
+
+.feedback-social-link.behance:hover {
+  color: #1769ff;
+  border-color: #1769ff;
+}
+
+.feedback-social-link.email:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
 @media (max-width: 900px) {
-  .fb-grid { grid-template-columns: 1fr; gap: 40px; }
-  .fb-form-card { padding: 26px; }
-  .feedback { padding: 80px 0; }
+  .feedback {
+    padding: 80px 0;
+  }
+
+  .fb-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .fb-form-card {
+    padding: 26px;
+  }
 }
 
 @media (max-width: 600px) {
-  .fb-form-card { padding: 20px; }
-  .feedback { padding: 60px 0; }
-  .fb-contact-item { padding: 10px 14px; }
+  .feedback {
+    padding: 60px 0;
+  }
+
+  .fb-form-card {
+    padding: 20px;
+  }
+
+  .fb-contact-item {
+    padding: 10px 14px;
+  }
 }
 
+@media (max-width: 480px) {
+  .feedback-socials {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .feedback-social-link {
+    justify-content: center;
+  }
+}
 /* ══════════════════════════════════════
    FOOTER
 ══════════════════════════════════════ */
