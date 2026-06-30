@@ -44,7 +44,7 @@ const AI_LOGOS: Record<string, string> = {
   'grok ai': 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/grok-icon.png',
   'perplexity': 'https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/perplexity-ai-icon.png',
   'hugging face': 'https://huggingface.co/front/assets/huggingface_logo-noborder.svg',
-  'arena ai': 'https://arena.ai/favicon.ico'
+  'arena ai': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqbhtvZIZ2cYRESZO9QmYqQYZkJOyKwpVT3CBkFvxqng&s=10'
 }
 
 const AI_TOOLS = [
