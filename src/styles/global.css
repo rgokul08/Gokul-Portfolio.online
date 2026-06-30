@@ -711,7 +711,8 @@ section[id] {
   .nav-links, .nav-right { display: none; }
   .nav-mobile-right { display: flex; }
   .navbar{
-      bottom: 493px;
+    top:0;
+      bottom: auto;
   }
   .nav-drawer { display: flex; }
 }
