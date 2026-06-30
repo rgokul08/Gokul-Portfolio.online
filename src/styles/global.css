@@ -559,7 +559,6 @@ section[id] {
   position: fixed;
   top: 0;
   left: 0;
-  bottom: 493px;
   right: 0;
   z-index: 1000;
   padding: 16px 0;
@@ -711,6 +710,10 @@ section[id] {
 @media (max-width: 768px) {
   .nav-links, .nav-right { display: none; }
   .nav-mobile-right { display: flex; }
+  .navbar.scrolled{
+    top:0;
+      bottom: 850px;
+  }
   .nav-drawer { display: flex; }
 }
 
