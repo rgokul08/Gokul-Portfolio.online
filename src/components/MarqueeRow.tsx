@@ -2,17 +2,16 @@ import { useEffect, useRef, useCallback } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 
 /**
- * Premium infinite-scroll marquee row.
+ * Premium infinite-scroll marquee row — fixed & responsive.
  *
- * How it works:
- *  1. The unique items are rendered THREE times inside the track
- *     so the visible window is always full — no blank gaps ever.
- *  2. A rAF loop moves the track by `speed` px per frame.
- *  3. When the offset crosses one "set width" boundary the position
- *     resets by exactly one set width — the user sees zero jump because
- *     the cloned set fills in identically.
- *  4. translate3d is used for GPU-composited rendering (60 fps).
- *  5. Hover pauses smoothly; ← → buttons nudge speed temporarily.
+ * Key fixes:
+ *  1. Mask gradient is applied via a CSS custom property so it scales
+ *     responsively instead of using fixed pixel values.
+ *  2. The rAF loop is gate-kept by a `runningRef` flag so cleanup is
+ *     always clean — no double-start on StrictMode remounts.
+ *  3. setWidth is re-measured after fonts/images load (ResizeObserver).
+ *  4. Speed nudge uses a proper spring back to baseSpeed regardless of
+ *     direction so arrows always return to the correct sign.
  */
 interface MarqueeRowProps<T> {
   items: T[]
@@ -33,73 +32,103 @@ export default function MarqueeRow<T>({
   trackClass = '',
   wrapClass = '',
 }: MarqueeRowProps<T>) {
-  const trackRef = useRef<HTMLDivElement>(null)
-  const offsetRef = useRef(0)
-  const speedRef = useRef(0)
+  const trackRef   = useRef<HTMLDivElement>(null)
+  const maskRef    = useRef<HTMLDivElement>(null)
+  const offsetRef  = useRef(0)
+  const speedRef   = useRef(0)
   const baseSpeedRef = useRef(0)
-  const rafRef = useRef(0)
-  const pausedRef = useRef(false)
+  const rafRef     = useRef(0)
+  const runningRef = useRef(false)
+  const pausedRef  = useRef(false)
   const setWidthRef = useRef(0)
 
-  // Measure one "set" of items width (items rendered once)
+  /* ── measure one copy of the items ── */
   const measure = useCallback(() => {
     const track = trackRef.current
     if (!track || items.length === 0) return
-    // total track has 3 copies → one set = scrollWidth / 3
-    setWidthRef.current = track.scrollWidth / 3
+    // Track contains 3 identical copies → one set = total / 3
+    const sw = track.scrollWidth / 3
+    if (sw > 0) setWidthRef.current = sw
   }, [items])
+
+  /* ── update mask gradient width responsively ── */
+  const updateMask = useCallback(() => {
+    const mask = maskRef.current
+    if (!mask) return
+    const w = mask.offsetWidth
+    // Fade zone: clamp between 40px (mobile) and 120px (desktop)
+    const fade = Math.min(120, Math.max(40, w * 0.07))
+    const pct  = (fade / w) * 100
+    mask.style.webkitMaskImage =
+      `linear-gradient(to right, transparent, black ${pct.toFixed(1)}%, black ${(100 - pct).toFixed(1)}%, transparent)`
+    mask.style.maskImage = mask.style.webkitMaskImage
+  }, [])
 
   useEffect(() => {
     const track = trackRef.current
     if (!track || items.length === 0) return
 
-    // Measure after paint
+    // Stop any existing loop first
+    runningRef.current = false
+    cancelAnimationFrame(rafRef.current)
+
+    const base = direction === 'ltr' ? speed : -speed
+    baseSpeedRef.current = base
+    speedRef.current     = base
+
+    /* Start offset: RTL begins at one set so wrap-back lands at set, not 0 */
     requestAnimationFrame(() => {
       measure()
+      updateMask()
+
       const sw = setWidthRef.current
       if (sw === 0) return
 
-      // LTR starts at 0 and moves right (offset increases)
-      // RTL starts at one set-width and moves left (offset decreases)
-      const base = direction === 'ltr' ? speed : -speed
-      baseSpeedRef.current = base
-      speedRef.current = base
       offsetRef.current = direction === 'rtl' ? sw : 0
 
+      let fc = 0
+      runningRef.current = true
+
       const tick = () => {
+        if (!runningRef.current) return
+
         if (!pausedRef.current) {
           offsetRef.current += speedRef.current
         }
 
-        // Ease speed back toward base (spring-like deceleration after nudge)
+        /* Spring back toward base speed */
         speedRef.current += (baseSpeedRef.current - speedRef.current) * 0.04
 
         const sw = setWidthRef.current
         if (sw > 0) {
-          // Seamless wrap: keep offset within [0, setWidth)
-          // When LTR scrolls past one full set, jump back by setWidth
-          // When RTL scrolls before 0, jump forward by setWidth
+          /* Seamless wrap within the middle copy */
           if (offsetRef.current >= sw * 2) offsetRef.current -= sw
-          if (offsetRef.current <= 0) offsetRef.current += sw
+          if (offsetRef.current <= 0)      offsetRef.current += sw
 
           track.style.transform = `translate3d(${-offsetRef.current}px, 0, 0)`
         }
 
+        fc++
         rafRef.current = requestAnimationFrame(tick)
       }
 
       rafRef.current = requestAnimationFrame(tick)
     })
 
-    // Re-measure on resize
-    const onResize = () => measure()
-    window.addEventListener('resize', onResize)
+    /* ResizeObserver re-measures + re-masks on container resize */
+    const ro = new ResizeObserver(() => {
+      measure()
+      updateMask()
+    })
+    if (maskRef.current)  ro.observe(maskRef.current)
+    if (trackRef.current) ro.observe(trackRef.current)
 
     return () => {
+      runningRef.current = false
       cancelAnimationFrame(rafRef.current)
-      window.removeEventListener('resize', onResize)
+      ro.disconnect()
     }
-  }, [items, direction, speed, measure])
+  }, [items, direction, speed, measure, updateMask])
 
   const nudge = useCallback((dir: 'left' | 'right') => {
     speedRef.current = dir === 'right' ? 8 : -8
@@ -107,7 +136,7 @@ export default function MarqueeRow<T>({
 
   if (items.length === 0) return null
 
-  // Render items 3 times for guaranteed no-gap coverage
+  // Three copies for guaranteed no-gap infinite scroll
   const tripled = [...items, ...items, ...items]
 
   return (
@@ -121,6 +150,7 @@ export default function MarqueeRow<T>({
       </button>
 
       <div
+        ref={maskRef}
         className={`marquee-row-mask ${wrapClass}`.trim()}
         onMouseEnter={() => { pausedRef.current = true }}
         onMouseLeave={() => { pausedRef.current = false }}
