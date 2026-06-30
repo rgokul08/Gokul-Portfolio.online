@@ -710,9 +710,9 @@ section[id] {
 @media (max-width: 768px) {
   .nav-links, .nav-right { display: none; }
   .nav-mobile-right { display: flex; }
-  .navbar{
+  .navbar.scrolled{
     top:0;
-      bottom: auto;
+      bottom: 850px;
   }
   .nav-drawer { display: flex; }
 }
