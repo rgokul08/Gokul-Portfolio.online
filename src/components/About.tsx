@@ -79,10 +79,11 @@ const EDUCATION = [
 const DEFAULT = {
   name: 'Gokul R',
   bio: `I'm Gokul R, a passionate Software Developer and AI & Data Science undergraduate currently pursuing my degree at Prince Dr. K. Vasudevan College (2025–2029). My journey into programming started with curiosity and has grown into a passion for building modern, scalable, and user-friendly applications.
+</br>
+  I specialize in web development, software engineering, and UI/UX-focused frontend development, creating experiences that are both visually appealing and highly functional. Alongside development, I actively explore Artificial Intelligence and Data Science, combining intelligent technologies with practical software solutions.
+ </br>
+  My mission is to leverage technology, creativity, and continuous learning to build innovative software solutions that create meaningful value and make a positive impact on the world. `,
 
-I specialize in web development, software engineering, and UI/UX-focused frontend development, creating experiences that are both visually appealing and highly functional. Alongside development, I actively explore Artificial Intelligence and Data Science, combining intelligent technologies with practical software solutions.
-
-My mission is to leverage technology, creativity, and continuous learning to build innovative software solutions that create meaningful value and make a positive impact on the world. `,
   skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript', 'React', 'NodeJs', 'Vite', 'Supabase', 'Git', 'GitHub','VS Code'],
   email: 'rgokul08.in@gmail.com',
   contact: '+91 88382104XX',
