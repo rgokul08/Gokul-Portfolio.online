@@ -147,7 +147,7 @@ export default function Hero() {
 
           <div className="hero-socials">
             <a href="https://github.com/rgokul08" target="_blank" rel="noopener noreferrer" className="hs-link" title="GitHub"><FiGithub /></a>
-            <a href="https://www.linkedin.com/in/gokul-r-69ab13385/" target="_blank" rel="noopener noreferrer" className="hs-link" title="LinkedIn"><FiLinkedin /></a>
+            <a href="www.linkedin.com/in/gokul-r-156708357" target="_blank" rel="noopener noreferrer" className="hs-link" title="LinkedIn"><FiLinkedin /></a>
             <a href="https://instagram.com/itz_goku.08" target="_blank" rel="noopener noreferrer" className="hs-link" title="Instagram"><FiInstagram /></a>
             <a href="https://www.behance.net/gokul08" target="_blank" rel="noopener noreferrer" className="hs-link" title="Behance"><SiBehance /></a>
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com" target="_blank" rel="noopener noreferrer" className="hs-link" title="Email"><FiMail /></a>
