@@ -87,7 +87,7 @@ const DEFAULT = {
   skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript', 'React', 'NodeJs', 'Vite', 'Supabase', 'Git', 'GitHub','VS Code'],
   email: 'rgokul08.in@gmail.com',
   contact: '+91 88382104XX',
-  linkedin: 'https://www.linkedin.com/in/gokul-r-69ab13385/',
+  linkedin: 'https://www.linkedin.com/in/gokul-r-156708357/',
   github: 'https://github.com/rgokul08',
   instagram: 'https://instagram.com/itz_goku.08',
   behance: 'https://www.behance.net/gokul08',
