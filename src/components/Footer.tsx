@@ -3,7 +3,7 @@ import { SiBehance } from 'react-icons/si'
 
 const SOCIALS = [
   { icon: <FiGithub />, href: 'https://github.com/rgokul08', label: 'GitHub' },
-  { icon: <FiLinkedin />, href: 'https://www.linkedin.com/in/gokul-r-69ab13385/', label: 'LinkedIn' },
+  { icon: <FiLinkedin />, href: 'www.linkedin.com/in/gokul-r-156708357', label: 'LinkedIn' },
   { icon: <FiInstagram />, href: 'https://instagram.com/itz_goku.08', label: 'Instagram' },
   { icon: <SiBehance />, href: 'https://www.behance.net/gokul08', label: 'Behance' },
   { icon: <FiMail />, href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com', label: 'Email' },
