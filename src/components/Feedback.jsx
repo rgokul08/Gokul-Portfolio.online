@@ -15,7 +15,7 @@ const KEY = 'vME-mdDF8y05MgnRa'
 const CONTACTS = [
   { icon: <FiMail />,      label: 'Primary Email',  value: 'rgokul08.in@gmail.com',  href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rgokul08.in@gmail.com', cls: '' },
   { icon: <FiMail />,      label: 'Figma / Design', value: 'rffgokul@gmail.com',      href: 'https://mail.google.com/mail/?view=cm&fs=1&to=rffgokul@gmail.com',   cls: 'figma' },
-  { icon: <FiLinkedin />,  label: 'LinkedIn',        value: 'Gokul R',                href: 'www.linkedin.com/in/gokul-r-156708357',                     cls: '' },
+  { icon: <FiLinkedin />,  label: 'LinkedIn',        value: 'Gokul R',                href: 'https://www.linkedin.com/in/gokul-r-156708357/',                     cls: '' },
   { icon: <FiGithub />,    label: 'GitHub',          value: '@rgokul08',              href: 'https://github.com/rgokul08',                                        cls: '' },
   { icon: <FiInstagram />, label: 'Instagram',       value: '@itz_goku.08',           href: 'https://instagram.com/itz_goku.08',                                  cls: 'insta' },
   { icon: <SiBehance />,   label: 'Behance',         value: 'behance.net/gokul08',    href: 'https://www.behance.net/gokul08',                                    cls: 'behance' },
