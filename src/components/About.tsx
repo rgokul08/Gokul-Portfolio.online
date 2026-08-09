@@ -78,11 +78,25 @@ const EDUCATION = [
 
 const DEFAULT = {
   name: 'Gokul R',
-  bio: `I'm Gokul R, a passionate Software Developer and AI & Data Science undergraduate currently pursuing my degree at Prince Dr. K. Vasudevan College (2025–2029). My journey into programming started with curiosity and has grown into a passion for building modern, scalable, and user-friendly applications.
+  bio: `𝑯𝒆𝒚, 𝑰'𝒎 𝑮𝒐𝒌𝒖𝒍 👋
 
-  I specialize in web development, software engineering, and UI/UX-focused frontend development, creating experiences that are both visually appealing and highly functional. Alongside development, I actively explore Artificial Intelligence and Data Science, combining intelligent technologies with practical software solutions.
+✦︎ I’m a 𝗕.𝗧𝗲𝗰𝗵 student in **Artificial Intelligence & Data Science** at Prince Dr. K. Vasudevan College of Engineering and Technology (2025–2029), passionate about **Software Engineering and Full Stack Web Development**.
 
-  My mission is to leverage technology, creativity, and continuous learning to build innovative software solutions that create meaningful value and make a positive impact on the world. `,
+✦︎ I enjoy transforming ideas into **scalable, user-centric digital products** by combining clean architecture, efficient problem-solving, responsive interfaces, and modern technologies.
+
+✦︎ My interests include:
+✧ Full Stack Web Development
+✧ Software Engineering
+✧ Frontend & Backend Development
+✧ Data Structures & Algorithms
+✧ Artificial Intelligence & Data Science
+✧ UI/UX Design with Figma
+
+✦︎ I’m currently seeking **Software Development, Full Stack, Frontend, Backend, and AI/Data Science internship opportunities** where I can contribute to real-world projects, learn from experienced professionals, and grow as a Software Engineer.
+
+𝗕𝘂𝗶𝗹𝗱𝗶𝗻𝗴 𝗶𝗻𝘁𝗲𝗹𝗹𝗶𝗴𝗲𝗻𝘁 𝘀𝗼𝗳𝘁𝘄𝗮𝗿𝗲 𝘁𝗼𝗱𝗮𝘆 𝘁𝗼 𝘀𝗵𝗮𝗽𝗲 𝘁𝗵𝗲 𝘁𝗲𝗰𝗵𝗻𝗼𝗹𝗼𝗴𝘆 𝗼𝗳 𝘁𝗼𝗺𝗼𝗿𝗿𝗼𝘄.
+
+  `,
 
   skills: ['Java', 'Python', 'Figma', 'HTML & CSS', 'JavaScript', 'React', 'NodeJs', 'Vite', 'Supabase', 'Git', 'GitHub','VS Code'],
   email: 'rgokul08.in@gmail.com',
