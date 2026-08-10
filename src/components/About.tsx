@@ -80,25 +80,21 @@ const DEFAULT = {
   name: 'Gokul R',
   bio: `𝑯𝒆𝒚, 𝑰'𝒎 𝑮𝒐𝒌𝒖𝒍 👋
 
-✦︎ I’m a 𝗕.𝗧𝗲𝗰𝗵 student in **Artificial Intelligence & Data Science** at Prince Dr. K. Vasudevan College of Engineering and Technology (2025–2029), passionate about building **intelligent, scalable, and user-focused digital products**.
+     ✦︎ I’m a 𝗕.𝗧𝗲𝗰𝗵 student in Artificial Intelligence & Data Science at Prince Dr. K. Vasudevan College of Engineering and Technology (2025–2029), passionate about building intelligent, scalable, and user-focused digital products.
 
-✦︎ My academic journey in **Artificial Intelligence, Data Structures, and Data Science** has developed my problem-solving foundation, while my strongest interest lies in **Software Engineering and Full Stack Web Development**. I enjoy building modern applications that combine clean architecture, responsive interfaces, efficient back-end systems, and meaningful user experiences.
+       My academic journey in Artificial Intelligence, Data Structures, and Data Science has developed my problem-solving foundation, while my strongest interest lies in Software Engineering and Full Stack Web Development. I enjoy building modern applications that combine clean architecture, responsive interfaces, efficient back-end systems, and meaningful user experiences.
 
-✦︎ 𝐖𝐡𝐚𝐭 𝐈 𝐄𝐧𝐣𝐨𝐲 𝐁𝐮𝐢𝐥𝐝𝐢𝐧𝐠
+      ✦︎ 𝐖𝐡𝐚𝐭 𝐈 𝐄𝐧𝐣𝐨𝐲 𝐁𝐮𝐢𝐥𝐝𝐢𝐧𝐠
+I enjoy turning ideas into functional, real-world software—from planning application workflows and designing interfaces in Figma to developing responsive frontends, scalable backends, database-driven applications, and integrating modern technologies.
 
-I enjoy turning ideas into functional, real-world software—from planning application workflows and designing interfaces in **Figma** to developing responsive frontends, scalable backends, database-driven applications, and integrating modern technologies.
-
-✦︎ 𝐖𝐡𝐚𝐭 𝐃𝐫𝐢𝐯𝐞𝐬 𝐌𝐞
-
-✧ Building **Full Stack web applications**
-✧ Developing clean and responsive user interfaces
-✧ Solving problems using efficient algorithms and data structures
-✧ Exploring **Artificial Intelligence & Data Science**
-✧ Learning new technologies and continuously improving my engineering skills
-
-✦︎ 𝐂𝐚𝐫𝐞𝐞𝐫 𝐎𝐛𝐣𝐞𝐜𝐭𝐢𝐯𝐞
-
-I’m currently seeking **Software Development, Full Stack, Frontend, Backend, and AI/Data Science internship or entry-level opportunities** where I can contribute to meaningful projects, learn from experienced professionals, and grow into a strong, well-rounded **Software Engineer**.
+      ✦︎ 𝐖𝐡𝐚𝐭 𝐃𝐫𝐢𝐯𝐞𝐬 𝐌𝐞
+          ✧ Building Full Stack web applications
+          ✧ Developing clean and responsive user interfaces
+          ✧ Solving problems using efficient algorithms and data structures
+          ✧ Exploring Artificial Intelligence & Data Science
+          ✧ Learning new technologies and continuously improving my engineering skills
+      ✦︎ 𝐂𝐚𝐫𝐞𝐞𝐫 𝐎𝐛𝐣𝐞𝐜𝐭𝐢𝐯𝐞
+              I’m currently seeking Software Development, Full Stack, Frontend, Backend, and AI/Data Science internship or entry-level opportunities where I can contribute to meaningful projects, learn from experienced professionals, and grow into a strong, well-rounded Software Engineer.
 
 ✦︎ 𝗕𝘂𝗶𝗹𝗱𝗶𝗻𝗴 𝗶𝗻𝘁𝗲𝗹𝗹𝗶𝗴𝗲𝗻𝘁 𝘀𝗼𝗳𝘁𝘄𝗮𝗿𝗲 𝘁𝗼𝗱𝗮𝘆 𝘁𝗼 𝘀𝗵𝗮𝗽𝗲 𝘁𝗵𝗲 𝘁𝗲𝗰𝗵𝗻𝗼𝗹𝗼𝗴𝘆 𝗼𝗳 𝘁𝗼𝗺𝗼𝗿𝗿𝗼𝘄.
 
