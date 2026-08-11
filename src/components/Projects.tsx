@@ -10,6 +10,13 @@ const FOLDER = 'projects_image'
 const SLIDE_AT = 3
 const AUTO_INTERVAL = 4000
 
+/**
+ * ⚠️ IMPORTANT: this must match your ACTUAL Supabase table name exactly.
+ * Confirmed via the "Could not find the table 'public.project'" error
+ * that the real table is `projects` (plural).
+ */
+const TABLE_NAME = 'projects'
+
 function imgUrl(item: any) {
   if (!item?.image_url) return null
   if (item.image_url.startsWith('http')) return item.image_url
@@ -30,15 +37,27 @@ export default function Projects() {
   const [paused, setPaused] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const progressRef = useRef<number>(0)
   const touchStartX = useRef<number | null>(null)
   const touchStartY = useRef<number | null>(null)
 
+  /**
+   * Fetches ALL rows from the Supabase table.
+   * No .limit(), no .range(), no .slice() — the table itself
+   * is the single source of truth for how many projects render.
+   */
   const load = useCallback(async () => {
     setLoading(true); setFetchErr(null)
     try {
-      const { data, error } = await supabase.from('projects').select('*').order('id', { ascending: false })
+      const { data, error, count } = await supabase
+        .from(TABLE_NAME)
+        .select('*', { count: 'exact' })
+        .order('id', { ascending: false })
+
       if (error) throw error
+
+      // Defensive log — remove once you've confirmed row counts match.
+      console.log(`[Projects] fetched ${data?.length ?? 0} rows (reported count: ${count})`)
+
       setProjects(data ?? [])
     } catch (err: any) {
       setFetchErr(err.message || 'Failed')
@@ -49,13 +68,18 @@ export default function Projects() {
 
   useEffect(() => { load() }, [load])
 
+  // Realtime: any insert/update/delete on the table triggers a full refetch,
+  // so newly added or removed projects show up automatically.
   useEffect(() => {
     const ch = supabase.channel('projects-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'projects' }, () => load())
+      .on('postgres_changes', { event: '*', schema: 'public', table: TABLE_NAME }, () => load())
       .subscribe()
     return () => { supabase.removeChannel(ch) }
   }, [load])
 
+  // Featured Projects section uses the exact same `projects` state
+  // (and therefore the exact same data) as the slideshow below —
+  // there is no separate/duplicated query or hardcoded subset.
   const allTags = ['All', ...new Set(projects.flatMap(p => parseTools(p.tools)))]
   const list = filter === 'All' ? projects : projects.filter(p => parseTools(p.tools).includes(filter))
   const slide = list.length > SLIDE_AT
@@ -65,7 +89,6 @@ export default function Projects() {
     setIsTransitioning(true)
     setCur(index)
     if (fromUser) setPaused(true)
-    // Allow next transition after CSS transition completes (500ms)
     setTimeout(() => setIsTransitioning(false), 500)
   }, [isTransitioning])
 
@@ -131,7 +154,6 @@ export default function Projects() {
     if (touchStartX.current === null || touchStartY.current === null) return
     const dx = e.changedTouches[0].clientX - touchStartX.current
     const dy = e.changedTouches[0].clientY - touchStartY.current
-    // Only swipe if horizontal movement dominates
     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
       if (dx < 0) nextFromUser()
       else prevFromUser()
