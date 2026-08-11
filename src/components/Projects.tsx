@@ -12,11 +12,10 @@ const AUTO_INTERVAL = 4000
 
 /**
  * ⚠️ IMPORTANT: this must match your ACTUAL Supabase table name exactly.
- * You confirmed the table is named `project` (singular) with 7 rows.
- * The previous code queried `projects` (plural) — if that was a
- * different/stale table, it would explain the mismatched count.
+ * Confirmed via the "Could not find the table 'public.project'" error
+ * that the real table is `projects` (plural).
  */
-const TABLE_NAME = 'project'
+const TABLE_NAME = 'projects'
 
 function imgUrl(item: any) {
   if (!item?.image_url) return null
