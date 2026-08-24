@@ -1,6 +1,7 @@
 // src/App.jsx
 import React, { useState, useEffect } from 'react'
 import { ThemeProvider } from './context/ThemeContext'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import Navbar       from './components/Navbar'
 import Hero         from './components/Hero'
 import About        from './components/About'
@@ -70,6 +71,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <PortfolioApp />
+      <SpeedInsights />
     </ThemeProvider>
   )
 }
