@@ -64,7 +64,7 @@ const EDUCATION = [
     degree: 'B.Tech in AI & Data Science',
     school: 'Prince Dr. K. Vasudevan College',
     year: '2025–2029',
-    score: 'CGPA: 8.2/10',
+    score: 'CGPA: 8.38/10',
     logo: 'https://yt3.googleusercontent.com/ytc/AIdro_k_qv60q5J-ADkI2QNCezEuT1zrK5KTSCIZMtIrhxphKU8=s900-c-k-c0x00ffffff-no-rj',
   },
   {
